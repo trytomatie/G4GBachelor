@@ -1,11 +1,12 @@
 using Cinemachine;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static PlayerController;
 
-public partial class PlayerController : MonoBehaviour, IEntityControlls
+public partial class PlayerController : NetworkBehaviour, IEntityControlls
 {
     // Character Movement Properties
     [SerializeField] private float maxMovementSpeed = 6;
@@ -25,8 +26,11 @@ public partial class PlayerController : MonoBehaviour, IEntityControlls
     public InteractionManager interactionManager;
     public Transform weaponPivot;
     public Transform staffTip;
+    public Transform cameraFollowTarget;
     private StatusManager sm;
     private Inventory inventory;
+
+
 
     [Header("HitBoxes")]
     public GameObject[] hitBoxes;
@@ -40,6 +44,10 @@ public partial class PlayerController : MonoBehaviour, IEntityControlls
     public int skillIndex = -1;
     public Skill[] skills;
     private float[] skillSlotCooldowns = new float[3] { -999, -999, -999 };
+
+    // PlayerSetup
+    public GameObject playerSetup;
+    private GameObject playerSetupInstance;
 
 
     // States
@@ -58,6 +66,12 @@ public partial class PlayerController : MonoBehaviour, IEntityControlls
     // Start is called before the first frame update
     void Start()
     {
+        if(!IsLocalPlayer)
+        {
+            enabled = false;
+            return;
+        }
+        PlayerSetupSetup();
         states[(int)PlayerState.Controlling] = new PlayerStateControlling();
         states[(int)PlayerState.InWater] = new PlayerStateInWater();
         states[(int)PlayerState.PlayerUsingSkill] = new PlayerUsingSkill();
@@ -87,7 +101,14 @@ public partial class PlayerController : MonoBehaviour, IEntityControlls
         }
         if (inventory.items[0].id != 0) SwitchHotbarItem(0);
     }
-   
+
+    public void PlayerSetupSetup()
+    {
+        playerSetupInstance = Instantiate(playerSetup, transform.position,transform.rotation,transform);
+        vCam = playerSetupInstance.GetComponentInChildren<CinemachineVirtualCamera>();
+        vCam.LookAt = cameraFollowTarget;
+        vCam.Follow = cameraFollowTarget;
+    }
 
     public void SwitchHotbarItem(int index)
     {
