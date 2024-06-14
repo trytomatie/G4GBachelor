@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1396290cc3f32d540b97a10f48ed64c7, type: 3}
+  m_Name: Skill_FieldOfFlowers
+  m_EditorClassIdentifier: 
+  skillName: Field Of Flowers
+  skillIcon: {fileID: 21300000, guid: 1aa4017c27d631841b5830bf13f8000e, type: 3}
+  skillCooldown: 3
+  flowerPrefabs:
+  - {fileID: 7861231804239001609, guid: 0de087af9a2230e45ada3effed767a97, type: 3}
+  spawnedObjects: []
+  flowerAmountPerTick: 5
+  ticks: 5
+  castTime: 0.5
+  lifeTime: 10
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128

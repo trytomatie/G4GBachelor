@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a28f23c8d12e347a3678e515f9b5ac, type: 3}
+  m_Name: Copper Sword Item Effect
+  m_EditorClassIdentifier: 
+  attackDamage: 3
+  weaponPrefab: {fileID: 195570, guid: 71bfa3c2d06ef5643980cf76996b302b, type: 3}
+  skill: {fileID: 11400000, guid: a423385fbd93f1447bb45e50294db018, type: 2}
