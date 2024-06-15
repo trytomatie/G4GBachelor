@@ -50,6 +50,12 @@ public class NetworkItemEffectsManager : NetworkBehaviour
         Transform weaponPivot = source.GetComponent<PlayerController>().weaponPivot.transform;
         GameObject instaniatedWeapon = Instantiate(weaponPrefab, weaponPivot);
         instaniatedWeapon.transform.localScale = weaponPrefab.transform.localScale;
+        Transform gunBarrelEnd = instaniatedWeapon.transform.Find("GunBarrelEnd").transform;
+        if(gunBarrelEnd != null)
+        {
+            source.GetComponent<PlayerController>().gunBarrelEnd = gunBarrelEnd;
+        }
+
     }
 
     [Rpc(SendTo.Server)]

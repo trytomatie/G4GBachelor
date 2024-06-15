@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MoreMountains.Tools;
+using UnityEngine;
 using static Unity.VisualScripting.Member;
 
 [CreateAssetMenu(fileName = "RifleWeapon_ItemEffects", menuName = "ScriptableObjects/ItemInteractionEffects/RifleWeapon_ItemEffects", order = 1)]
@@ -6,13 +7,22 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
 {
     public int attackDamage = 1;
     public GameObject weaponPrefab;
+    public float fireRate = 0.1f;
     public Skill skill;
     public Skill skill2;
+
+    private float timeLastFired = 0;
     public override void OnUse(GameObject source, Item item)
     {
-        if(isUsing)
+        if (isUsing)
         {
-            source.GetComponent<PlayerController>().HandleAttack(true);
+            if(timeLastFired + fireRate < Time.time)
+            {
+                PlayerController pc = source.GetComponent<PlayerController>();
+
+                timeLastFired = Time.time;
+                NetworkSpellManager.Instance.FireBulletServerRpc(NetworkGameManager.GetLocalPlayerId, pc.StatusManager.AttackDamage, pc.aimFollowTarget.transform.position);
+            }
         }
     }
 
@@ -37,6 +47,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
         {
             skill.AssignSkill(source, 0);
         }
+        timeLastFired = 0;
 
     }
 

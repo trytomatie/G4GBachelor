@@ -25,7 +25,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public ParticleSystem walkDust;
     public InteractionManager interactionManager;
     public Transform weaponPivot;
-    public Transform staffTip;
+    public Transform gunBarrelEnd;
     public Transform cameraFollowTarget;
     public Transform aimFollowTarget;
     private StatusManager sm;
@@ -67,7 +67,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     // Start is called before the first frame update
     void Start()
     {
-        if(!IsLocalPlayer)
+        NetworkGameManager.Instance.AddClient(NetworkObject.OwnerClientId, GetComponent<NetworkObject>());
+        if (!IsLocalPlayer)
         {
             enabled = false;
             return;
@@ -312,7 +313,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     }
     public void HandleAttack(bool handleAttack)
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && !BuildingManager.instance.PlaceBuildingMode && handleAttack)
+        if (!EventSystem.current.IsPointerOverGameObject()  && handleAttack)
         {
             anim.SetBool("attack", true);
         }
@@ -331,7 +332,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         {
             if (anim.GetBool("chrageStaff") == false)
             {
-                staffVFXRef = VFXManager.Instance.PlayFeedback(4, staffTip);
+                staffVFXRef = VFXManager.Instance.PlayFeedback(4, gunBarrelEnd);
             }
             attackChargeTimer += Time.deltaTime;
             CastRotation();
@@ -356,7 +357,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     private void FireMagicAttack()
     {
         Instantiate(hitBoxes[1], hitBoxes[1].transform.position, hitBoxes[1].transform.rotation).SetActive(true);
-        GameObject vfx = VFXManager.Instance.PlayFeedback(5, staffTip);
+        GameObject vfx = VFXManager.Instance.PlayFeedback(5, gunBarrelEnd);
         AudioManager.PlayGeneralSound(transform.position, 2);
         Destroy(vfx, 11);
     }
@@ -569,7 +570,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
     public Transform VfxTransform { get => vfxTransform; set => vfxTransform = value; }
 
-    public Transform CastingPivot => staffTip;
+    public Transform CastingPivot => gunBarrelEnd;
     #endregion
 }
 public interface State

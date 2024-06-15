@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -186,7 +187,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         particleSystem.Stop();
     }
-
 
     public static GameManager Instance { get 
         { 
