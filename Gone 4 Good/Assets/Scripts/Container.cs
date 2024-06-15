@@ -12,7 +12,7 @@ public class Container : MonoBehaviour
     public ContainerUpdated onInventoryUpdate;
     public Stash stash;
 
-    private void Start()
+    public void Start()
     {
         items.Clear();
         for(int i = 0; i < space; i++)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +17,11 @@ public class SkillSlotUI : MonoBehaviour
 
     public int index;
     public float skillCooldown;
-    private void Start()
+
+
+    public void BindEntity(IEntityControlls entity)
     {
-        entity = GameManager.Instance.player.GetComponent<IEntityControlls>();
+        this.entity = entity;
     }
     public void SetupSkill(Skill skill)
     {

@@ -503,7 +503,6 @@ public class Death : EnemyState
         pc.anim.SetTrigger("Death");
         pc.agent.enabled = false;
         pc.GetComponent<Collider>().enabled = false;
-        GameManager.Instance.player.GetComponent<PlayerExp>().AddExperience(pc.transform.position, pc.sm.experienceDrop);
         EnemyAI.enemyAIList.Remove(pc);
     }
 

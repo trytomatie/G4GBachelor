@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb46627e5394824da13340a6fc0bdd5, type: 3}
+  m_Name: RifleWeapon_ItemEffects
+  m_EditorClassIdentifier: 
+  attackDamage: 1
+  weaponPrefab: {fileID: 1312551688009478, guid: da29ba09b0ae85b44a5c25f14124dc88, type: 3}
+  skill: {fileID: 11400000, guid: e5295a6d459630a45b889290c336e6f9, type: 2}
+  skill2: {fileID: 11400000, guid: c2fa30eb28a49a74ab8c61460ffdb8f9, type: 2}

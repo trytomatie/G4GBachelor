@@ -80,6 +80,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         cameraTransform = Camera.main.transform;
         inventory = GetComponent<Inventory>();
         sm = GetComponent<StatusManager>();
+        foreach(SkillSlotUI skillSlotUI in GameUI.instance.skillslots)
+        {
+            skillSlotUI.BindEntity(this);
+        }
 
         InputSystem.GetInputActionMapPlayer().Player.Hotkey1.performed += ctx => SwitchHotbarItem(0);
         InputSystem.GetInputActionMapPlayer().Player.Hotkey2.performed += ctx => SwitchHotbarItem(1);
@@ -100,6 +104,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
             }
 
         }
+
         if (inventory.items[0].id != 0) SwitchHotbarItem(0);
     }
 
@@ -453,7 +458,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         }
         if (skills[skillIndex] != null && skills[skillIndex].CheckSkillConditions(gameObject))
         {
-            GameUI.instance.skillslots[skillIndex].skillCooldown = skills[skillIndex].skillCooldown;
+            //GameUI.instance.skillslots[skillIndex].skillCooldown = skills[skillIndex].skillCooldown;
             SwitchPlayerState(PlayerState.PlayerUsingSkill);
         }
     }

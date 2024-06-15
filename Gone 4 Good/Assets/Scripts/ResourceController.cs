@@ -43,7 +43,7 @@ public class ResourceController : MonoBehaviour
 
     public void AddExperience()
     {
-        GameManager.Instance.player.GetComponent<PlayerExp>().AddExperience(transform.position,rsm.experienceDrop);
+        Debug.Log("Experience System removed");
     }
 
 }

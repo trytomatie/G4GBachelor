@@ -58,9 +58,7 @@ public class DroppedItem : MonoBehaviour
         if (isKeyItem)
         {
             Item item = new Item(droppedItem.id, amount);
-            target.GetComponent<Inventory>().AddItem(item);
-            GameUI.instance.SetUpGetItemScreen(item);
-        }
+            target.GetComponent<Inventory>().AddItem(item);        }
         else
         {
             target.GetComponent<Inventory>().AddItem(new Item(droppedItem.id, amount));
