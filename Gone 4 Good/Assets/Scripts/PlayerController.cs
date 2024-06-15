@@ -27,6 +27,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public Transform weaponPivot;
     public Transform staffTip;
     public Transform cameraFollowTarget;
+    public Transform aimFollowTarget;
     private StatusManager sm;
     private Inventory inventory;
 
@@ -370,7 +371,9 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
             Vector3 direction = cursorPosition - transform.position;
             direction.Normalize();
             Quaternion targetCharacterRotation = Quaternion.LookRotation(direction, Vector3.up);
+            // Translate to euler angles
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetCharacterRotation, 10000 * Time.deltaTime);
+            aimFollowTarget.transform.position = ray.GetPoint(hitDistance);
         }
     }
 
