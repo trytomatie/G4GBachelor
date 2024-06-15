@@ -8,10 +8,17 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
     public int attackDamage = 1;
     public GameObject weaponPrefab;
     public float fireRate = 0.1f;
+    public float spreadAccumulation = 0.05f;
+    public float perfectShots = 3;
+    public float startSpread = 0f;
+    public float spreadLimit = 1;
+    public float spreadDecay = 0.25f;
     public Skill skill;
     public Skill skill2;
 
     private float timeLastFired = 0;
+    private float perfectShotCounter = 0;
+    private float currentSpread = 0;
     public override void OnUse(GameObject source, Item item)
     {
         if (isUsing)
@@ -19,10 +26,28 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
             if(timeLastFired + fireRate < Time.time)
             {
                 PlayerController pc = source.GetComponent<PlayerController>();
-
+                if(perfectShotCounter < perfectShots)
+                {
+                    currentSpread = 0;
+                    perfectShotCounter++;
+                }
+                else
+                {
+                    currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
+                }
                 timeLastFired = Time.time;
-                NetworkSpellManager.Instance.FireBulletServerRpc(NetworkGameManager.GetLocalPlayerId, pc.StatusManager.AttackDamage, pc.aimFollowTarget.transform.position);
+                NetworkSpellManager.Instance.FireBulletServerRpc(NetworkGameManager.GetLocalPlayerId, pc.StatusManager.AttackDamage, currentSpread);
             }
+        }
+    }
+
+    public override void ConstantUpdate(GameObject source,Item item)
+    {
+        if(!isUsing)
+        {
+            
+            currentSpread = Mathf.Clamp(currentSpread - (spreadDecay * Time.deltaTime),0,spreadLimit);
+            perfectShotCounter = 0;
         }
     }
 
@@ -48,6 +73,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
             skill.AssignSkill(source, 0);
         }
         timeLastFired = 0;
+        currentSpread = 0;
 
     }
 

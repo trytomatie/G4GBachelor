@@ -31,6 +31,11 @@ public class ItemInteractionEffects : ScriptableObject
         OnUseEnd(source,item);
     }
 
+    public virtual void ConstantUpdate(GameObject source, Item item)
+    {
+
+    }
+
     public virtual void OnEquip(GameObject source, Item item)
     {
         Debug.LogError("OnEquip not implemented");

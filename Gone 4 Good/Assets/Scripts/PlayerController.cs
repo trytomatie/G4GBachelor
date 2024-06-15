@@ -160,6 +160,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         states[(int)currentPlayerState].OnUpdate(this);
         CheckForPlayerVoidOut();
+        if(inventory.CurrentHotbarItem.id != 0)
+        {
+            inventory.CurrentHotbarItem.GetItemInteractionEffects.ConstantUpdate(gameObject,inventory.CurrentHotbarItem);
+        }
     }
 
     public void HandleInteraction()
