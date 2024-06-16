@@ -170,3 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3350d34d35fd35948a7488a37fad5378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 55
+  distanceUntilImpact: 999
+  impactPosition: {x: 0, y: 0, z: 0}

@@ -27,7 +27,7 @@ public class NetworkSpellManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void FireBulletServerRpc(ulong sourcePlayer, int damage,float spread)
+    public void FireRaycastBulletServerRpc(ulong sourcePlayer, int damage,float spread)
     {
         RaycastHit hit;
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
@@ -35,36 +35,37 @@ public class NetworkSpellManager : NetworkBehaviour
         Vector3 gunBarrel = player.gunBarrelEnd.position;
         bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), player.transform.rotation);
         bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);
-        if (Physics.Raycast(bulletAimer.transform.position, bulletAimer.transform.forward, out hit,30, hitLayer))
+        Ray ray = new Ray(bulletAimer.transform.position, bulletAimer.transform.forward);
+        if (Physics.Raycast(ray, out hit,30, hitLayer))
         {
-            print("Hit: " + hit.collider.gameObject.name);
+            Debug.Log("Hit Logic");
         }
 
         float distance = 30;
-        Vector3 impactPosition = new Vector3(0, -100, 0);
-        if(hit.collider != null)
+        Vector3 impactPosition = ray.GetPoint(30);
+        if (hit.collider != null)
         {
             distance = hit.distance;
             impactPosition = hit.point;
         }
-        FireBulletVisualRpc(sourcePlayer,randomSpread, distance, impactPosition);
+        FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
 
     [Rpc(SendTo.Everyone)]
-    public void FireBulletVisualRpc(ulong sourcePlayer, Vector2 spread,float distanceUntilImpact,Vector3 impactPosition)
+    public void FireRaycastBulletVisualRpc(ulong sourcePlayer,Vector3 impactPosition)
     {
         BulletFirePoolable bulletFire = GetBulletFire();
         if(bulletFire == null)
         {
             print("Uhh no more bullets left in the pool!");
         }
-        bulletFire.distanceUntilImpact = distanceUntilImpact;
         bulletFire.impactPosition = impactPosition;
+
         PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
+        bulletFire.distanceUntilImpact = Vector3.Distance(player.transform.position, impactPosition);
         Vector3 gunBarrel = player.gunBarrelEnd.position;
         bulletFire.transform.position = gunBarrel;
-        bulletFire.transform.eulerAngles = player.transform.eulerAngles;
-        bulletFire.transform.eulerAngles += new Vector3(0, spread.y, 0);
+        bulletFire.transform.LookAt(impactPosition);
         bulletFire.InUse = true;
     }
 

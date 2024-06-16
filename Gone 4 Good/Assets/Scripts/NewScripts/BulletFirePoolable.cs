@@ -18,7 +18,8 @@ public class BulletFirePoolable : MonoBehaviour
         {
             if(value == false)
             {
-
+                distanceUntilImpact = 999;
+                gameObject.SetActive(false);
             }
             else
             {
