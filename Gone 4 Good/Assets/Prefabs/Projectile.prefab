@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1067610593636777858}
   - component: {fileID: -4066814708331747769}
   - component: {fileID: 6219427508645194427}
+  - component: {fileID: 2289112242333371433}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -122,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2186691175
+  GlobalObjectIdHash: 2901136858
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -158,3 +159,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &2289112242333371433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5038026323123207307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8d535c9b3a63f40b0562775096010a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  penetrationCounter: 0
+  damage: 1

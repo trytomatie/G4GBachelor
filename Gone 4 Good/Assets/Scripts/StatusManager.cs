@@ -1,12 +1,14 @@
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class StatusManager : MonoBehaviour
+public class StatusManager : NetworkBehaviour
 {
     public enum Faction
     {
@@ -20,7 +22,7 @@ public class StatusManager : MonoBehaviour
     public SoundType deathSound;
     public int level = 1;
     public int maxHp = 30;
-    private int hp = 30;
+    private NetworkVariable<int> hp = new NetworkVariable<int>(30);
     [SerializeField] private int maxStamina = 0;
     [SerializeField] private int stamina = 0;
     [SerializeField] private int staminaRegenPerSecond = 5;
@@ -55,7 +57,7 @@ public class StatusManager : MonoBehaviour
             experienceDrop += statsScaling.expGrowth * level-1;
 
         }
-        Hp = maxHp;
+        Hp.Value = maxHp;
         if(maxStamina > 0) 
         { 
             StartCoroutine(RegenStamina());
@@ -119,13 +121,18 @@ public class StatusManager : MonoBehaviour
             }
         }
     }
-
-    public void ApplyDamage(int damage)
+    [Rpc(SendTo.Everyone)]
+    public void ApplyDamageRpc(int damage,Vector3 position)
     {
-        int calculatedDamage = Mathf.Clamp(damage - bonusDefense,1, 9999);
-        Hp -= calculatedDamage;
-        FloatingTextSpawner.instance.SpawnFloatingText(calculatedDamage.ToString(), transform);
-        if (Hp <= 0)
+        int calculatedDamage = Mathf.Clamp(damage - bonusDefense, 1, 9999);
+        if (IsServer)
+        {
+            Hp.Value -= calculatedDamage;
+        }
+        NetworkGameManager.Instance.floatingTextSpawner.transform.position = position;
+        NetworkGameManager.Instance.floatingTextSpawner.GetFeedbackOfType<MMF_FloatingText>().Value = calculatedDamage.ToString();
+        NetworkGameManager.Instance.floatingTextSpawner.PlayFeedbacks();
+        if (Hp.Value <= 0)
         {
             OnDeath.Invoke();
         }
@@ -133,7 +140,7 @@ public class StatusManager : MonoBehaviour
 
     public void UpdateHPBar(MMProgressBar progressbar)
     {
-        progressbar.UpdateBar01(Hp / (float)maxHp);
+        progressbar.UpdateBar01(Hp.Value / (float)maxHp);
     }
 
     public static List<StatusManager> GetEnemies(Faction faction)
@@ -150,7 +157,7 @@ public class StatusManager : MonoBehaviour
         }
     }
 
-    public int Hp 
+    public NetworkVariable<int> Hp 
     { 
         get => hp;
         set

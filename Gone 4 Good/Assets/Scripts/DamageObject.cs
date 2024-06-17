@@ -21,7 +21,7 @@ public class DamageObject : MonoBehaviour
         {
             HitEvent.Invoke();  
             hitObjects.Add(other.gameObject);
-            resourceStatusManager.ApplyDamage(source.AttackDamage);
+            resourceStatusManager.ApplyDamageRpc(source.AttackDamage);
             Vector3 hitPosition = other.ClosestPointOnBounds(transform.position+ new Vector3(0,0.5f,0));
             GameObject hitVFX = Instantiate(hitVFXPrefab, hitPosition, Quaternion.identity);
             Destroy(hitVFX, 2f);
@@ -30,7 +30,7 @@ public class DamageObject : MonoBehaviour
         {
             HitEvent.Invoke();  
             hitObjects.Add(other.gameObject);
-            statusManager.ApplyDamage(source.AttackDamage);
+            statusManager.ApplyDamageRpc(source.AttackDamage);
             Vector3 hitPosition = other.ClosestPointOnBounds(transform.position+ new Vector3(0,0.5f,0));
             GameObject hitVFX = Instantiate(hitVFXPrefab, hitPosition, Quaternion.identity);
             Destroy(hitVFX, 2f);

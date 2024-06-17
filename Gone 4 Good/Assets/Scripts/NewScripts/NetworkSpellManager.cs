@@ -73,7 +73,7 @@ public class NetworkSpellManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void FireProjectileRpc(ulong sourcePlayer, float clientRotation, int damage, float spread,float size,float speed,int visual)
+    public void FireProjectileRpc(ulong sourcePlayer, float clientRotation, int damage, float spread,float size,float speed,int penetration,int visual)
     {
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
 

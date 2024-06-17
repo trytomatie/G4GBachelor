@@ -138,7 +138,7 @@ public class GameUI : MonoBehaviour
 
     public void UpdatePlayerHealthBar()
     {
-        int currentHealth = playerStatusManager.Hp;
+        int currentHealth = playerStatusManager.Hp.Value;
         int maxHealth = playerStatusManager.maxHp;
         playerHealthBar.fillAmount = (float)currentHealth / maxHealth;
         playerHealthText.text = ""+currentHealth;

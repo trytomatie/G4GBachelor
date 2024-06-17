@@ -245,7 +245,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         yield return new WaitForSeconds(3);
         TransitionScreenControler.instance.CallTransition();
         yield return new WaitForSeconds(1f);
-        sm.Hp = sm.maxHp;
+        sm.Hp.Value = sm.maxHp;
         characterController.enabled = false;
         TeleportToDungeonLayer(false);
         transform.position = new Vector3(0,0,0);

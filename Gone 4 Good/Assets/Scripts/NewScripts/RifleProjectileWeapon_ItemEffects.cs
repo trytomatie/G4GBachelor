@@ -8,6 +8,9 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
     public int attackDamage = 1;
     public GameObject weaponPrefab;
     public float fireRate = 0.1f;
+    public float projectileSpeed = 30;
+    public float projectileSize = 0.2f;
+    public int penetration = 0;
     public float spreadAccumulation = 0.05f;
     public float perfectShots = 3;
     public float startSpread = 0f;
@@ -36,7 +39,7 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,0.2f,30,0);
+                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 0);
             }
         }
     }
