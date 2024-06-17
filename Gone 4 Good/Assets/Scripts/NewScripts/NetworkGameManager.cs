@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MoreMountains.Feedbacks;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class NetworkGameManager : NetworkBehaviour
 {
     public Dictionary<ulong, NetworkObject> connectedClients = new Dictionary<ulong, NetworkObject>();
+    public MMF_Player floatingTextSpawner;
 
     // Singleton
     private static NetworkGameManager instance;

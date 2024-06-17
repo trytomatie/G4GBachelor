@@ -11,6 +11,7 @@ public class BulletFirePoolable : MonoBehaviour
     public float distanceUntilImpact = 999;
     public Vector3 impactPosition;
     private int impactCount = 0;
+    private bool inPosition = false;
     public bool InUse 
     { 
         get => inUse; 
@@ -18,14 +19,15 @@ public class BulletFirePoolable : MonoBehaviour
         {
             if(value == false)
             {
+                inUse = false;
                 distanceUntilImpact = 999;
-                gameObject.SetActive(false);
+
             }
             else
             {
-                impactCount = 0;
                 trailRenderer.Clear();
-                gameObject.SetActive(true);
+                this.enabled = true;
+                impactCount = 0;
                 StartCoroutine(DissableBullet());
             }
             inUse = value; 
@@ -36,6 +38,7 @@ public class BulletFirePoolable : MonoBehaviour
     {
         trailRenderer = GetComponent<TrailRenderer>();
         trailRenderer.Clear();
+        this.enabled = false;
 
     }
 

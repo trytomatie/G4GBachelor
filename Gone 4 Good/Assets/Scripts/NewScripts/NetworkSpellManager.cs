@@ -11,6 +11,7 @@ public class NetworkSpellManager : NetworkBehaviour
     private static NetworkSpellManager instance;
     public Transform bulletAimer;
     public BulletFirePoolable[] bulletFirePool;
+    public GameObject networkProjectile;
     public MMF_Player bulletImpact;
     public LayerMask hitLayer;
 
@@ -27,13 +28,13 @@ public class NetworkSpellManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void FireRaycastBulletServerRpc(ulong sourcePlayer, int damage,float spread)
+    public void FireRaycastBulletServerRpc(ulong sourcePlayer,float clientRotation, int damage,float spread)
     {
         RaycastHit hit;
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
         PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
         Vector3 gunBarrel = player.gunBarrelEnd.position;
-        bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), player.transform.rotation);
+        bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), Quaternion.Euler(0, clientRotation,0));
         bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);
         Ray ray = new Ray(bulletAimer.transform.position, bulletAimer.transform.forward);
         if (Physics.Raycast(ray, out hit,30, hitLayer))
@@ -47,11 +48,13 @@ public class NetworkSpellManager : NetworkBehaviour
         {
             distance = hit.distance;
             impactPosition = hit.point;
+            NetworkGameManager.Instance.floatingTextSpawner.transform.position = impactPosition;
+            NetworkGameManager.Instance.floatingTextSpawner.PlayFeedbacks();
         }
         FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.ClientsAndHost)]
     public void FireRaycastBulletVisualRpc(ulong sourcePlayer,Vector3 impactPosition)
     {
         BulletFirePoolable bulletFire = GetBulletFire();
@@ -67,6 +70,39 @@ public class NetworkSpellManager : NetworkBehaviour
         bulletFire.transform.position = gunBarrel;
         bulletFire.transform.LookAt(impactPosition);
         bulletFire.InUse = true;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void FireProjectileRpc(ulong sourcePlayer, float clientRotation, int damage, float spread,float size,float speed,int visual)
+    {
+        Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
+
+        PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
+        bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), Quaternion.Euler(0, clientRotation, 0));
+        bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);
+        Vector3 gunBarrel = player.gunBarrelEnd.position;
+        GameObject spawnedProjectile = Instantiate(networkProjectile, gunBarrel, bulletAimer.rotation);
+        NetworkObject networkObject = spawnedProjectile.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+
+        // SpawnLogic
+        Rigidbody rb = spawnedProjectile.GetComponent<Rigidbody>();
+        rb.linearVelocity = spawnedProjectile.transform.forward * speed;
+        FireProjectileVisualRpc(sourcePlayer,networkObject,visual,speed);
+
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void FireProjectileVisualRpc(ulong sourcePlayer,NetworkObjectReference networkObjectReference,int visual,float speed)
+    {
+        PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
+        Vector3 gunBarrel = player.gunBarrelEnd.position;
+        networkObjectReference.TryGet(out NetworkObject networkObject);
+        networkObject.transform.position = gunBarrel;
+        Rigidbody rb = networkObject.GetComponent<Rigidbody>();
+        rb.linearVelocity = networkObject.transform.forward * speed;
+        GameObject projectile = networkObject.gameObject;
+        GameObject vfx = Instantiate(NetworkVFXManager.Instance.projectileVFX[visual], projectile.transform.position, projectile.transform.rotation,projectile.transform);
     }
 
     public void ImpactBulletVisual(Vector3 impactPosition,Quaternion rotation)

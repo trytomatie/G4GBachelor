@@ -111,7 +111,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
     public void PlayerSetupSetup()
     {
-        playerSetupInstance = Instantiate(playerSetup, transform.position,transform.rotation,transform);
+        playerSetupInstance = Instantiate(playerSetup, transform.position,transform.rotation);
         vCam = playerSetupInstance.GetComponentInChildren<CinemachineVirtualCamera>();
         vCam.LookAt = cameraFollowTarget;
         vCam.Follow = cameraFollowTarget;

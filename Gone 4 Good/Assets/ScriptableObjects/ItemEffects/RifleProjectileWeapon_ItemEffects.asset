@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde9caa370f989148b5bb6d7f173be62, type: 3}
+  m_Name: RifleProjectileWeapon_ItemEffects
+  m_EditorClassIdentifier: 
+  attackDamage: 1
+  weaponPrefab: {fileID: 1312551688009478, guid: da29ba09b0ae85b44a5c25f14124dc88, type: 3}
+  fireRate: 0.4
+  spreadAccumulation: 1
+  perfectShots: 1
+  startSpread: 11
+  spreadLimit: 3
+  spreadDecay: 0.25
+  skill: {fileID: 0}
+  skill2: {fileID: 0}
