@@ -321,13 +321,22 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlashLight"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c82828d-be82-4f76-927d-56bd6063ca73"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""f099b98b-f20d-4f55-9afc-b07428587862"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -437,7 +446,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c2ce1ea3-de60-48a2-91a1-542dc520a51b"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -448,11 +457,22 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""66fb7f58-897c-4c59-a967-beba3f77e86f"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Skill2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f915ed6d-bc42-4fa6-9c47-8b96a189404a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlashLight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -515,6 +535,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         m_Player_Hotkey7 = m_Player.FindAction("Hotkey7", throwIfNotFound: true);
         m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
         m_Player_Skill2 = m_Player.FindAction("Skill2", throwIfNotFound: true);
+        m_Player_FlashLight = m_Player.FindAction("FlashLight", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_PrintStackToConsole = m_Debug.FindAction("PrintStackToConsole", throwIfNotFound: true);
@@ -731,6 +752,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hotkey7;
     private readonly InputAction m_Player_Skill1;
     private readonly InputAction m_Player_Skill2;
+    private readonly InputAction m_Player_FlashLight;
     public struct PlayerActions
     {
         private @InputActionMapPlayer m_Wrapper;
@@ -747,6 +769,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         public InputAction @Hotkey7 => m_Wrapper.m_Player_Hotkey7;
         public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
         public InputAction @Skill2 => m_Wrapper.m_Player_Skill2;
+        public InputAction @FlashLight => m_Wrapper.m_Player_FlashLight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -792,6 +815,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @Skill2.started += instance.OnSkill2;
             @Skill2.performed += instance.OnSkill2;
             @Skill2.canceled += instance.OnSkill2;
+            @FlashLight.started += instance.OnFlashLight;
+            @FlashLight.performed += instance.OnFlashLight;
+            @FlashLight.canceled += instance.OnFlashLight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -832,6 +858,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @Skill2.started -= instance.OnSkill2;
             @Skill2.performed -= instance.OnSkill2;
             @Skill2.canceled -= instance.OnSkill2;
+            @FlashLight.started -= instance.OnFlashLight;
+            @FlashLight.performed -= instance.OnFlashLight;
+            @FlashLight.canceled -= instance.OnFlashLight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -923,6 +952,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         void OnHotkey7(InputAction.CallbackContext context);
         void OnSkill1(InputAction.CallbackContext context);
         void OnSkill2(InputAction.CallbackContext context);
+        void OnFlashLight(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

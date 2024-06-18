@@ -30,7 +30,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public Transform aimFollowTarget;
     private StatusManager sm;
     private Inventory inventory;
+    public GameObject flashLightRef;
 
+    // Flashlight
+    private NetworkVariable<bool> flashLight = new NetworkVariable<bool>(false,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
 
     [Header("HitBoxes")]
@@ -68,6 +71,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     void Start()
     {
         NetworkGameManager.Instance.AddClient(NetworkObject.OwnerClientId, GetComponent<NetworkObject>());
+        ToggleFlashLightRpc(flashLight.Value);
         if (!IsLocalPlayer)
         {
             enabled = false;
@@ -95,6 +99,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         InputSystem.GetInputActionMapPlayer().Player.Hotkey7.performed += ctx => SwitchHotbarItem(6);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
+        InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
 
         for (int i = 0; i < skills.Length; i++)
         {
@@ -115,6 +120,17 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         vCam = playerSetupInstance.GetComponentInChildren<CinemachineVirtualCamera>();
         vCam.LookAt = cameraFollowTarget;
         vCam.Follow = cameraFollowTarget;
+    }
+
+    private void ToggleFlashLight()
+    {
+        flashLight.Value = !flashLight.Value;
+        ToggleFlashLightRpc(flashLight.Value);
+    }
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ToggleFlashLightRpc(bool value)
+    {
+        flashLightRef.SetActive(value);
     }
 
     public void SwitchHotbarItem(int index)

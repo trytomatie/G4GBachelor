@@ -22,7 +22,7 @@ public class StatusManager : NetworkBehaviour
     public SoundType deathSound;
     public int level = 1;
     public int maxHp = 30;
-    private NetworkVariable<int> hp = new NetworkVariable<int>(30);
+    public NetworkVariable<int> hp = new NetworkVariable<int>(30);
     [SerializeField] private int maxStamina = 0;
     [SerializeField] private int stamina = 0;
     [SerializeField] private int staminaRegenPerSecond = 5;
