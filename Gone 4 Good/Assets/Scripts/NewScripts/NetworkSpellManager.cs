@@ -103,6 +103,7 @@ public class NetworkSpellManager : NetworkBehaviour
         rb.linearVelocity = networkObject.transform.forward * speed;
         GameObject projectile = networkObject.gameObject;
         GameObject vfx = Instantiate(NetworkVFXManager.Instance.projectileVFX[visual], projectile.transform.position, projectile.transform.rotation,projectile.transform);
+        projectile.GetComponent<NetworkProjectile>().attchedVFX = vfx;
     }
 
     public void ImpactBulletVisual(Vector3 impactPosition,Quaternion rotation)

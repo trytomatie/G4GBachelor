@@ -11,7 +11,7 @@ public class NetworkProjectile : NetworkBehaviour
     public int penetrationCounter = 0;
     public int damage = 1;
     private List<GameObject> hitObjects = new List<GameObject>();
-
+    public GameObject attchedVFX;
     private NetworkObject networkObject;
     private void Start()
     {
@@ -20,11 +20,12 @@ public class NetworkProjectile : NetworkBehaviour
         DespawnTimer(10);
 
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if(other.GetComponent<StatusManager>() != null && !hitObjects.Contains(other.gameObject))
+        if(other.collider.isTrigger || !IsServer) return;
+        if(other.collider.GetComponent<StatusManager>() != null && !hitObjects.Contains(other.gameObject))
         {
-            other.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position);
+            other.collider.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position);
             hitObjects.Add(other.gameObject);
             if (penetrationCounter > 0)
             {
@@ -32,15 +33,28 @@ public class NetworkProjectile : NetworkBehaviour
             }
             else
             {
-                networkObject.DontDestroyWithOwner = true;
-                networkObject.Despawn();
+                DespawnLogic(other.contacts[0].point);
             }
         }
         else
         {
-            networkObject.DontDestroyWithOwner = true;
-            networkObject.Despawn();
+            if(networkObject.IsSpawned)
+            {
+                DespawnLogic(other.contacts[0].point);
+            }
         }
+    }
+
+    private void DespawnLogic(Vector3 impactPoint)
+    {
+        if(attchedVFX!= null)
+        {
+            attchedVFX.transform.parent = null;
+            Destroy(attchedVFX, 0.3f);
+        }
+        NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPoint, transform.rotation);
+        networkObject.DontDestroyWithOwner = true;
+        networkObject.Despawn();
     }
 
     IEnumerator DespawnTimer(float time)
@@ -48,5 +62,6 @@ public class NetworkProjectile : NetworkBehaviour
         yield return new WaitForSeconds(time);
         networkObject.DontDestroyWithOwner = true;
         networkObject.Despawn();
+
     }
 }

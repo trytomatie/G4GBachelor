@@ -40,6 +40,7 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
                 }
                 timeLastFired = Time.time;
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 0);
+                NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
             }
         }
     }

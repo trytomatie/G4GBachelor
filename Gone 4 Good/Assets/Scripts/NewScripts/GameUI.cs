@@ -57,8 +57,6 @@ public class GameUI : MonoBehaviour
     {
         interfaceAnimator = GetComponent<Animator>();
         SetUpInputSystem();
-        playerStatusManager = GameManager.Instance.player.GetComponent<StatusManager>();
-        playerStatusManager.OnDamage.AddListener(UpdatePlayerHealthBar);
         UpdatePlayerHealthBar();
         for(int i = 0; i < skillslots.Length; i++)
         {
