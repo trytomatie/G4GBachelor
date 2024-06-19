@@ -16,7 +16,8 @@ public class GameUI : MonoBehaviour
     [Header("Hotbar")]
     public InventoryUI inventoryUI;
 
-
+    [Header("Interaction")]
+    public FollowGameObjectUI interactionToolTip;
 
 
 

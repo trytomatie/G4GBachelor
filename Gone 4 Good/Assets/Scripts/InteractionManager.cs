@@ -30,21 +30,22 @@ public class InteractionManager : MonoBehaviour
     {
         if (interactablesInRange.Count > 0)
         {
-            interactionToolTip.gameObject.SetActive(true);
-            interactionToolTip.objectToFollow = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First().gameObject;
+            GameUI.instance.interactionToolTip.gameObject.SetActive(true);
+            GameUI.instance.interactionToolTip.objectToFollow = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First().gameObject;
         }
         else
         {
-            interactionToolTip.gameObject.SetActive(false);
+            GameUI.instance.interactionToolTip.gameObject.SetActive(false);
         }
     }
 
-    public void Interact()
+    public void Interact(GameObject source)
     {
         if (interactablesInRange.Count > 0)
         {
             Interactable interactable = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First();
-            interactable.Interact();
+            interactable.Interact(source);
+            interactablesInRange.Remove(interactable);
         }
     }
 }

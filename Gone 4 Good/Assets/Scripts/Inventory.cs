@@ -13,7 +13,7 @@ public class Inventory : Container
         base.Start();
         AddItem(new Item(19, 1));
     }
-    private int currentHotbarIndex = 0;
+    public int currentHotbarIndex = 0;
     public Item CurrentHotbarItem
     {
         get

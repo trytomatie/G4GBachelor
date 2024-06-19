@@ -16,6 +16,7 @@ public class ItemBlueprint : ScriptableObject
     public int maxStackSize;
     public bool keyItem = false;
     public ItemInteractionEffects itemInteractionEffects;
+    public GameObject droppedPrefab;
 
 }
 

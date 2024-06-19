@@ -82,6 +82,7 @@ public class NetworkSpellManager : NetworkBehaviour
         bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);
         Vector3 gunBarrel = player.gunBarrelEnd.position;
         GameObject spawnedProjectile = Instantiate(networkProjectile, gunBarrel, bulletAimer.rotation);
+        spawnedProjectile.GetComponent<NetworkProjectile>().damage = damage;
         NetworkObject networkObject = spawnedProjectile.GetComponent<NetworkObject>();
         networkObject.Spawn();
 

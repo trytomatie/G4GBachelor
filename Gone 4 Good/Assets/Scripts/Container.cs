@@ -10,7 +10,6 @@ public class Container : MonoBehaviour
     public delegate void ItemCompletlyRemoved(int index);
     public ItemCompletlyRemoved onItemCompletlyRemoved;
     public ContainerUpdated onInventoryUpdate;
-    public Stash stash;
 
     public void Start()
     {
@@ -36,7 +35,6 @@ public class Container : MonoBehaviour
             if (items[pos].amount + item.amount <= maxStack) // If the item can fit in the stack
             {
                 items[pos].amount += item.amount;
-                stash.AddItem(item, item.amount, this);
                 onInventoryUpdate?.Invoke(pos);
                 return true;
             }
@@ -61,7 +59,6 @@ public class Container : MonoBehaviour
         {
 
             AddItemToEmptySpot(item);
-            stash.AddItem(item, item.amount, this);
             onInventoryUpdate?.Invoke(pos);
             return true;
         }
@@ -114,7 +111,6 @@ public class Container : MonoBehaviour
                 if (items[i].amount > amount) // If the item has more than the amount we want to remove
                 {
                     items[i].amount -= amount;
-                    stash.RemoveItem(id, amount, this);
                     onInventoryUpdate.Invoke(i);
                     return;
                 }
@@ -123,7 +119,6 @@ public class Container : MonoBehaviour
                     print("Remove Same");
                     onItemCompletlyRemoved?.Invoke(i);
                     items[i] = new Item(0, 0);
-                    stash.RemoveItem(id, amount, this);
                     onInventoryUpdate.Invoke(i);
                     return;
                 }
@@ -131,7 +126,6 @@ public class Container : MonoBehaviour
                 {
                     onItemCompletlyRemoved?.Invoke(i);
                     amount -= items[i].amount;
-                    stash.RemoveItem(id, items[i].amount, this);
                     items[i] = new Item(0, 0);
                 }
             }

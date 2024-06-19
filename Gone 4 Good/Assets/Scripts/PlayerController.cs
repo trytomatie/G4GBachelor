@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -100,6 +101,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
         InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
+        InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
 
         for (int i = 0; i < skills.Length; i++)
         {
@@ -112,6 +114,28 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         }
 
         if (inventory.items[0].id != 0) SwitchHotbarItem(0);
+    }
+
+
+    private void DropEqipedItem()
+    {
+        if(inventory.CurrentHotbarItem.id != 0)
+        {
+            DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id);
+            inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DropEquipedItemRpc(ulong playerId,int itemId)
+    {
+        GameObject player = NetworkGameManager.GetPlayerById(playerId);
+        GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab,player.transform.position + new Vector3(0,1,0),Quaternion.identity);
+        NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+        Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
+        rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+        rb.linearVelocity = UnityEngine.Random.Range(1, 2) * player.transform.forward;
     }
 
     public void PlayerSetupSetup()
@@ -187,8 +211,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         if (InputSystem.GetInputActionMapPlayer().Player.Interact.WasPressedThisFrame())
         {
             print("Interacting");
-            interactionManager.Interact();
-
+            interactionManager.Interact(gameObject);
         }
     }
 

@@ -330,6 +330,15 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropEquipedItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""0abbadae-26b2-49ae-b30a-a82d20ee4396"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -475,6 +484,17 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                     ""action"": ""FlashLight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7aa94b8-58d3-4eb0-b4d4-e619f7f547ae"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropEquipedItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -536,6 +556,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
         m_Player_Skill2 = m_Player.FindAction("Skill2", throwIfNotFound: true);
         m_Player_FlashLight = m_Player.FindAction("FlashLight", throwIfNotFound: true);
+        m_Player_DropEquipedItem = m_Player.FindAction("DropEquipedItem", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_PrintStackToConsole = m_Debug.FindAction("PrintStackToConsole", throwIfNotFound: true);
@@ -753,6 +774,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Skill1;
     private readonly InputAction m_Player_Skill2;
     private readonly InputAction m_Player_FlashLight;
+    private readonly InputAction m_Player_DropEquipedItem;
     public struct PlayerActions
     {
         private @InputActionMapPlayer m_Wrapper;
@@ -770,6 +792,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
         public InputAction @Skill2 => m_Wrapper.m_Player_Skill2;
         public InputAction @FlashLight => m_Wrapper.m_Player_FlashLight;
+        public InputAction @DropEquipedItem => m_Wrapper.m_Player_DropEquipedItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -818,6 +841,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @FlashLight.started += instance.OnFlashLight;
             @FlashLight.performed += instance.OnFlashLight;
             @FlashLight.canceled += instance.OnFlashLight;
+            @DropEquipedItem.started += instance.OnDropEquipedItem;
+            @DropEquipedItem.performed += instance.OnDropEquipedItem;
+            @DropEquipedItem.canceled += instance.OnDropEquipedItem;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -861,6 +887,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @FlashLight.started -= instance.OnFlashLight;
             @FlashLight.performed -= instance.OnFlashLight;
             @FlashLight.canceled -= instance.OnFlashLight;
+            @DropEquipedItem.started -= instance.OnDropEquipedItem;
+            @DropEquipedItem.performed -= instance.OnDropEquipedItem;
+            @DropEquipedItem.canceled -= instance.OnDropEquipedItem;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -953,6 +982,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         void OnSkill1(InputAction.CallbackContext context);
         void OnSkill2(InputAction.CallbackContext context);
         void OnFlashLight(InputAction.CallbackContext context);
+        void OnDropEquipedItem(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

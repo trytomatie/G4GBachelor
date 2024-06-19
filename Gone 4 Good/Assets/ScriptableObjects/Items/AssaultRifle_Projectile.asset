@@ -20,3 +20,4 @@ MonoBehaviour:
   maxStackSize: 1
   keyItem: 0
   itemInteractionEffects: {fileID: 11400000, guid: f3645f824d133ef48a19da0109ddf49c, type: 2}
+  droppedPrefab: {fileID: 6519648963754419163, guid: d3ab419f63365d24b94fef40a96daf8d, type: 3}

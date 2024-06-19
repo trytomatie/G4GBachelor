@@ -39,6 +39,10 @@ public class NetworkGameManager : NetworkBehaviour
         {
             NetworkManager.Singleton.StartHost();
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            NetworkManager.Singleton.StartClient();
+        }
     }
 
     public void AddClient(ulong id, NetworkObject client)

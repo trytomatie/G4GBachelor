@@ -308,6 +308,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DropEquipedItem",
+                    "type": "Button",
+                    "id": "0abbadae-26b2-49ae-b30a-a82d20ee4396",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -451,6 +460,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "FlashLight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7aa94b8-58d3-4eb0-b4d4-e619f7f547ae",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DropEquipedItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

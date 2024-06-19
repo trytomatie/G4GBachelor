@@ -3812,7 +3812,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3837
+    m_Bits: 4093
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -6398,7 +6398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5, y: -5}
+  m_AnchoredPosition: {x: -5, y: 3.7871704}
   m_SizeDelta: {x: 600, y: 300}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7998673815493621858
@@ -6430,13 +6430,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b9e84f33b748a5f40b1d019b1699328f, type: 3}
+    m_Font: {fileID: 12800000, guid: 0f03458534bea45e4bba9ab3411321b2, type: 3}
     m_FontSize: 216
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 298
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -6613,6 +6613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryAnimator: {fileID: 0}
   inventoryUI: {fileID: 0}
+  interactionToolTip: {fileID: 7078230029466086926}
   playerHealthBar: {fileID: 7143952461253766020}
   playerHealthText: {fileID: 8769263238730952179}
   itemDescription: {fileID: 6121674126040302834}

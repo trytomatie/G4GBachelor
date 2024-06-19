@@ -132,6 +132,7 @@ public class StatusManager : NetworkBehaviour
         NetworkGameManager.Instance.floatingTextSpawner.transform.position = position;
         NetworkGameManager.Instance.floatingTextSpawner.GetFeedbackOfType<MMF_FloatingText>().Value = calculatedDamage.ToString();
         NetworkGameManager.Instance.floatingTextSpawner.PlayFeedbacks();
+        GetComponentInChildren<Animator>().SetTrigger("Damage");
         if (Hp.Value <= 0)
         {
             OnDeath.Invoke();
