@@ -63,7 +63,6 @@ public class DroppedItem : MonoBehaviour
         {
             target.GetComponent<Inventory>().AddItem(new Item(droppedItem.id, amount));
         }
-        AudioManager.PlayGeneralSound(transform.position, 1);
         Destroy(gameObject);
     }
 

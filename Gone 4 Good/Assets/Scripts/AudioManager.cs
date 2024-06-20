@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : NetworkBehaviour
 {
     public AudioClip[] bgMusic;
 
@@ -39,12 +40,19 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSource, source.clip.length + 0.1f);
     }
 
-    public static void PlayRandomSoundFromList(AudioClip[] audio, Vector3 position)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void PlaySoundFromAudiolistRpc(int listIndex, Vector3 pos,float pitch)
+    {
+        PlayRandomSoundFromList(audioLists[listIndex].audioClips, pos,pitch);
+    }
+
+    public static void PlayRandomSoundFromList(AudioClip[] audio, Vector3 position,float pitch)
     {
         GameObject audioSource = Instantiate(instance.audioSourcePrefab, position, Quaternion.identity);
         AudioSource source = audioSource.GetComponent<AudioSource>();
         source.clip = audio[Random.Range(0, audio.Length)];
         source.outputAudioMixerGroup = instance.sfxAudioGroup;
+        source.pitch = pitch;
         source.Play();
         Destroy(audioSource, source.clip.length + 0.1f);
     }
@@ -52,6 +60,7 @@ public class AudioManager : MonoBehaviour
     private int musicIndex = 0;
     public void PlayMusic()
     {
+        return;
         if (musicIndex < instance.bgMusic.Length - 1)
         {
             musicIndex++;

@@ -275,7 +275,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public void Death()
     {
         anim.SetBool("Death", true);
-        AudioManager.PlayRandomSoundFromList(AudioManager.instance.playerDeath, transform.position);
+
         StartCoroutine(DeathRoutine());
 
     }
@@ -413,7 +413,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         Instantiate(hitBoxes[1], hitBoxes[1].transform.position, hitBoxes[1].transform.rotation).SetActive(true);
         GameObject vfx = VFXManager.Instance.PlayFeedback(5, gunBarrelEnd);
-        AudioManager.PlayGeneralSound(transform.position, 2);
+
         Destroy(vfx, 11);
     }
 

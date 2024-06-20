@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179ebeb0152285544ad70eb050ccc43d, type: 3}
-  m_Name: Player_Dash
+  m_Name: ShotGun
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: d5997a503c4f09a40832cd04a615ea59, type: 3}
+  - {fileID: 8300000, guid: 431876faabc22094a8d325450eaefba1, type: 3}

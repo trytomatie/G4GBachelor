@@ -827,7 +827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.71
+      value: 0.034
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5235,6 +5235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1665025901}
   - component: {fileID: 1665025907}
+  - component: {fileID: 1665025908}
   - component: {fileID: 1665025906}
   m_Layer: 0
   m_Name: AudioManager
@@ -5273,40 +5274,11 @@ MonoBehaviour:
   bgMusic:
   - {fileID: 8300000, guid: 59a0a1680d66200488937d4dfad86e3f, type: 3}
   - {fileID: 8300000, guid: adb2fac36b6170d4c88030d14e6d3428, type: 3}
-  woodHit:
-  - {fileID: 8300000, guid: 085ecc65fea3e47428b8adc85ee46776, type: 3}
-  - {fileID: 8300000, guid: a539479d8a7c3424cbfc03e928b4c4b2, type: 3}
-  - {fileID: 8300000, guid: 56643195b3789e24f89240d7c5b49cac, type: 3}
-  stoneHit:
-  - {fileID: 8300000, guid: 02956aff18cc6d54497a621457fd367c, type: 3}
-  - {fileID: 8300000, guid: eb802cfa06767a2439df19165443e05f, type: 3}
-  - {fileID: 8300000, guid: cee4cba9ae7f9c8499ce7c45dfea14e8, type: 3}
-  - {fileID: 8300000, guid: 6af84efd6dd80b348ab431e64080c1c4, type: 3}
-  - {fileID: 8300000, guid: 150f1d82189adf94f90eb703c0c01273, type: 3}
-  - {fileID: 8300000, guid: efcd7553942192a45aa67e7778d1f49d, type: 3}
-  - {fileID: 8300000, guid: 67ee916eb3900b5448e45c9e69785488, type: 3}
-  - {fileID: 8300000, guid: 73f9ae249aaa12440b37b7388b68fb94, type: 3}
-  - {fileID: 8300000, guid: 7f84fa4dd1579564faa917e3363f1702, type: 3}
-  - {fileID: 8300000, guid: 7b6d1e91959aa354595c8f48d49ef670, type: 3}
-  - {fileID: 8300000, guid: f6356ee7da73dff48af08605db1c4c01, type: 3}
-  - {fileID: 8300000, guid: e3e9b368414683c4788a6dd6ddd0b322, type: 3}
-  entityHit:
-  - {fileID: 8300000, guid: 8cf4ecfca5620de42b1806e2240356cd, type: 3}
-  generalAudio:
-  - {fileID: 8300000, guid: d5997a503c4f09a40832cd04a615ea59, type: 3}
-  - {fileID: 8300000, guid: be8b8ccd8ad493745bc514c1d34be353, type: 3}
-  - {fileID: 8300000, guid: 4f637470ead2ab94aa31a0b58c4f9ee6, type: 3}
-  playerDeath:
-  - {fileID: 8300000, guid: 2e285b01312bfe643a8442a5b129fe0c, type: 3}
-  - {fileID: 8300000, guid: 25301ee1114276d4ebd7088ae1a75ac2, type: 3}
-  - {fileID: 8300000, guid: f69d2011bc852114a94a89cca3163540, type: 3}
   audioLists:
-  - {fileID: 11400000, guid: e51dc7b5db61df94daba5dbb55dff292, type: 2}
   - {fileID: 11400000, guid: 8a175ac2387ac5b4d975f26d61e951a4, type: 2}
-  - {fileID: 11400000, guid: 9b02cbd143207a04b8b97d29b6320cfc, type: 2}
   sfxAudioGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   musicAudioGroup: {fileID: -2273146209696275378, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
-  audioSourcePrefab: {fileID: 8452735164548895714, guid: 110a7c741c5770047a6405719889ea4e, type: 3}
+  audioSourcePrefab: {fileID: 7989588483833957038, guid: 8039677dd24f91d4db556c86799388ad, type: 3}
 --- !u!82 &1665025907
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5395,6 +5367,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1665025908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665025900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2880869108
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!4 &1675613352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4567485262158198, guid: df31c83b27360844d9c8bb3549762491, type: 3}
@@ -8450,7 +8443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: d3ab419f63365d24b94fef40a96daf8d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.51
+      value: 0.038
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: d3ab419f63365d24b94fef40a96daf8d, type: 3}
       propertyPath: m_LocalPosition.z

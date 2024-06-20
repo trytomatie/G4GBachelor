@@ -39,6 +39,7 @@ public class ShotgunProjectileWeapon_ItemEffects : ItemInteractionEffects
                 source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
                 // Gun Fire
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
+                AudioManager.instance.PlaySoundFromAudiolistRpc(0,source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position,0.58f);
             }
         }
     }
