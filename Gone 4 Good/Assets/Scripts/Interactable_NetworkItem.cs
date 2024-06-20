@@ -40,8 +40,10 @@ public class Interactable_NetworkItem : Interactable
     public void GivePickupClientRpc(ulong id,RpcParams rpcParams = default)
     {
         NetworkObject player = NetworkGameManager.GetPlayerById(id).GetComponent<NetworkObject>();
+        
         // Add Item to Player
         player.GetComponent<Inventory>().AddItem(new Item(itemID,amount));
+        player.GetComponent<Inventory>().SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
         NetworkObject networkObject = GetComponent<NetworkObject>();
         networkObject.Despawn(true);
     }

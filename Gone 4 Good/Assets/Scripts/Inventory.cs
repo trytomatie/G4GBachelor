@@ -11,7 +11,6 @@ public class Inventory : Container
     public new void Start()
     {
         base.Start();
-        AddItem(new Item(19, 1));
     }
     public int currentHotbarIndex = 0;
     public Item CurrentHotbarItem

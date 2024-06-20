@@ -6,11 +6,6 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public AudioClip[] bgMusic;
-    public AudioClip[] woodHit;
-    public AudioClip[] stoneHit;
-    public AudioClip[] entityHit;
-    public AudioClip[] generalAudio;
-    public AudioClip[] playerDeath;
 
     public AudioList[] audioLists;
     public AudioMixerGroup sfxAudioGroup;
@@ -32,26 +27,6 @@ public class AudioManager : MonoBehaviour
         }
         PlayMusic();
     }
-    public static void PlayHitSound(Vector3 position, HitType type)
-    {
-        GameObject audioSource = Instantiate(instance.audioSourcePrefab, position, Quaternion.identity);
-        AudioSource source = audioSource.GetComponent<AudioSource>();
-        switch (type)
-        {
-            case HitType.Wood:
-                source.clip = instance.woodHit[Random.Range(0, instance.woodHit.Length)];
-                break;
-            case HitType.Stone:
-                source.clip = instance.stoneHit[Random.Range(0, instance.stoneHit.Length)];
-                break;
-            case HitType.Entity:
-                source.clip = instance.entityHit[Random.Range(0, instance.entityHit.Length)];
-                break;
-        }
-        source.outputAudioMixerGroup = instance.sfxAudioGroup;
-        source.Play();
-        Destroy(audioSource, source.clip.length + 0.1f);
-    }
 
     public static void PlaySound(Vector3 position, SoundType type)
     {
@@ -69,16 +44,6 @@ public class AudioManager : MonoBehaviour
         GameObject audioSource = Instantiate(instance.audioSourcePrefab, position, Quaternion.identity);
         AudioSource source = audioSource.GetComponent<AudioSource>();
         source.clip = audio[Random.Range(0, audio.Length)];
-        source.outputAudioMixerGroup = instance.sfxAudioGroup;
-        source.Play();
-        Destroy(audioSource, source.clip.length + 0.1f);
-    }
-
-    public static void PlayGeneralSound(Vector3 pos, int index)
-    {
-        GameObject audioSource = Instantiate(instance.audioSourcePrefab, pos, Quaternion.identity);
-        AudioSource source = audioSource.GetComponent<AudioSource>();
-        source.clip = instance.generalAudio[index];
         source.outputAudioMixerGroup = instance.sfxAudioGroup;
         source.Play();
         Destroy(audioSource, source.clip.length + 0.1f);

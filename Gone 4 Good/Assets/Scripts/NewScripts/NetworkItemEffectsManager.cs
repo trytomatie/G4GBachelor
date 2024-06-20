@@ -27,17 +27,18 @@ public class NetworkItemEffectsManager : NetworkBehaviour
 
 
     [Rpc(SendTo.Server)]
-    public void EquipItemServerRpc(ulong playerId,string weaponPrefabName)
+    public void EquipItemServerRpc(ulong playerId,string weaponPrefabName,int upperBodyState)
     {
-        EquipItemClientRPC(playerId,weaponPrefabName);
+        EquipItemClientRPC(playerId,weaponPrefabName, upperBodyState);
     }
 
 
     [Rpc(SendTo.Everyone)]
-    public void EquipItemClientRPC(ulong id,string weaponPrefabName)
+    public void EquipItemClientRPC(ulong id,string weaponPrefabName,int upperBodyState)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        if(source.GetComponent<PlayerController>().weaponPivot.transform.childCount > 0)
+        source.GetComponent<PlayerController>().anim.SetInteger("UpperBody", upperBodyState);
+        if (source.GetComponent<PlayerController>().weaponPivot.transform.childCount > 0)
         {
             Destroy(source.GetComponent<PlayerController>().weaponPivot.transform.GetChild(0).gameObject);
         }
@@ -68,7 +69,8 @@ public class NetworkItemEffectsManager : NetworkBehaviour
     public void UnequipItemClientRPC(ulong id)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        if(source.GetComponent<PlayerController>().weaponPivot.transform.childCount >0)
+        source.GetComponent<PlayerController>().anim.SetInteger("UpperBody", 0);
+        if (source.GetComponent<PlayerController>().weaponPivot.transform.childCount >0)
         {
             Destroy(source.GetComponent<PlayerController>().weaponPivot.transform.GetChild(0).gameObject);
         }

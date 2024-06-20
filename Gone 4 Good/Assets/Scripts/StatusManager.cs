@@ -66,23 +66,6 @@ public class StatusManager : NetworkBehaviour
         OnDeath.AddListener(() => StopAllCoroutines());
         OnDeath.AddListener(() => AddToFactionDictonary());
         OnDeath.AddListener(() => AudioManager.PlaySound(transform.position, deathSound));
-        AssignHitsound();
-    }
-
-    public void AssignHitsound()
-    {
-        switch(materialType)
-        {
-            case HitType.Wood:
-                OnDamage.AddListener(() => AudioManager.PlayHitSound(transform.position, HitType.Wood));
-                break;
-            case HitType.Stone:
-                OnDamage.AddListener(() => AudioManager.PlayHitSound(transform.position, HitType.Stone));
-                break;
-            default:
-                OnDamage.AddListener(() => AudioManager.PlayHitSound(transform.position, HitType.Entity));
-                break;
-        }
     }
 
     private void OnEnable()

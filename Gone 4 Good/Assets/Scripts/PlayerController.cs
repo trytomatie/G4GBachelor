@@ -121,6 +121,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         if(inventory.CurrentHotbarItem.id != 0)
         {
+            inventory.CurrentHotbarItem.GetItemInteractionEffects.OnDrop(gameObject, inventory.CurrentHotbarItem);
             DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
         }
@@ -296,8 +297,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
     public void Animations()
     {
-        anim.SetFloat("XDir", Mathf.RoundToInt(rotationRelativeDirection.x),0.1f,Time.deltaTime);
-        anim.SetFloat("YDir", Mathf.RoundToInt(rotationRelativeDirection.y), 0.1f, Time.deltaTime);
+        // Round to nearest 0.25f
+        rotationRelativeDirection= new Vector2(Mathf.Round(rotationRelativeDirection.x * 4) / 4, Mathf.Round(rotationRelativeDirection.y * 4) / 4);
+        anim.SetFloat("XDir",rotationRelativeDirection.x,0.05f,Time.deltaTime);
+        anim.SetFloat("YDir", rotationRelativeDirection.y, 0.05f, Time.deltaTime);
     }
 
     public void Movement()
@@ -311,8 +314,16 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
 
         bool shouldWalk = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        if(shouldWalk)
+        {
+            anim.SetFloat("AnimationSpeed", 1.3f);
+        }
+        else
+        {
+            anim.SetFloat("AnimationSpeed", 1);
+        }
 
-        currentSpeed = shouldWalk ? inputMagnitude * 0.333f : inputMagnitude;
+        currentSpeed = shouldWalk ? inputMagnitude * 1.333f : inputMagnitude;
         if (anim.GetBool("attack"))
         {
             currentSpeed *= 0.3f;
@@ -340,8 +351,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         Vector3 right = transform.right;
 
         Vector3 movement = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0) * new Vector3(horizontalInput, 0, verticalInput);
-        float dot = Vector3.Dot(forward, movement.normalized);
-        float dotRight = Vector3.Dot(right, movement.normalized);
+        float dot = Vector3.Dot(forward, movementDirection.normalized);
+        float dotRight = Vector3.Dot(right, movementDirection.normalized);
 
         float maxDot = Mathf.Max(Mathf.Abs(dotRight), Mathf.Abs(dot));
         if (maxDot == Mathf.Abs(dot))
@@ -352,7 +363,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         {
             dot = 0;
         }
-        rotationRelativeDirection = new Vector2(dotRight, dot);
+        Vector3 relativeMovementDir = transform.InverseTransformDirection(movementDirection);
+        rotationRelativeDirection = new Vector2(relativeMovementDir.x, relativeMovementDir.z);
     }
     public void HandleAttack(bool handleAttack)
     {

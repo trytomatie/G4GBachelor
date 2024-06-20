@@ -67,6 +67,8 @@ public class NetworkSpellManager : NetworkBehaviour
         PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
         bulletFire.distanceUntilImpact = Vector3.Distance(player.transform.position, impactPosition);
         Vector3 gunBarrel = player.gunBarrelEnd.position;
+        // Set to constant height
+        gunBarrel.y = 1.325f;
         bulletFire.transform.position = gunBarrel;
         bulletFire.transform.LookAt(impactPosition);
         bulletFire.InUse = true;

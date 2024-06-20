@@ -23,9 +23,19 @@ public class NetworkVFXManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void SpawnVFXRpc(int vfxIndex, Vector3 position, Quaternion rotation)
     {
-        vfx[vfxIndex].transform.position = position;
-        vfx[vfxIndex].transform.rotation = rotation;
-        vfx[vfxIndex].PlayFeedbacks();
+        switch(vfxIndex)
+        {
+            case 0:
+                vfx[vfxIndex].GetFeedbackOfType<MMF_ParticlesInstantiation>().TargetWorldPosition = position;
+                vfx[vfxIndex].PlayFeedbacks();
+                break;
+            case 1:
+                vfx[vfxIndex].transform.position = position;
+                vfx[vfxIndex].transform.rotation = rotation;
+                vfx[vfxIndex].PlayFeedbacks();
+                break;
+        }
+
     }
 
     public static NetworkVFXManager Instance { get => instance;}

@@ -66,7 +66,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
 
     public override void OnEquip(GameObject source, Item item)
     {
-        NetworkItemEffectsManager.Instance.EquipItemServerRpc(NetworkGameManager.GetLocalPlayerId, weaponPrefab.name);
+        NetworkItemEffectsManager.Instance.EquipItemServerRpc(NetworkGameManager.GetLocalPlayerId, weaponPrefab.name,1);
         source.GetComponent<StatusManager>().weaponAttackDamage = attackDamage;
         if(skill != null)
         {

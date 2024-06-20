@@ -39,6 +39,7 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
+                source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 0);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
             }
@@ -70,7 +71,7 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
 
     public override void OnEquip(GameObject source, Item item)
     {
-        NetworkItemEffectsManager.Instance.EquipItemServerRpc(NetworkGameManager.GetLocalPlayerId, weaponPrefab.name);
+        NetworkItemEffectsManager.Instance.EquipItemServerRpc(NetworkGameManager.GetLocalPlayerId, weaponPrefab.name,1);
         source.GetComponent<StatusManager>().weaponAttackDamage = attackDamage;
         if(skill != null)
         {
@@ -93,6 +94,6 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
 
     public override void OnDrop(GameObject source, Item item)
     {
-        Debug.Log("Dropping " + item.id);
+        NetworkItemEffectsManager.Instance.UnequipItemServerRpc(NetworkGameManager.GetLocalPlayerId);
     }
 }
