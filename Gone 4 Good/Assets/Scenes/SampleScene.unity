@@ -4367,7 +4367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 1
-  size: {x: 99.877914, y: 8.5, z: 25.878012}
+  size: {x: 99.87791, y: 8.5, z: 25.878012}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -4407,7 +4407,7 @@ Transform:
   m_GameObject: {fileID: 1440563482}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -21.810951, y: 2.5, z: -5.8110056}
+  m_LocalPosition: {x: -21.810955, y: 2.5, z: -5.8110056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8393,7 +8393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileVFX:
   - {fileID: 3954710839169843520, guid: a2235916476d72047bea36e0766161fe, type: 3}
-  - {fileID: 3358612833029713813, guid: df743aa53c3d2b14388935fb956f2c0e, type: 3}
+  - {fileID: 8368184424076865324, guid: 805234be6b2ecc640acf00fd3533aed3, type: 3}
   - {fileID: 3358612833029713813, guid: df743aa53c3d2b14388935fb956f2c0e, type: 3}
   vfx:
   - {fileID: 479463556}

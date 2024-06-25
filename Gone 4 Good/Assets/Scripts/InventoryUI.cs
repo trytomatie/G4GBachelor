@@ -64,10 +64,6 @@ public class InventoryUI : MonoBehaviour
                 inventorySlots[i].SetItem(syncedInventory.items[i]);
             }
         }
-        for(int i = 0; i < equipmentContainer.items.Count; i++)
-        {
-            equipmentSlots[i].SetItem(equipmentContainer.items[i]);
-        }
     }
 
     public void SelectSlot(int index)

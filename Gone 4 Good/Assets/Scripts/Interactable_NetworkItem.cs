@@ -45,6 +45,13 @@ public class Interactable_NetworkItem : Interactable
         player.GetComponent<Inventory>().AddItem(new Item(itemID,amount));
         player.GetComponent<Inventory>().SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
         NetworkObject networkObject = GetComponent<NetworkObject>();
+        DespawnRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void DespawnRpc()
+    {
+        NetworkObject networkObject = GetComponent<NetworkObject>();
         networkObject.Despawn(true);
     }
 }
