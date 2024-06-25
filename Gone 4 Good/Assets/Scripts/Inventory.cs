@@ -23,7 +23,7 @@ public class Inventory : Container
     }
     public void SwitchHotbarItem(int index)
     {
-        // GameUI.instance.inventoryUI.SelectSlot(index); TODO: FIX THIS
+        GameUI.instance.inventoryUI.SelectSlot(index);
         if (items.Count-1 >= currentHotbarIndex)
         {
             items[currentHotbarIndex]?.GetItemInteractionEffects.OnUnequip(gameObject, items[currentHotbarIndex]);

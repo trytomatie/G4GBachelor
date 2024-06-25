@@ -16,7 +16,7 @@ MonoBehaviour:
   itemType: 5
   itemName: Shotgun
   itemDescription: 
-  itemIcon: {fileID: 21300008, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+  itemIcon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   maxStackSize: 1
   keyItem: 0
   itemInteractionEffects: {fileID: 11400000, guid: c7ea91cd6a7485545b73b6eca5ddbea0, type: 2}

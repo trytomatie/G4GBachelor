@@ -26,7 +26,6 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        syncedInventory = GameManager.Instance.player.GetComponent<Inventory>();
         syncedInventory.onInventoryUpdate += UpdateUI;
         equipmentContainer.onInventoryUpdate += UpdateUI;
         UpdateUI(0);

@@ -33,7 +33,7 @@ public class ShotgunProjectileWeapon_ItemEffects : ItemInteractionEffects
                 timeLastFired = Time.time;
                 for(int i = 0; i < pelets; i++)
                 {
-                    NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread, projectileSize, projectileSpeed, penetration, 0);
+                    NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread, projectileSize, projectileSpeed, penetration, 2);
 
                 }
                 source.GetComponent<PlayerController>().anim.SetTrigger("Attack");

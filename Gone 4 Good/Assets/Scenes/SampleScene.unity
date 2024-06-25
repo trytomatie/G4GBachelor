@@ -8393,6 +8393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileVFX:
   - {fileID: 3954710839169843520, guid: a2235916476d72047bea36e0766161fe, type: 3}
+  - {fileID: 3358612833029713813, guid: df743aa53c3d2b14388935fb956f2c0e, type: 3}
+  - {fileID: 3358612833029713813, guid: df743aa53c3d2b14388935fb956f2c0e, type: 3}
   vfx:
   - {fileID: 479463556}
   - {fileID: 1976233168}

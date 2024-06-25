@@ -11,7 +11,6 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public ItemType slotRestriction = ItemType.None;
     public Image sprite;
     public TextMeshProUGUI amountText;
-    public MMF_Player feedback;
     public Container syncedContainer;
     public int currentAmount;
     public int assignedIndex = 0;
@@ -40,7 +39,6 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         sprite.sprite = ItemDatabase.GetItem(item.id).itemIcon;
         if (item.amount != currentAmount)
         {
-            feedback.PlayFeedbacks();
             currentAmount = item.amount;
         }
         if(item.amount == 1)

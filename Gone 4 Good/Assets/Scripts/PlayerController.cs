@@ -78,14 +78,16 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
             enabled = false;
             return;
         }
+
+        inventory = GetComponent<Inventory>();
+        sm = GetComponent<StatusManager>();
         PlayerSetupSetup();
+        cameraTransform = Camera.main.transform;
         states[(int)PlayerState.Controlling] = new PlayerStateControlling();
         states[(int)PlayerState.InWater] = new PlayerStateInWater();
         states[(int)PlayerState.PlayerUsingSkill] = new PlayerUsingSkill();
         states[(int)currentPlayerState].OnEnter(this);
-        cameraTransform = Camera.main.transform;
-        inventory = GetComponent<Inventory>();
-        sm = GetComponent<StatusManager>();
+
         foreach(SkillSlotUI skillSlotUI in GameUI.instance.skillslots)
         {
             skillSlotUI.BindEntity(this);
@@ -112,7 +114,6 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
             }
 
         }
-
         if (inventory.items[0].id != 0) SwitchHotbarItem(0);
     }
 
@@ -142,6 +143,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public void PlayerSetupSetup()
     {
         playerSetupInstance = Instantiate(playerSetup, transform.position,transform.rotation);
+        GameUI gameUI = playerSetupInstance.GetComponentInChildren<GameUI>();
+        gameUI.inventoryUI.syncedInventory = inventory;
         vCam = playerSetupInstance.GetComponentInChildren<CinemachineVirtualCamera>();
         vCam.LookAt = cameraFollowTarget;
         vCam.Follow = cameraFollowTarget;
