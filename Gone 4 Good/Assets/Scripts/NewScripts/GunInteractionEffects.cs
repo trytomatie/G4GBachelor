@@ -16,16 +16,15 @@ public class GunInteractionEffects : ItemInteractionEffects
     public float spreadLimit = 1;
     public float spreadDecay = 0.25f;
 
-    public int currentAmmo = 160;
+
     public int maxAmmo = 240;
-    public int currentClip = 30;
     public int maxClip = 30;
 
-    public bool SubstractAmmo()
+    public bool SubstractAmmo(Item item)
     {
-        if (currentClip > 0)
+        if (item.currentClip > 0)
         {
-            currentClip--;
+            item.currentClip--;
             return true;
         }
         else
@@ -34,19 +33,19 @@ public class GunInteractionEffects : ItemInteractionEffects
         }
     }
 
-    public bool Reload()
+    public bool Reload(Item item)
     {
-        int amountNeeded = maxClip - currentClip;
-        if (currentAmmo >= amountNeeded)
+        int amountNeeded = maxClip - item.currentClip;
+        if (item.currentAmmo >= amountNeeded)
         {
-            currentAmmo -= amountNeeded;
-            currentClip = maxClip;
+            item.currentAmmo -= amountNeeded;
+            item.currentClip = maxClip;
             return true;
         }
-        else if (currentAmmo > 0)
+        else if (item.currentAmmo > 0)
         {
-            currentClip += currentAmmo;
-            currentAmmo = 0;
+            item.currentClip += item.currentAmmo;
+            item.currentAmmo = 0;
             return true;
         }
         return false;

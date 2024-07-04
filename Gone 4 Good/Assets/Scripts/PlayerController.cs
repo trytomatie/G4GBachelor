@@ -104,6 +104,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
         InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
         InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
+        InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
         for (int i = 0; i < skills.Length; i++)
         {
@@ -122,18 +123,32 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         if(inventory.CurrentHotbarItem.id != 0)
         {
-            inventory.CurrentHotbarItem.GetItemInteractionEffects.OnDrop(gameObject, inventory.CurrentHotbarItem);
-            DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id);
+            Item item = inventory.CurrentHotbarItem;
+            item.GetItemInteractionEffects.OnDrop(gameObject, inventory.CurrentHotbarItem);
+            NetworkItemData data = new NetworkItemData()
+            {
+                affinity = 0,
+                currentAmmo = item.currentAmmo,
+                currentClip = item.currentClip
+            };
+            DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id, data);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
         }
     }
 
+    private void ReloadCurrentItem()
+    {
+        ((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).Reload(inventory.CurrentHotbarItem);
+        anim.SetTrigger("Reload");
+    }
+
     [Rpc(SendTo.Server)]
-    private void DropEquipedItemRpc(ulong playerId,int itemId)
+    private void DropEquipedItemRpc(ulong playerId,int itemId,NetworkItemData networkItemData)
     {
         GameObject player = NetworkGameManager.GetPlayerById(playerId);
         GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab,player.transform.position + new Vector3(0,1,0),Quaternion.identity);
         NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
+        _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
         networkObject.Spawn();
         Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
         rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));

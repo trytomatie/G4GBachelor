@@ -23,5 +23,5 @@ MonoBehaviour:
   startSpread: 11
   spreadLimit: 3
   spreadDecay: 0.25
-  skill: {fileID: 0}
-  skill2: {fileID: 0}
+  maxAmmo: 240
+  maxClip: 30
