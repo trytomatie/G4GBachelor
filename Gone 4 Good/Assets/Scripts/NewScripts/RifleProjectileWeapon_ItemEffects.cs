@@ -3,21 +3,8 @@ using UnityEngine;
 using static Unity.VisualScripting.Member;
 
 [CreateAssetMenu(fileName = "RifleProjectileWeapon_ItemEffects", menuName = "ScriptableObjects/ItemInteractionEffects/RifleProjectileWeapon_ItemEffects", order = 1)]
-public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
+public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
 {
-    public int attackDamage = 1;
-    public GameObject weaponPrefab;
-    public float fireRate = 0.1f;
-    public float projectileSpeed = 30;
-    public float projectileSize = 0.2f;
-    public int penetration = 0;
-    public float spreadAccumulation = 0.05f;
-    public float perfectShots = 3;
-    public float startSpread = 0f;
-    public float spreadLimit = 1;
-    public float spreadDecay = 0.25f;
-    public Skill skill;
-    public Skill skill2;
 
     private float timeLastFired = 0;
     private float perfectShotCounter = 0;
@@ -28,6 +15,7 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
         {
             if(timeLastFired + fireRate < Time.time)
             {
+                if(SubstractAmmo() == false) return;
                 PlayerController pc = source.GetComponent<PlayerController>();
                 if(perfectShotCounter < perfectShots)
                 {
@@ -73,10 +61,6 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
     {
         NetworkItemEffectsManager.Instance.EquipItemServerRpc(NetworkGameManager.GetLocalPlayerId, weaponPrefab.name,1);
         source.GetComponent<StatusManager>().weaponAttackDamage = attackDamage;
-        if(skill != null)
-        {
-            skill.AssignSkill(source, 0);
-        }
         timeLastFired = 0;
         currentSpread = 0;
 
@@ -86,10 +70,6 @@ public class RifleProjectileWeapon_ItemEffects : ItemInteractionEffects
     {
         NetworkItemEffectsManager.Instance.UnequipItemServerRpc(NetworkGameManager.GetLocalPlayerId);
         source.GetComponent<StatusManager>().weaponAttackDamage = 0;
-        if (skill != null)
-        {
-            skill.RemoveSkill(source, 0);
-        }
     }
 
     public override void OnDrop(GameObject source, Item item)
