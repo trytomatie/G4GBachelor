@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 1
   weaponPrefab: {fileID: 1312551688009478, guid: da29ba09b0ae85b44a5c25f14124dc88, type: 3}
-  fireRate: 0.1
+  fireRate: 0.135
   projectileSpeed: 30
   projectileSize: 0.2
   penetration: 0

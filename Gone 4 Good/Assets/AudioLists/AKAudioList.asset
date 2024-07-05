@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179ebeb0152285544ad70eb050ccc43d, type: 3}
   m_Name: AKAudioList
   m_EditorClassIdentifier: 
+  randomPitchRange: 0.09
   audioClips:
-  - {fileID: 8300000, guid: 431876faabc22094a8d325450eaefba1, type: 3}
+  - {fileID: 8300000, guid: 430a453dc8141c04ea627c33a8b3fe9a, type: 3}
