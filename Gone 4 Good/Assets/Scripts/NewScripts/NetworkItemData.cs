@@ -2,7 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-
+[System.Serializable]
 public struct NetworkItemData : INetworkSerializable
 {
     public int currentAmmo;

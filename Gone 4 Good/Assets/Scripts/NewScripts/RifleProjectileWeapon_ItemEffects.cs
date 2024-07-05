@@ -30,6 +30,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                 source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
+                AudioManager.instance.PlaySoundFromAudiolistRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, 1);
             }
         }
     }

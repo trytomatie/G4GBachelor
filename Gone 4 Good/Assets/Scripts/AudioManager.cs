@@ -43,16 +43,19 @@ public class AudioManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void PlaySoundFromAudiolistRpc(int listIndex, Vector3 pos,float pitch)
     {
-        PlayRandomSoundFromList(audioLists[listIndex].audioClips, pos,pitch);
+        PlayRandomSoundFromList(listIndex, pos,pitch);
     }
 
-    public static void PlayRandomSoundFromList(AudioClip[] audio, Vector3 position,float pitch)
+    public static void PlayRandomSoundFromList(int ListIndex, Vector3 position,float pitch)
     {
+        AudioList audioList = instance.audioLists[ListIndex];
+        AudioClip[] audio = audioList.audioClips;
+        float randomPitchAdjustment = Random.Range(-audioList.randomPitchRange, audioList.randomPitchRange);
         GameObject audioSource = Instantiate(instance.audioSourcePrefab, position, Quaternion.identity);
         AudioSource source = audioSource.GetComponent<AudioSource>();
         source.clip = audio[Random.Range(0, audio.Length)];
         source.outputAudioMixerGroup = instance.sfxAudioGroup;
-        source.pitch = pitch;
+        source.pitch = pitch + randomPitchAdjustment;
         source.Play();
         Destroy(audioSource, source.clip.length + 0.1f);
     }
