@@ -40,7 +40,6 @@ public class Skill_AirDash : Skill
 
         if (Time.time > onEnterTime)
         {
-            controller.SwitchState(PlayerState.Controlling);
             dashCount = 0;
             controller.SkillColldowns[controller.SkillIndex] = Time.time;
         }

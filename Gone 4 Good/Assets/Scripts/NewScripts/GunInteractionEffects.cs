@@ -20,6 +20,8 @@ public class GunInteractionEffects : ItemInteractionEffects
     public int maxAmmo = 240;
     public int maxClip = 30;
 
+    public float reloadTime = 2.5f;
+
     public bool SubstractAmmo(Item item)
     {
         if (item.currentClip > 0)
@@ -50,5 +52,16 @@ public class GunInteractionEffects : ItemInteractionEffects
         }
         return false;
 
+    }
+
+    public bool CanReload(Item item)
+    {
+        return item.currentAmmo > 0 && item.currentClip < maxClip;
+    }
+
+    public override void ConstantUpdate(GameObject source, Item item)
+    {
+        base.ConstantUpdate(source, item);
+        GameUI.instance.SetAmmo(item.currentClip, item.currentAmmo);
     }
 }

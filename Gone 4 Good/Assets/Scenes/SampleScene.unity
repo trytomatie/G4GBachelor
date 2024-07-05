@@ -5342,6 +5342,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: adb2fac36b6170d4c88030d14e6d3428, type: 3}
   audioLists:
   - {fileID: 11400000, guid: 8a175ac2387ac5b4d975f26d61e951a4, type: 2}
+  - {fileID: 11400000, guid: 3e543ee6aa4acc242a8c3b82458a7368, type: 2}
   sfxAudioGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   musicAudioGroup: {fileID: -2273146209696275378, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   audioSourcePrefab: {fileID: 7989588483833957038, guid: 8039677dd24f91d4db556c86799388ad, type: 3}

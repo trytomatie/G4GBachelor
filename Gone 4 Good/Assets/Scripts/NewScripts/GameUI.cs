@@ -38,6 +38,9 @@ public class GameUI : MonoBehaviour
     [Header("Skills")]
     public SkillSlotUI[] skillslots;
 
+    [Header("Ammo")]
+    public TextMeshProUGUI ammoText;
+
     [HideInInspector] public Animator interfaceAnimator;
 
     // Singleton
@@ -65,6 +68,10 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public void SetAmmo(int currentClip,int currentAmmo)
+    {
+        ammoText.text = currentClip + " / " + currentAmmo;
+    }
     private void OnDisable()
     {
         InputSystem.GetInputActionMapPlayer().IngameUI.Inventory.performed -= ToggleInventory;

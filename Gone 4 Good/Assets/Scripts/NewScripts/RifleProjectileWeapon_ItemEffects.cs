@@ -37,12 +37,14 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
 
     public override void ConstantUpdate(GameObject source,Item item)
     {
+        base.ConstantUpdate(source,item);
         if(!isUsing)
         {
             
             currentSpread = Mathf.Clamp(currentSpread - (spreadDecay * Time.deltaTime),0,spreadLimit);
             perfectShotCounter = 0;
         }
+
     }
 
     public override void OnUseEnd(GameObject source,Item item)

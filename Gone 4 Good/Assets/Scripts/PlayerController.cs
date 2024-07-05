@@ -20,6 +20,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     private Vector2 rotationRelativeDirection;
     public Vector3 rootMotionMotion;
     public LayerMask groundLayer;
+    private bool isReloading;
     // References
     public CharacterController characterController;
     public CinemachineVirtualCamera vCam;
@@ -66,7 +67,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     }
     public PlayerState currentPlayerState = PlayerState.Controlling;
 
-    private State[] states = new State[5];
+    private global::PlayerState[] states = new global::PlayerState[5];
 
     // Start is called before the first frame update
     void Start()
@@ -136,10 +137,26 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         }
     }
 
+
+
     private void ReloadCurrentItem()
     {
+
+        if(((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).CanReload(inventory.CurrentHotbarItem) && !isReloading)
+        {
+            anim.SetTrigger("Reload");
+            isReloading = true;
+            StartCoroutine(ReloadRoutine());
+
+        }
+
+    }
+
+    public IEnumerator ReloadRoutine()
+    {
+        yield return new WaitForSeconds(((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).reloadTime);
         ((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).Reload(inventory.CurrentHotbarItem);
-        anim.SetTrigger("Reload");
+        isReloading = false;
     }
 
     [Rpc(SendTo.Server)]
@@ -305,8 +322,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         yield return new WaitForSeconds(1f);
         sm.Hp.Value = sm.maxHp;
         characterController.enabled = false;
-        TeleportToDungeonLayer(false);
-        transform.position = new Vector3(0,0,0);
+        transform.position = new Vector3(0, 0, 0);
         characterController.enabled = true;
         anim.SetBool("Death", false);
         yield return new WaitForSeconds(0.5f);
@@ -475,37 +491,6 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         characterController.enabled = true;
     }
 
-    public void TeleportToDungeonLayer(bool enter)
-    {
-        print(enter);
-        //vCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = 0;
-        //vCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = 0;
-        //vCam.GetCinemachineComponent<CinemachineTransposer>().m_ZDamping = 0;
-        if (enter)
-        {
-            GameManager.Instance.overWorld.transform.position = new Vector3(0, -50, 0);
-            GameManager.Instance.dungeonWorld.transform.position = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            GameManager.Instance.overWorld.transform.position = new Vector3(0, 0, 0);
-            GameManager.Instance.dungeonWorld.transform.position = new Vector3(0, -50, 0);
-        }
-        foreach (EnemyAI enemy in EnemyAI.enemyAIList)
-        {
-            if (enemy.transform.position.y < -20)
-            {
-                enemy.gameObject.SetActive(false);
-            }
-            else
-            {
-                enemy.gameObject.SetActive(true);
-            }
-            enemy.agent.enabled = false;
-            enemy.agent.enabled = true;
-        }
-        // Invoke("ResetCamera", 0.1f);
-    }
 
     private void ResetCamera()
     {
@@ -646,14 +631,14 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public Transform CastingPivot => gunBarrelEnd;
     #endregion
 }
-public interface State
+public interface PlayerState
 {
     void OnEnter(PlayerController pc);
     void OnExit(PlayerController pc);
     void OnUpdate(PlayerController pc);
 }
 
-public class PlayerStateControlling : State
+public class PlayerStateControlling : PlayerState
 {
     public void OnEnter(PlayerController pc)
     {
@@ -681,7 +666,7 @@ public class PlayerStateControlling : State
     }
 }
 
-public class PlayerStateInWater : State
+public class PlayerStateInWater : PlayerState
 {
     private Transform initialFollowTarget;
     public void OnEnter(PlayerController pc)
@@ -704,7 +689,7 @@ public class PlayerStateInWater : State
     }
 }
 
-public class PlayerUsingSkill : State
+public class PlayerUsingSkill : PlayerState
 {
     public void OnEnter(PlayerController pc)
     {
