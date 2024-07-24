@@ -33,18 +33,32 @@ public class ZombieAI : MonoBehaviour
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
         enemyStates[1] = new ChaseState();
+        currentState = enemyStates[0];
+        currentState.OnEnter(this);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        currentState.OnUpdate(this);
+        Animation();
     }
 
-    public void LookForClosestTarget()
+    public void SwitchState(State newState)
+    {
+        currentState.OnExit(this);
+        currentState = newState;
+        currentState.OnEnter(this);
+    }
+
+    public bool LookForClosestTarget()
     {
         List<NetworkObject> players = NetworkGameManager.Instance.connectedClients.Values.ToList();
+        if (players.Count == 0)
+        {
+            return false;
+        }
         float closestDistance = Mathf.Infinity;
         foreach (NetworkObject player in players)
         {
@@ -60,11 +74,17 @@ public class ZombieAI : MonoBehaviour
                 closestDistance = distance;
             }
         }
+        return true;
     }
 
     public void Animation()
     {
         animator.SetFloat("Speed", agent.velocity.magnitude);
+    }
+
+    public void PathfindToDestination(Vector3 pos)
+    {
+        agent.SetDestination(pos);
     }
 }
 
@@ -90,7 +110,10 @@ public class IdleState : State
 
     public void OnUpdate(ZombieAI pc)
     {
-
+        if(pc.LookForClosestTarget())
+        {
+            pc.SwitchState(pc.enemyStates[1]);
+        }
     }
 
     public void OnExit(ZombieAI pc)
@@ -103,12 +126,13 @@ public class ChaseState : State
 {
     public void OnEnter(ZombieAI pc)
     {
-
+        pc.LookForClosestTarget();
     }
 
     public void OnUpdate(ZombieAI pc)
     {
-
+        pc.PathfindToDestination(pc.target.transform.position);
+        pc.Animation();
     }
 
     public void OnExit(ZombieAI pc)

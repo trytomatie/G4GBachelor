@@ -40,3 +40,4 @@ public class NetworkVFXManager : NetworkBehaviour
 
     public static NetworkVFXManager Instance { get => instance;}
 }
+
