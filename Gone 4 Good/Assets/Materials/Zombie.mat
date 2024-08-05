@@ -111,13 +111,14 @@ Material:
     - _DstBlendAlpha: 0
     - _EmissionScaleUI: 0
     - _EnvironmentReflections: 1
+    - _Float: 0.44
     - _FrenselPower: 5.12
     - _GlossMapScale: 1
     - _Glossiness: 0.2
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseScale: 38.7
+    - _NoiseScale: 33.56
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -125,6 +126,7 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
+    - _SpawnLerp: 0.44
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
