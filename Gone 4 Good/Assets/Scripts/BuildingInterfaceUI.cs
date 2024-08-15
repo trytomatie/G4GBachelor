@@ -29,3 +29,28 @@ public class BuildingInterfaceUI : MonoBehaviour
         }
     }
 }
+
+public class TriggerLights : MonoBehaviour
+{
+    public GameObject[] candles;
+
+    public float timeIntervalCandles = 1.0f;
+
+    private bool triggered = false;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!triggered)
+            StartCoroutine(Itterator());
+    }
+
+    private IEnumerator Itterator()
+    {
+        triggered = true;
+        foreach (GameObject Candles in candles)
+        {
+            Candles.SetActive(true);
+            yield return new WaitForSeconds(timeIntervalCandles);
+        }
+    }
+}
