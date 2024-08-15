@@ -7,4 +7,5 @@ public class AudioList : ScriptableObject
 {
     public float randomPitchRange = 0;
     public AudioClip[] audioClips;
+
 }
