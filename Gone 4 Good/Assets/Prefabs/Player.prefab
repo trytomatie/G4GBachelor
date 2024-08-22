@@ -5044,15 +5044,23 @@ MonoBehaviour:
   items:
   - id: 0
     amount: 0
+    currentAmmo: 0
+    currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
+    currentAmmo: 0
+    currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
+    currentAmmo: 0
+    currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
+    currentAmmo: 0
+    currentClip: 0
     varriant: 0
   space: 4
 --- !u!1 &3720351126094754331
@@ -5454,7 +5462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ec7cb2ee445384db5caaeba96a7f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMovementSpeed: 3
+  maxMovementSpeed: 4
   rotationSpeed: 800
   ySpeed: 0
   movementDirection: {x: 0, y: 0, z: 0}
@@ -11286,7 +11294,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd619f991169c8647bcbf05626db8934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 2048251345
+    DestinationState: 210696763
+    TransitionDuration: 0.25
+    TriggerNameHash: 1080829965
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 2048251345
+    DestinationState: -1525363869
+    TransitionDuration: 0
+    TriggerNameHash: -1525363869
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 210696763
+    DestinationState: 210696763
+    TransitionDuration: 0.12
+    TriggerNameHash: 1080829965
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 210696763
+    DestinationState: -1525363869
+    TransitionDuration: 0.25
+    TriggerNameHash: -1525363869
+    TransitionIndex: 2
   m_Animator: {fileID: 4700966721635612080}
 --- !u!114 &8273692736405204457
 MonoBehaviour:

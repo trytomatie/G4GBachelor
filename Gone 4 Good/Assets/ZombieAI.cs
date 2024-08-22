@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(StatusManager))]
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
 
 public class ZombieAI : MonoBehaviour
@@ -29,7 +28,6 @@ public class ZombieAI : MonoBehaviour
     void Start()
     {
         statusManager = GetComponent<StatusManager>();
-        animator = GetComponent<Animator>();
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
         enemyStates[1] = new ChaseState();
@@ -124,6 +122,8 @@ public class IdleState : State
 
 public class ChaseState : State
 {
+    private float attackTimer = 0;
+    private float attackCooldown = 1.5f;
     public void OnEnter(ZombieAI pc)
     {
         pc.LookForClosestTarget();
@@ -131,8 +131,21 @@ public class ChaseState : State
 
     public void OnUpdate(ZombieAI pc)
     {
-        pc.PathfindToDestination(pc.target.transform.position);
-        pc.Animation();
+        if (attackTimer + attackCooldown < Time.time)
+        {
+            pc.PathfindToDestination(pc.target.transform.position);
+            pc.Animation();
+            if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)
+            {
+                Debug.Log("Attack");
+                attackTimer = Time.time;
+                pc.animator.SetTrigger("Attack");
+                pc.animator.SetInteger("AttackAnimation", Random.Range(0, 3));
+                pc.PathfindToDestination(pc .transform.position);
+            }
+
+        }
+
     }
 
     public void OnExit(ZombieAI pc)
