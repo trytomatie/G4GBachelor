@@ -33,6 +33,7 @@ public class ZombieAI : MonoBehaviour
         enemyStates[1] = new ChaseState();
         currentState = enemyStates[0];
         currentState.OnEnter(this);
+        animator.SetFloat("RunAnimation", Random.Range(0, 3));
 
     }
 
