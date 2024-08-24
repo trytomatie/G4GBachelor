@@ -5,7 +5,7 @@ public class GenericItemEffects : ItemInteractionEffects
 {
     public override void OnUse(GameObject source, Item item)
     {
-        Debug.Log("Using " + item.id);
+        //  Debug.Log("Using " + item.id);
     }
 
     public override void OnEquip(GameObject source, Item item)

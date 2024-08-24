@@ -9,7 +9,6 @@ public class InteractionManager : MonoBehaviour
     public FollowGameObjectUI interactionToolTip;
     private void OnTriggerEnter(Collider other)
     {
-        print("OnTriggerEnter" + other.name);
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable != null)
         {

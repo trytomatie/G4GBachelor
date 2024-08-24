@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(StatusManager))]
 [RequireComponent(typeof(NavMeshAgent))]
 
-public class ZombieAI : MonoBehaviour
+public class ZombieAI : NetworkBehaviour
 {
     public StatusManager statusManager;
     public Animator animator;
@@ -23,10 +24,19 @@ public class ZombieAI : MonoBehaviour
 
     [Header("Senses")]
     public Transform eyes;
-    
+
+    [Header("Attack")]
+    public Collider hitbox;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsServer)
+        {
+            print("IsClient:" + IsServer);
+            enabled = false;
+            return;
+        }
         statusManager = GetComponent<StatusManager>();
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
@@ -34,12 +44,12 @@ public class ZombieAI : MonoBehaviour
         currentState = enemyStates[0];
         currentState.OnEnter(this);
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!IsSpawned) return;
         currentState.OnUpdate(this);
         Animation();
     }
@@ -85,6 +95,16 @@ public class ZombieAI : MonoBehaviour
     {
         agent.SetDestination(pos);
     }
+
+    public void Attack(float delay)
+    {
+        Invoke("InvokeAttack", delay);
+    }
+
+    private void InvokeAttack()
+    {
+        hitbox.gameObject.SetActive(true);
+    }
 }
 
 public enum EnemyState
@@ -125,6 +145,8 @@ public class ChaseState : State
 {
     private float attackTimer = 0;
     private float attackCooldown = 1.5f;
+
+    public float[] attackDelay = new float[3] { 0.4f, 0.4f, 0.55f };
     public void OnEnter(ZombieAI pc)
     {
         pc.LookForClosestTarget();
@@ -138,10 +160,12 @@ public class ChaseState : State
             pc.Animation();
             if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)
             {
+                int rnd = Random.Range(0, 3);
                 Debug.Log("Attack");
+                pc.Attack(attackDelay[rnd]);
                 attackTimer = Time.time;
                 pc.animator.SetTrigger("Attack");
-                pc.animator.SetInteger("AttackAnimation", Random.Range(0, 3));
+                pc.animator.SetInteger("AttackAnimation", rnd);
                 pc.PathfindToDestination(pc .transform.position);
             }
 
