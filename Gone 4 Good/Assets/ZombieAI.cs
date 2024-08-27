@@ -33,7 +33,6 @@ public class ZombieAI : NetworkBehaviour
     {
         if(!IsServer)
         {
-            print("IsClient:" + IsServer);
             enabled = false;
             return;
         }
@@ -93,6 +92,7 @@ public class ZombieAI : NetworkBehaviour
 
     public void PathfindToDestination(Vector3 pos)
     {
+        pos += new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
         agent.SetDestination(pos);
     }
 
@@ -104,6 +104,17 @@ public class ZombieAI : NetworkBehaviour
     private void InvokeAttack()
     {
         hitbox.gameObject.SetActive(true);
+    }
+
+    public void Ragdoll()
+    {
+        animator.enabled = false;
+        agent.enabled = false;
+        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
+        foreach(Rigidbody rb in rbs)
+        {
+            rb.isKinematic = false;
+        }
     }
 }
 
@@ -156,6 +167,11 @@ public class ChaseState : State
     {
         if (attackTimer + attackCooldown < Time.time)
         {
+            if(pc.target == null)
+            {
+                pc.SwitchState(pc.enemyStates[0]);
+                return;
+            }
             pc.PathfindToDestination(pc.target.transform.position);
             pc.Animation();
             if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)

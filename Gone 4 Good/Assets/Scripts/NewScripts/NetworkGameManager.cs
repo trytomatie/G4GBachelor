@@ -1,6 +1,7 @@
 ﻿using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -58,6 +59,12 @@ public class NetworkGameManager : NetworkBehaviour
     public static GameObject GetPlayerById(ulong id)
     {         
         return Instance.connectedClients[id].gameObject;
+    }
+
+    public static GameObject GetRandomPlayer()
+    {
+        if (Instance.connectedClients.Count == 0) return null;
+        return Instance.connectedClients.Values.ElementAt(Random.Range(0, Instance.connectedClients.Count)).gameObject;
     }
     public static NetworkGameManager Instance { get => instance;}
 }
