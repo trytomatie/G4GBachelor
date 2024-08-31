@@ -174,3 +174,4 @@ MonoBehaviour:
   penetrationCounter: 0
   damage: 1
   attchedVFX: {fileID: 0}
+  physicsForce: 10

@@ -5441,7 +5441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3621923576
+  GlobalObjectIdHash: 3002704556
   InScenePlacedSourceGlobalObjectIdHash: 3002704556
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -5524,7 +5524,7 @@ MonoBehaviour:
   materialType: 2
   deathSound: -1
   level: 1
-  maxHp: 30
+  maxHp: 1111
   hp:
     m_InternalValue: 30
   maxStamina: 0

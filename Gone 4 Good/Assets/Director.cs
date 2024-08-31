@@ -23,7 +23,7 @@ public class Director : NetworkBehaviour
         for (int i = 0; i < 10; i++)
         {
             Vector3 spawnPos = GetElegibleSpawnPos();
-            SpawnEnemy(zombie, spawnPos);
+            SpawnEnemyRpc(0,spawnPos);
         }
     }
 
@@ -40,6 +40,7 @@ public class Director : NetworkBehaviour
             spawnPos = player.transform.position + new Vector3(rndCircle.x, 0, rndCircle.y);
             if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {
+                if (!NavMesh.CalculatePath(hit.position,player.transform.position , NavMesh.AllAreas, new NavMeshPath())) continue;
                 if(Vector3.Distance(player.transform.position, hit.position) > 15) return hit.position;
             }
             samples++;
@@ -48,10 +49,11 @@ public class Director : NetworkBehaviour
 
         return Vector3.zero;
     }
-
-    private void SpawnEnemy(GameObject enemy, Vector3 position)
+    [Rpc(SendTo.Server)]
+    private void SpawnEnemyRpc(int index,Vector3 position)
     {
-        GameObject enemyInstance = Instantiate(enemy, position, Quaternion.identity);
+        if(position == Vector3.zero) return;
+        GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
         enemyInstance.GetComponent<NetworkObject>().Spawn();
     }
 

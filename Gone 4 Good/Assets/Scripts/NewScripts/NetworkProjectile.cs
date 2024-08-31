@@ -13,6 +13,7 @@ public class NetworkProjectile : NetworkBehaviour
     private List<GameObject> hitObjects = new List<GameObject>();
     public GameObject attchedVFX;
     private NetworkObject networkObject;
+    public float physicsForce = 100;
     private void Start()
     {
         if(!IsServer) enabled = false;
@@ -25,7 +26,7 @@ public class NetworkProjectile : NetworkBehaviour
         if(other.collider.isTrigger || !IsServer) return;
         if(other.collider.GetComponent<StatusManager>() != null && !hitObjects.Contains(other.gameObject))
         {
-            other.collider.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position);
+            other.collider.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position,physicsForce);
             hitObjects.Add(other.gameObject);
             if (penetrationCounter > 0)
             {

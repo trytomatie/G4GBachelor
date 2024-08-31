@@ -105,7 +105,7 @@ public class StatusManager : NetworkBehaviour
         }
     }
     [Rpc(SendTo.Everyone)]
-    public void ApplyDamageRpc(int damage,Vector3 position)
+    public void ApplyDamageRpc(int damage,Vector3 position,float force)
     {
         int calculatedDamage = Mathf.Clamp(damage - bonusDefense, 1, 9999);
         if (IsServer)
@@ -119,6 +119,16 @@ public class StatusManager : NetworkBehaviour
         if (Hp.Value <= 0)
         {
             OnDeath.Invoke();
+            RagdollForce(force);
+        }
+    }
+
+    private void RagdollForce(float force)
+    {
+        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody rb in rbs)
+        {
+            rb.AddForce(Vector3.up * force, ForceMode.Impulse);
         }
     }
 

@@ -14,8 +14,8 @@ public class ZombieAI : NetworkBehaviour
     public Animator animator;
     public NavMeshAgent agent;
 
-    public State currentState;
     public State[] enemyStates;
+    public EnemyState currentState;
 
     public GameObject target;
 
@@ -40,8 +40,7 @@ public class ZombieAI : NetworkBehaviour
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
         enemyStates[1] = new ChaseState();
-        currentState = enemyStates[0];
-        currentState.OnEnter(this);
+        enemyStates[(int)currentState].OnEnter(this);
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
     }
 
@@ -49,15 +48,15 @@ public class ZombieAI : NetworkBehaviour
     void Update()
     {
         if (!IsSpawned) return;
-        currentState.OnUpdate(this);
+        enemyStates[(int)currentState].OnUpdate(this);
         Animation();
     }
 
-    public void SwitchState(State newState)
+    public void SwitchState(EnemyState newState)
     {
-        currentState.OnExit(this);
+        enemyStates[(int)currentState].OnExit(this);
         currentState = newState;
-        currentState.OnEnter(this);
+        enemyStates[(int)currentState].OnEnter(this);
     }
 
     public bool LookForClosestTarget()
@@ -125,6 +124,7 @@ public enum EnemyState
     Attack,
     Dead
 }
+
 public interface State
 {
     void OnEnter(ZombieAI pc);
@@ -142,7 +142,7 @@ public class IdleState : State
     {
         if(pc.LookForClosestTarget())
         {
-            pc.SwitchState(pc.enemyStates[1]);
+            pc.SwitchState(EnemyState.Chase);
         }
     }
 
@@ -169,7 +169,7 @@ public class ChaseState : State
         {
             if(pc.target == null)
             {
-                pc.SwitchState(pc.enemyStates[0]);
+                pc.SwitchState(EnemyState.Idle);
                 return;
             }
             pc.PathfindToDestination(pc.target.transform.position);

@@ -33,7 +33,7 @@ public class DamageObject : MonoBehaviour
         if (sm != null && !hitList.Contains(sm))
         {
             if (sm.faction == faction) return;
-            sm.ApplyDamageRpc(10,sm.transform.position);
+            sm.ApplyDamageRpc(10,sm.transform.position,20);
             hitList.Add(sm);
         }
     }
