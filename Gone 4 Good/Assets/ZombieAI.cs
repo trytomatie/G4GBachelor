@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -83,7 +84,34 @@ public class ZombieAI : NetworkBehaviour
         }
         return true;
     }
+    public void ZombieDeath()
+    {
+        StartCoroutine(Dissolve());
+        StartCoroutine(Despawn());
+        Ragdoll();
 
+    }
+
+    private IEnumerator Despawn()
+    {
+        yield return new WaitForSeconds(5);
+        NetworkObject networkObject = GetComponent<NetworkObject>();
+        networkObject.Despawn();
+    }
+
+    private IEnumerator Dissolve()
+    {
+        yield return new WaitForSeconds(0);
+        float timer = 0;
+        float dissolveTime = 2;
+        Material mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
+        while (timer < dissolveTime)
+        {
+            mat.SetFloat("_DissolveProgression", Mathf.Lerp(0, 1, timer / dissolveTime));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
     public void Animation()
     {
         animator.SetFloat("Speed", agent.velocity.magnitude);
