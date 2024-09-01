@@ -374,7 +374,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         movementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up)
     * movementDirection;
 
-        Vector3 finalMovementDirection = movementDirection * currentSpeed;
+        Vector3 finalMovementDirection = movementDirection * currentSpeed * StatusManager.movementSpeedMultiplier;
         finalMovementDirection.y = 0;
         characterController.Move((finalMovementDirection * maxMovementSpeed * Time.deltaTime) + rootMotionMotion);
 

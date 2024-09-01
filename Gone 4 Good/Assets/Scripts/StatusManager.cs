@@ -27,6 +27,7 @@ public class StatusManager : NetworkBehaviour
     [SerializeField] private int stamina = 0;
     [SerializeField] private int staminaRegenPerSecond = 5;
     [SerializeField] private int baseAttackDamage = 1;
+    public float movementSpeedMultiplier = 1;
     public int bonusDefense = 0;
 
     public int experienceDrop = 1;

@@ -64,4 +64,11 @@ public class GunInteractionEffects : ItemInteractionEffects
         base.ConstantUpdate(source, item);
         GameUI.instance.SetAmmo(item.currentClip, item.currentAmmo);
     }
+
+    public override void OnUseEnd(GameObject source, Item item)
+    {
+        source.GetComponent<StatusManager>().movementSpeedMultiplier = 1;
+        source.GetComponent<PlayerController>().anim.speed = 1;
+        base.OnUseEnd(source, item);
+    }
 }

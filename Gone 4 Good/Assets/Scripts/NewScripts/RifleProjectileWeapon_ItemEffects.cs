@@ -27,7 +27,9 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
+                pc.anim.SetTrigger("Attack");
+                pc.StatusManager.movementSpeedMultiplier = 0.5f;
+                pc.anim.speed = 0.5f;
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
                 AudioManager.instance.PlaySoundFromAudiolistRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, 1);
@@ -49,6 +51,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
 
     public override void OnUseEnd(GameObject source,Item item)
     {
+        base.OnUseEnd(source,item);
         source.GetComponent<PlayerController>().HandleAttack(false);
     }
 
