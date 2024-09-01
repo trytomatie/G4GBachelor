@@ -21,6 +21,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public Vector3 rootMotionMotion;
     public LayerMask groundLayer;
     public bool isReloading;
+    public bool voidOut = false;
     // References
     public CharacterController characterController;
     public CinemachineVirtualCamera vCam;
@@ -62,7 +63,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public enum PlayerState
     {
         Controlling,
-        InWater,
+        VoidOut,
         Running,
         Attacking,
         PlayerUsingSkill
@@ -87,7 +88,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         PlayerSetupSetup();
         cameraTransform = Camera.main.transform;
         states[(int)PlayerState.Controlling] = new PlayerStateControlling();
-        states[(int)PlayerState.InWater] = new PlayerStateInWater();
+        states[(int)PlayerState.VoidOut] = new PlayerStateInWater();
         states[(int)PlayerState.PlayerUsingSkill] = new PlayerUsingSkill();
         states[(int)currentPlayerState].OnEnter(this);
 
@@ -572,9 +573,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     //#endregion
     public void CheckForPlayerVoidOut()
     {
-        if (transform.position.y < -15)
+        if (transform.position.y < -15 || voidOut)
         {
-            CurrentPlayerState = PlayerState.InWater;
+            CurrentPlayerState = PlayerState.VoidOut;
+            voidOut = false;
         }
     }
 

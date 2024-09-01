@@ -8,7 +8,7 @@ public class WaterDeathZone : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>() != null)
         {
-            other.gameObject.GetComponent<PlayerController>().SwitchPlayerState(PlayerController.PlayerState.InWater);
+            other.gameObject.GetComponent<PlayerController>().SwitchPlayerState(PlayerController.PlayerState.VoidOut);
         }
     }
 }
