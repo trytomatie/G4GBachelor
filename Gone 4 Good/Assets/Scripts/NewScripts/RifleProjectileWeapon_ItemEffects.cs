@@ -13,7 +13,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     {
         if (isUsing)
         {
-            if(timeLastFired + fireRate < Time.time !source.GetComponent<PlayerController>().isReloading)
+            if(timeLastFired + fireRate < Time.time && !source.GetComponent<PlayerController>().isReloading)
             {
                 if(SubstractAmmo(source,item) == false) return;
                 PlayerController pc = source.GetComponent<PlayerController>();

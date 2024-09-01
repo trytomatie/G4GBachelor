@@ -5470,6 +5470,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
+  isReloading: 0
   characterController: {fileID: 7133257732268526666}
   vCam: {fileID: 0}
   walkDust: {fileID: 5398425358917736134}
@@ -5492,6 +5493,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 861fc369938e19248ab87f9ade9bfc16, type: 2}
   - {fileID: 0}
   playerSetup: {fileID: 2035643944554340856, guid: 5fda762b7584c0a4bb56e6db466369e5, type: 3}
+  enviormentMaterials:
+  - {fileID: 2100000, guid: a74066172cf19cd4bacae3c6600a7217, type: 2}
+  - {fileID: 2100000, guid: f773f9e7d08bedd44b73534af5c327e2, type: 2}
+  - {fileID: 2100000, guid: 97a96693c2c6e934cb4c090fe8d0d36c, type: 2}
+  - {fileID: 2100000, guid: 104879306de394242abb32cffee7abcd, type: 2}
+  - {fileID: 2100000, guid: 447dc53fa48380a4fa063de19aa75b00, type: 2}
+  - {fileID: 2100000, guid: c03cd3022949c6e43af60b56befeddf7, type: 2}
+  - {fileID: 2100000, guid: efe956fcc48a9a444a666d5d3de9ec34, type: 2}
+  - {fileID: 2100000, guid: d926aacd9d68a6e40a3b194bce6c52b4, type: 2}
+  - {fileID: 2100000, guid: 931a8223b8cb7e449bd50e42d6c0a2d8, type: 2}
   currentPlayerState: 0
 --- !u!114 &4592661334032776263
 MonoBehaviour:
@@ -5531,6 +5542,7 @@ MonoBehaviour:
   stamina: 0
   staminaRegenPerSecond: 5
   baseAttackDamage: 1
+  movementSpeedMultiplier: 1
   bonusDefense: 0
   experienceDrop: 1
   statsScaling: {fileID: 0}

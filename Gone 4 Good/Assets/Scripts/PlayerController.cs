@@ -55,6 +55,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     public GameObject playerSetup;
     private GameObject playerSetupInstance;
 
+    [Header("Shaders")]
+    public Material[] enviormentMaterials;
 
     // States
     public enum PlayerState
@@ -119,7 +121,13 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         if (inventory.items[0].id != 0) SwitchHotbarItem(0);
     }
 
-
+    public void UpdateShaders()
+    {
+        foreach(Material m in enviormentMaterials)
+        {
+            m.SetFloat("_PlayerYPosition", transform.position.y);
+        }
+    }
     private void DropEqipedItem()
     {
         if(inventory.CurrentHotbarItem.id != 0)
@@ -236,7 +244,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         states[(int)currentPlayerState].OnUpdate(this);
         CheckForPlayerVoidOut();
-        if(inventory.CurrentHotbarItem.id != 0)
+        UpdateShaders();
+        if (inventory.CurrentHotbarItem.id != 0)
         {
             inventory.CurrentHotbarItem.GetItemInteractionEffects.ConstantUpdate(gameObject,inventory.CurrentHotbarItem);
         }
