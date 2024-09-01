@@ -267,7 +267,10 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         if (isGrounded && ySpeed <= 0.2f)
         {
             ySpeed = 0;
-            lastSolidGround = transform.position;
+            if(CurrentPlayerState != PlayerState.VoidOut)
+            {
+                lastSolidGround = transform.position;
+            }
         }
         else
         {
@@ -278,7 +281,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, 0.1f, groundLayer);
+        // raycast to ground, ignoreing triggers
+        return Physics.Raycast(transform.position + new Vector3(0, 0.15f, 0), Vector3.down, 0.3f, groundLayer);
     }
 
     public void Rotation()

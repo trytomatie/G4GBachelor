@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8574647386769602285}
   - component: {fileID: 1254477455794785941}
   - component: {fileID: 7860338732274289204}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: VoidOutBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -63,6 +63,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6494026078753268232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2e6228073d7b744397d881f5e5a347f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ed259589421f3545894c0792b67e38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -5471,6 +5471,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   isReloading: 0
+  voidOut: 0
   characterController: {fileID: 7133257732268526666}
   vCam: {fileID: 0}
   walkDust: {fileID: 5398425358917736134}
@@ -5503,6 +5504,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: efe956fcc48a9a444a666d5d3de9ec34, type: 2}
   - {fileID: 2100000, guid: d926aacd9d68a6e40a3b194bce6c52b4, type: 2}
   - {fileID: 2100000, guid: 931a8223b8cb7e449bd50e42d6c0a2d8, type: 2}
+  - {fileID: 2100000, guid: 22af96f9ba68eb54b9ce79bdf6661284, type: 2}
+  - {fileID: 2100000, guid: 3214c024c7c133641a0ad7c2ad33124b, type: 2}
+  - {fileID: 2100000, guid: 505c6a505a475904e81718db81d730a3, type: 2}
+  - {fileID: 2100000, guid: bbeb502b0ff220a47bc32d1992e591ca, type: 2}
+  - {fileID: 2100000, guid: 2b817cff4dbd89b4293676ff91af5ae5, type: 2}
   currentPlayerState: 0
 --- !u!114 &4592661334032776263
 MonoBehaviour:
