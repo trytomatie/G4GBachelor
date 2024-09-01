@@ -22,7 +22,7 @@ public class GunInteractionEffects : ItemInteractionEffects
 
     public float reloadTime = 2.5f;
 
-    public bool SubstractAmmo(Item item)
+    public bool SubstractAmmo(GameObject source,Item item)
     {
         if (item.currentClip > 0)
         {
@@ -31,6 +31,7 @@ public class GunInteractionEffects : ItemInteractionEffects
         }
         else
         {
+            source.GetComponent<PlayerController>().ReloadCurrentItem();
             return false;
         }
     }

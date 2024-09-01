@@ -20,7 +20,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     private Vector2 rotationRelativeDirection;
     public Vector3 rootMotionMotion;
     public LayerMask groundLayer;
-    private bool isReloading;
+    public bool isReloading;
     // References
     public CharacterController characterController;
     public CinemachineVirtualCamera vCam;
@@ -139,7 +139,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
 
 
-    private void ReloadCurrentItem()
+    public void ReloadCurrentItem()
     {
 
         if(((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).CanReload(inventory.CurrentHotbarItem) && !isReloading)
