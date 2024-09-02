@@ -72,6 +72,35 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
     private global::PlayerState[] states = new global::PlayerState[5];
 
+
+    public override void OnNetworkSpawn()
+    {
+        if(IsLocalPlayer) 
+        {
+            PlayerSetupSetup();
+            GameUI.instance.SyncHpBar(GetComponent<StatusManager>());
+        }
+        else
+        {
+            StartCoroutine(SyncAfterDelay());
+        }
+        base.OnNetworkSpawn();
+    }
+
+    private IEnumerator SyncAfterDelay()
+    {
+        while(GameUI.instance == null)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        GameUI.instance.SyncHpAllyBar(GetComponent<StatusManager>());
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,7 +114,6 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
         inventory = GetComponent<Inventory>();
         sm = GetComponent<StatusManager>();
-        PlayerSetupSetup();
         cameraTransform = Camera.main.transform;
         states[(int)PlayerState.Controlling] = new PlayerStateControlling();
         states[(int)PlayerState.VoidOut] = new PlayerStateInWater();

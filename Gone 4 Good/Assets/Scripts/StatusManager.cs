@@ -44,6 +44,7 @@ public class StatusManager : NetworkBehaviour
 
     public UnityEvent OnDeath;
     public UnityEvent OnDamage;
+    public UnityEvent NetworkDespawnEvent;
 
     public int AttackDamage { get => Mathf.CeilToInt((baseAttackDamage + weaponAttackDamage + bonusAttackDamage) * bonusAttackDamageMultiplier); }
     public int Defense { get => bonusDefense; }
@@ -150,6 +151,12 @@ public class StatusManager : NetworkBehaviour
             default:
                 return new List<StatusManager>();
         }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        NetworkDespawnEvent.Invoke();
     }
 
     public NetworkVariable<int> Hp 

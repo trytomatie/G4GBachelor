@@ -17,7 +17,7 @@ public class ItemInteractionEffects : ScriptableObject
 
     public virtual void OnUseEnd(GameObject source, Item item)
     {
-        Debug.LogError("OnUseEnd not implemented");
+        //Debug.LogError("OnUseEnd not implemented");
     }
 
     public void OnUsePerformed(GameObject source, Item item)

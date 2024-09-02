@@ -52,7 +52,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Glow: 1
-    - _PlayerYPosition: 8.884667
+    - _PlayerYPosition: 1.4996202
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,4 +1,5 @@
 using MoreMountains.Feedbacks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -22,10 +23,11 @@ public class GameUI : MonoBehaviour
 
 
 
-    [Header("Player Stats")]
-    public Image playerHealthBar;
-    public TextMeshProUGUI playerHealthText;
-    private StatusManager playerStatusManager;
+    [Header("HpBars")]
+    public HealthBar playerHealthBar;
+    public GameObject healthBarPrefab;
+    public Transform allyHealthbarPanel;
+    public HealthBar[] allyHealthBars;
 
     [Header("Item Description")]
     public GameObject itemDescription;
@@ -61,7 +63,6 @@ public class GameUI : MonoBehaviour
     {
         interfaceAnimator = GetComponent<Animator>();
         SetUpInputSystem();
-        UpdatePlayerHealthBar();
         for(int i = 0; i < skillslots.Length; i++)
         {
             skillslots[i].index = i;
@@ -142,14 +143,6 @@ public class GameUI : MonoBehaviour
     }
 
 
-    public void UpdatePlayerHealthBar()
-    {
-        int currentHealth = playerStatusManager.Hp.Value;
-        int maxHealth = playerStatusManager.maxHp;
-        playerHealthBar.fillAmount = (float)currentHealth / maxHealth;
-        playerHealthText.text = ""+currentHealth;
-    }
-
     #region ItemDescription
     public void ShowItemDescription(Item item, int location)
     {
@@ -165,6 +158,30 @@ public class GameUI : MonoBehaviour
     public void HideItemDescription()
     {
         itemDescription.SetActive(false);
+    }
+
+    public void SyncHpBar(StatusManager statusManager)
+    {
+        statusManager.Hp.OnValueChanged += (oldValue, newValue) =>
+        {
+            playerHealthBar.SetHealth(newValue, statusManager.maxHp);
+        };
+        // TODO: ADD Name
+    }
+
+    public void SyncHpAllyBar(StatusManager statusManager)
+    {
+        GameObject healthBar = Instantiate(healthBarPrefab, allyHealthbarPanel);
+        HealthBar healthBarScript = healthBar.GetComponent<HealthBar>();
+        healthBarScript.SetHealth(statusManager.Hp.Value, statusManager.maxHp);
+        statusManager.Hp.OnValueChanged += (oldValue, newValue) =>
+        {
+            healthBarScript.SetHealth(newValue, statusManager.maxHp);
+        };
+        statusManager.NetworkDespawnEvent.AddListener(() =>
+        {
+            Destroy(healthBar);
+        });
     }
     #endregion
 }
