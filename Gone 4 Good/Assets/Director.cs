@@ -3,10 +3,13 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+using UnityEngine.Splines;
+using Unity.Mathematics;
 
 public class Director : NetworkBehaviour
 {
     public GameObject zombie;
+    public SplineContainer flowLine;
 
     public override void OnNetworkSpawn()
     {
@@ -15,7 +18,9 @@ public class Director : NetworkBehaviour
             enabled = false;
             return;
         }
-        InvokeRepeating("SpawnEnemies", 5, 5);
+        InvokeRepeating("SpawnEnemies", 15, 15);
+        flowLine = GameObject.FindFirstObjectByType<SplineContainer>();
+        InvokeRepeating("LevelProgression", 1, 1);
     }
 
     public void SpawnEnemies()
@@ -27,6 +32,16 @@ public class Director : NetworkBehaviour
         }
     }
 
+    public void LevelProgression()
+    {
+        // Get all players
+        GameObject players = NetworkGameManager.GetRandomPlayer();
+        // Find the player that is closesed to the flowline
+        float test = SplineUtility.GetNearestPoint(flowLine.Spline, players.transform.position,out float3 newPos,out float t,4,2);
+        print($"t: {t} splinePos: {newPos}");
+
+    }
+
     private Vector3 GetElegibleSpawnPos()
     {   
         // Get random player 
@@ -36,7 +51,7 @@ public class Director : NetworkBehaviour
         int samples = 0;
         while (samples < 15)
         {
-            Vector2 rndCircle = Random.insideUnitCircle * 30;
+            Vector2 rndCircle = UnityEngine.Random.insideUnitCircle * 30;
             spawnPos = player.transform.position + new Vector3(rndCircle.x, 0, rndCircle.y);
             if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {

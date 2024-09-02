@@ -96,7 +96,7 @@ public class ZombieAI : NetworkBehaviour
     {
         yield return new WaitForSeconds(5);
         NetworkObject networkObject = GetComponent<NetworkObject>();
-        networkObject.Despawn();
+        networkObject.Despawn(true);
     }
 
     private IEnumerator Dissolve()

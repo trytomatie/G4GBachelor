@@ -91,7 +91,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
     {
         while(GameUI.instance == null)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
         GameUI.instance.SyncHpAllyBar(GetComponent<StatusManager>());
     }
