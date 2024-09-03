@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 392935098263672059}
   - component: {fileID: 1701560475879588547}
   - component: {fileID: 5637941816802944624}
+  - component: {fileID: 6044494642268331304}
+  - component: {fileID: 1922712266563510309}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -28,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 414350159727963061}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.84, z: 0.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.8665, z: 0.9444}
+  m_LocalScale: {x: 1, y: 1.7021341, z: 1.1487}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8763642362138219181}
@@ -53,8 +55,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.7319793, z: 1.216646}
-  m_Center: {x: 0, y: -0.014571488, z: -0.24149239}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1701560475879588547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +99,59 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!23 &6044494642268331304
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414350159727963061}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 7933299137048178034, guid: a9f670f4eae962b4683c35ae3d1db878, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1922712266563510309
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414350159727963061}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1157177676998877921
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +322,7 @@ MonoBehaviour:
   stamina: 0
   staminaRegenPerSecond: 5
   baseAttackDamage: 1
+  movementSpeedMultiplier: 1
   bonusDefense: 0
   experienceDrop: 1
   statsScaling: {fileID: 0}
@@ -339,6 +395,9 @@ MonoBehaviour:
   OnDamage:
     m_PersistentCalls:
       m_Calls: []
+  NetworkDespawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &268022218545924848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,9 +446,10 @@ MonoBehaviour:
   agent: {fileID: 1134306891324310806}
   currentState: 0
   target: {fileID: 0}
-  moveSpeed: 2
+  moveSpeed: 2.5
   eyes: {fileID: 0}
   hitbox: {fileID: 392935098263672059}
+  spawnHitBox: 0
 --- !u!195 &1134306891324310806
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -726,6 +786,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1211111090650002, guid: 4c424221a7b54dd4d914e22e679e4348, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5569508137382641504}
+    - targetCorrespondingSourceObject: {fileID: 1211111090650002, guid: 4c424221a7b54dd4d914e22e679e4348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5951349599625677203}
     - targetCorrespondingSourceObject: {fileID: 1661793425057434, guid: 4c424221a7b54dd4d914e22e679e4348, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7854022829143609340}
@@ -1422,6 +1485,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 1043839360927437720}
+--- !u!114 &5951349599625677203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093015018050951130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a30bcdc898bd840913f5d0e9306045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zombieAI: {fileID: 2322598715176625426}
 --- !u!1 &1093070842293768764 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1187481920650868, guid: 4c424221a7b54dd4d914e22e679e4348, type: 3}

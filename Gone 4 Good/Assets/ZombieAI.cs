@@ -20,6 +20,7 @@ public class ZombieAI : NetworkBehaviour
 
     public GameObject target;
 
+
     [Header("Movement")]
     public float moveSpeed = 1;
 
@@ -28,6 +29,7 @@ public class ZombieAI : NetworkBehaviour
 
     [Header("Attack")]
     public Collider hitbox;
+    public float spawnHitBox = 0; // if this is greater than 0, spawn the hitbox
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
@@ -58,6 +60,11 @@ public class ZombieAI : NetworkBehaviour
         enemyStates[(int)currentState].OnExit(this);
         currentState = newState;
         enemyStates[(int)currentState].OnEnter(this);
+    }
+
+    public void SpawnHitbox(float lingerTime)
+    {
+        spawnHitBox = lingerTime;
     }
 
     public bool LookForClosestTarget()
@@ -119,18 +126,24 @@ public class ZombieAI : NetworkBehaviour
 
     public void PathfindToDestination(Vector3 pos)
     {
-        pos += new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
         agent.SetDestination(pos);
     }
 
-    public void Attack(float delay)
+    public void Attack()
     {
-        Invoke("InvokeAttack", delay);
+        StartCoroutine(InvokeAttack());
     }
 
-    private void InvokeAttack()
+    private IEnumerator InvokeAttack()
     {
+        while(spawnHitBox == 0)
+        {
+            yield return null;
+        }
         hitbox.gameObject.SetActive(true);
+        yield return new WaitForSeconds(spawnHitBox);
+        hitbox.gameObject.SetActive(false);
+        spawnHitBox = 0;
     }
 
     public void Ragdoll()
@@ -185,7 +198,6 @@ public class ChaseState : State
     private float attackTimer = 0;
     private float attackCooldown = 1.5f;
 
-    public float[] attackDelay = new float[3] { 0.4f, 0.4f, 0.55f };
     public void OnEnter(ZombieAI pc)
     {
         pc.LookForClosestTarget();
@@ -193,6 +205,8 @@ public class ChaseState : State
 
     public void OnUpdate(ZombieAI pc)
     {
+        pc.PathfindToDestination(pc.target.transform.position);
+        pc.Animation();
         if (attackTimer + attackCooldown < Time.time)
         {
             if(pc.target == null)
@@ -200,17 +214,15 @@ public class ChaseState : State
                 pc.SwitchState(EnemyState.Idle);
                 return;
             }
-            pc.PathfindToDestination(pc.target.transform.position);
-            pc.Animation();
+           
             if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)
             {
                 int rnd = Random.Range(0, 3);
-                Debug.Log("Attack");
-                pc.Attack(attackDelay[rnd]);
+                pc.Attack();
                 attackTimer = Time.time;
                 pc.animator.SetTrigger("Attack");
                 pc.animator.SetInteger("AttackAnimation", rnd);
-                pc.PathfindToDestination(pc .transform.position);
+                //pc.PathfindToDestination(pc.transform.position);
             }
 
         }

@@ -38,7 +38,8 @@ public class Director : NetworkBehaviour
         GameObject players = NetworkGameManager.GetRandomPlayer();
         // Find the player that is closesed to the flowline
         float test = SplineUtility.GetNearestPoint(flowLine.Spline, players.transform.position,out float3 newPos,out float t,4,2);
-        print($"t: {t} splinePos: {newPos}");
+        float progress = flowLine.CalculateLength(0) * t;
+        print($"t: {t} splinePos: {newPos} progress: {progress}m");
 
     }
 
@@ -47,6 +48,7 @@ public class Director : NetworkBehaviour
         // Get random player 
         GameObject player = NetworkGameManager.GetRandomPlayer();
         NavMeshHit hit;
+        NavMeshHit pHit;
         Vector3 spawnPos;
         int samples = 0;
         while (samples < 15)
@@ -55,7 +57,8 @@ public class Director : NetworkBehaviour
             spawnPos = player.transform.position + new Vector3(rndCircle.x, 0, rndCircle.y);
             if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {
-                if (!NavMesh.CalculatePath(hit.position,player.transform.position , NavMesh.AllAreas, new NavMeshPath())) continue;
+                NavMesh.SamplePosition(player.transform.position, out pHit, 1.0f, NavMesh.AllAreas);
+                if (!NavMesh.CalculatePath(hit.position, pHit.position, NavMesh.AllAreas, new NavMeshPath())) continue;
                 if(Vector3.Distance(player.transform.position, hit.position) > 15) return hit.position;
             }
             samples++;

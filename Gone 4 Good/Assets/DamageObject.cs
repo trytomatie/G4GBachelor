@@ -8,9 +8,10 @@ public class DamageObject : MonoBehaviour
     public bool destoyDamageObject = true;
     public StatusManager.Faction faction = StatusManager.Faction.Neutral;
     private List<StatusManager> hitList = new List<StatusManager>();
+
     private void OnEnable()
     {
-        Invoke("DisableAfterTime", 1f);
+        Invoke("DisableAfterTime", 0.1f);
     }
 
     private void OnDisable()
