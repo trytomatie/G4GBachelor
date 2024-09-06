@@ -35,6 +35,10 @@ public class DamageObject : MonoBehaviour
         {
             if (sm.faction == faction) return;
             sm.ApplyDamageRpc(10,sm.transform.position,20);
+            Slowness slowness = new Slowness();
+            slowness.duration = 1;
+            slowness.slowAmount = 0.15f;
+            slowness.ApplyStatusEffect(sm);
             hitList.Add(sm);
         }
     }

@@ -118,7 +118,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PlayerVisible: 1
-    - _PlayerYPosition: -0.89772856
+    - _PlayerYPosition: 0.20544201
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius: 1

@@ -9,6 +9,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     private float timeLastFired = 0;
     private float perfectShotCounter = 0;
     private float currentSpread = 0;
+    private Slowness slownessDebuff = new Slowness();
     public override void OnUse(GameObject source, Item item)
     {
         if (isUsing)
@@ -28,7 +29,11 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                 }
                 timeLastFired = Time.time;
                 pc.anim.SetTrigger("Attack");
-                pc.StatusManager.movementSpeedMultiplier = 0.5f;
+                slownessDebuff.duration = 0.3f;
+                if(!pc.StatusManager.statusEffects.Contains(slownessDebuff))
+                {
+                    slownessDebuff.ApplyStatusEffect(pc.StatusManager);
+                }
                 pc.anim.speed = 0.5f;
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);

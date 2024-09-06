@@ -19,7 +19,7 @@ public class ZombieAI : NetworkBehaviour
     public EnemyState currentState;
 
     public GameObject target;
-
+    private float aggroRange = 12;
 
     [Header("Movement")]
     public float moveSpeed = 1;
@@ -43,6 +43,7 @@ public class ZombieAI : NetworkBehaviour
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
         enemyStates[1] = new ChaseState();
+        enemyStates[2] = new WanderState();
         enemyStates[(int)currentState].OnEnter(this);
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
     }
@@ -53,6 +54,7 @@ public class ZombieAI : NetworkBehaviour
         if (!IsSpawned) return;
         enemyStates[(int)currentState].OnUpdate(this);
         Animation();
+        agent.speed = moveSpeed * statusManager.MovementSpeedMultiplier;
     }
 
     public void SwitchState(EnemyState newState)
@@ -83,11 +85,19 @@ public class ZombieAI : NetworkBehaviour
                 continue;
             }
             float distance = Vector3.Distance(player.transform.position, transform.position);
+            if(distance > aggroRange)
+            {
+                continue;
+            }
             if (distance < closestDistance)
             {
                 target = player.gameObject;
                 closestDistance = distance;
             }
+        }
+        if(target == null)
+        {
+            return false;
         }
         return true;
     }
@@ -156,14 +166,21 @@ public class ZombieAI : NetworkBehaviour
             rb.isKinematic = false;
         }
     }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, aggroRange);
+    }
 }
 
 public enum EnemyState
 {
     Idle,
     Chase,
-    Attack,
+    Wander,
     Dead
+    
 }
 
 public interface State
@@ -174,9 +191,10 @@ public interface State
 }
 public class IdleState : State
 {
+    private float wanderTimer = 0;
     public void OnEnter(ZombieAI pc)
     {
-
+        wanderTimer = Time.time + Random.Range(2, 5);
     }
 
     public void OnUpdate(ZombieAI pc)
@@ -185,10 +203,52 @@ public class IdleState : State
         {
             pc.SwitchState(EnemyState.Chase);
         }
+        if(wanderTimer < Time.time)
+        {
+            pc.SwitchState(EnemyState.Wander);
+        }
     }
 
     public void OnExit(ZombieAI pc)
     {
+
+    }
+}
+
+public class WanderState : State
+{
+    Slowness slowness = new Slowness();
+    private float enterTime;
+    public void OnEnter(ZombieAI pc)
+    {
+        pc.PathfindToDestination(pc.transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)));
+        slowness.duration = 1000;
+        slowness.slowAmount = 0.5f;
+        slowness.ApplyStatusEffect(pc.statusManager);
+        enterTime = Time.time;
+    }
+
+    public void OnUpdate(ZombieAI pc)
+    {
+        if(Vector3.Distance(pc.transform.position,pc.agent.destination) < 1)
+        {
+            pc.SwitchState(EnemyState.Idle);
+        }
+        if (pc.LookForClosestTarget())
+        {
+            pc.SwitchState(EnemyState.Chase);
+        }
+        if(enterTime + 5 < Time.time)
+        {
+            pc.SwitchState(EnemyState.Idle);
+        }
+        pc.Animation();
+    }
+
+    public void OnExit(ZombieAI pc)
+    {
+        slowness.OnRemove(pc.statusManager);
+        pc.statusManager.statusEffects.Remove(slowness);
 
     }
 }

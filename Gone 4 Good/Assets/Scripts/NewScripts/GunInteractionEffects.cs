@@ -68,7 +68,6 @@ public class GunInteractionEffects : ItemInteractionEffects
 
     public override void OnUseEnd(GameObject source, Item item)
     {
-        source.GetComponent<StatusManager>().movementSpeedMultiplier = 1;
         source.GetComponent<PlayerController>().anim.speed = 1;
         base.OnUseEnd(source, item);
     }

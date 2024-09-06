@@ -46,8 +46,9 @@ public class StatusManager : NetworkBehaviour
     public UnityEvent OnDamage;
     public UnityEvent NetworkDespawnEvent;
 
-    public int AttackDamage { get => Mathf.CeilToInt((baseAttackDamage + weaponAttackDamage + bonusAttackDamage) * bonusAttackDamageMultiplier); }
-    public int Defense { get => bonusDefense; }
+    public List<StatusEffect> statusEffects = new List<StatusEffect>();
+
+
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -86,6 +87,20 @@ public class StatusManager : NetworkBehaviour
             factionMembers.Add(faction, new List<StatusManager>());
         }
         factionMembers[faction].Add(this);
+    }
+
+    private void Update()
+    {
+        for(int i = 0; i < statusEffects.Count; i++)
+        {
+            statusEffects[i].OnUpdate(this);
+            statusEffects[i].duration -= Time.deltaTime;
+            if (statusEffects[i].duration <= 0)
+            {
+                statusEffects[i].OnRemove(this);
+                statusEffects.RemoveAt(i);
+            }
+        }
     }
 
     private IEnumerator RegenStamina()
@@ -168,4 +183,16 @@ public class StatusManager : NetworkBehaviour
             hp = value;
         }
     }
+
+    public float MovementSpeedMultiplier
+    {
+        get => Mathf.Clamp(movementSpeedMultiplier,0.2f,3);
+        set
+        {
+            movementSpeedMultiplier = value;
+        }
+    }
+
+    public int AttackDamage { get => Mathf.CeilToInt((baseAttackDamage + weaponAttackDamage + bonusAttackDamage) * bonusAttackDamageMultiplier); }
+    public int Defense { get => bonusDefense; }
 }
