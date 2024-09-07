@@ -1541,8 +1541,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b2866f82152b54aaf539d03fb01ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombie: {fileID: 6108802015962838173, guid: d9cc0aa5da099f840a97c5c8051e6e89, type: 3}
+  zombie: {fileID: 6108802015962838173, guid: ba5cff3f22ebb0144ae5b11ad42c332c, type: 3}
   flowLine: {fileID: 0}
+  spawnPoints: []
+  hordeCounter: 0
+  hordeInterval: 50
+  spawnedHordes: 0
 --- !u!114 &504107188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4581,25 +4585,25 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 2
   overridesSubdivLevels: 0
-  mightNeedRebaking: 1
+  mightNeedRebaking: 0
   cachedTransform:
     e00: 1
     e01: 0
     e02: 0
-    e03: -33.250046
+    e03: 10.779968
     e10: 0
     e11: 1
     e12: 0
-    e13: -6.19129
+    e13: -3.4866714
     e20: 0
     e21: 0
     e22: 1
-    e23: -7.3802185
+    e23: -27.380234
     e30: 0
     e31: 0
     e32: 0
     e33: 1
-  cachedHashCode: -690314037
+  cachedHashCode: -631942487
   fillEmptySpaces: 0
   version: 1
   globalVolume: 0
@@ -8938,6 +8942,10 @@ PrefabInstance:
     - target: {fileID: 7966604645416468652, guid: c131679c0988b434981a345cc0c6dbb2, type: 3}
       propertyPath: m_BoundingSphereOverride.z
       value: 4.5914e-41
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371469384755806914, guid: c131679c0988b434981a345cc0c6dbb2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

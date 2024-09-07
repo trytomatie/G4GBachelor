@@ -257,6 +257,7 @@ public class ChaseState : State
 {
     private float attackTimer = 0;
     private float attackCooldown = 1.5f;
+    private float[] attackspeed = { 2f, 2, 3 };
 
     public void OnEnter(ZombieAI pc)
     {
@@ -280,11 +281,11 @@ public class ChaseState : State
                 int rnd = Random.Range(0, 3);
                 pc.Attack();
                 attackTimer = Time.time;
+                pc.animator.speed = attackspeed[rnd];
                 pc.animator.SetTrigger("Attack");
                 pc.animator.SetInteger("AttackAnimation", rnd);
                 //pc.PathfindToDestination(pc.transform.position);
             }
-
         }
 
     }

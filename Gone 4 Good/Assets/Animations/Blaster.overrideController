@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blaster
+  m_Controller: {fileID: 9100000, guid: 46413f0fb99a08842aaf9bdccb3d2086, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 927f72cec3f3acc4bbbf32439a7c2c28, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 88b7a50b61c83ac479575ba5b0cfd6c8, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 994e11d965b4baf469cae7d44d536e6b, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6c710d7259c8714f981f4db1f7c1483, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: e1e766c5d88590649bb71fc8cd390aec, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: cabbcc1a26cd71f49a83835e7a2c22da, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 73ad5a7d3a9d0634e952439544cc0d66, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 524c86749388ae74da4fb687de85ab00, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 35d7dc7228ac63a419aa075108c9b4f7, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: ba16eefb55241e843862f73698993ac8, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: e1a7bede918b5fd48abcd4e3d5b33df0, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 222d23566926ac94f9cfdd96793b08e1, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 904fab5629b3c89408e3072c6e0f9cfe, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 6881737385214e747bed5ae3d33dbfb8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: cc8fa4028573e2848b43ea24c1c12dae, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 9b3cf8758afd1004eba25d1449eebfea, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c6929f6b3f720f448855c339021187bb, type: 3}
