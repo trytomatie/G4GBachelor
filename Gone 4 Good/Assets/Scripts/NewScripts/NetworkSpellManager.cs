@@ -86,6 +86,7 @@ public class NetworkSpellManager : NetworkBehaviour
         gunBarrel.y = 1.325f;
         GameObject spawnedProjectile = Instantiate(networkProjectile, gunBarrel, bulletAimer.rotation);
         spawnedProjectile.GetComponent<NetworkProjectile>().damage = damage;
+        spawnedProjectile.GetComponent<NetworkProjectile>().soruce = player.GetComponent<StatusManager>();
         NetworkObject networkObject = spawnedProjectile.GetComponent<NetworkObject>();
         networkObject.Spawn();
 
@@ -93,7 +94,39 @@ public class NetworkSpellManager : NetworkBehaviour
         Rigidbody rb = spawnedProjectile.GetComponent<Rigidbody>();
         rb.linearVelocity = spawnedProjectile.transform.forward * speed;
         FireProjectileVisualRpc(sourcePlayer,networkObject,visual,speed);
+    }
 
+    [Rpc(SendTo.Server)]
+    public void FireNPCProjectileRpc(NetworkObjectReference npc,int visual,float speed,Quaternion direction,int damage)
+    {
+        NetworkObject npcNetworkObject;
+        if(npc.TryGet(out npcNetworkObject))
+        {
+            Vector3 projectileSpawnPosition = npcNetworkObject.transform.position;
+            GameObject spawnedProjectile = Instantiate(networkProjectile, projectileSpawnPosition + new Vector3(0, 1.325f,0), direction);
+            spawnedProjectile.GetComponent<NetworkProjectile>().damage = damage;
+            spawnedProjectile.GetComponent<NetworkProjectile>().soruce = npcNetworkObject.GetComponent<StatusManager>();
+            NetworkObject networkObject = spawnedProjectile.GetComponent<NetworkObject>();
+            networkObject.Spawn();
+
+            // SpawnLogic
+            Rigidbody rb = spawnedProjectile.GetComponent<Rigidbody>();
+            rb.linearVelocity = spawnedProjectile.transform.forward * speed;
+            FireNPCProjectileVisualRpc(networkObject, visual, speed);
+        }
+
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void FireNPCProjectileVisualRpc(NetworkObjectReference networkObjectReference, int visual, float speed)
+    {
+        NetworkObject networkObject;
+        if(networkObjectReference.TryGet(out networkObject))
+        {
+            GameObject projectile = networkObject.gameObject;
+            GameObject vfx = Instantiate(NetworkVFXManager.Instance.projectileVFX[visual], projectile.transform.position, projectile.transform.rotation, projectile.transform);
+            projectile.GetComponent<NetworkProjectile>().attchedVFX = vfx;
+        }
     }
 
     [Rpc(SendTo.ClientsAndHost)]

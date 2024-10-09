@@ -275,9 +275,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.22
-  m_Height: 1.4284222
+  m_Height: 1.9220942
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7025548, z: 0}
+  m_Center: {x: 0, y: 0.9493908, z: 0}
 --- !u!114 &466089071451916836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,9 +315,9 @@ MonoBehaviour:
   materialType: 0
   deathSound: 0
   level: 1
-  maxHp: 4
+  maxHp: 7
   hp:
-    m_InternalValue: 4
+    m_InternalValue: 7
   maxStamina: 0
   stamina: 0
   staminaRegenPerSecond: 5
@@ -449,7 +449,7 @@ MonoBehaviour:
   moveSpeed: 4.5
   eyes: {fileID: 0}
   hitbox: {fileID: 392935098263672059}
-  spawnHitBox: 0
+  triggerAttack: 0
 --- !u!195 &1134306891324310806
 NavMeshAgent:
   m_ObjectHideFlags: 0

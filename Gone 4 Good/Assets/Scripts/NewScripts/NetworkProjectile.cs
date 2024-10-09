@@ -13,6 +13,7 @@ public class NetworkProjectile : NetworkBehaviour
     private List<GameObject> hitObjects = new List<GameObject>();
     public GameObject attchedVFX;
     private NetworkObject networkObject;
+    public StatusManager soruce;
     public float physicsForce = 100;
     private void Start()
     {
@@ -26,6 +27,8 @@ public class NetworkProjectile : NetworkBehaviour
         if(other.collider.isTrigger || !IsServer) return;
         if(other.collider.GetComponent<StatusManager>() != null && !hitObjects.Contains(other.gameObject))
         {
+            StatusManager otherStatus = other.collider.GetComponent<StatusManager>();
+            if(otherStatus.faction == soruce.faction) return;
             other.collider.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position,physicsForce);
             hitObjects.Add(other.gameObject);
             if (penetrationCounter > 0)
@@ -42,6 +45,33 @@ public class NetworkProjectile : NetworkBehaviour
             if(networkObject.IsSpawned)
             {
                 DespawnLogic(other.contacts[0].point);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.isTrigger || !IsServer) return;
+        if(other.GetComponent<StatusManager>() != null && !hitObjects.Contains(other.gameObject))
+        {
+            StatusManager otherStatus = other.GetComponent<StatusManager>();
+            if(otherStatus.faction == soruce.faction) return;
+            other.GetComponent<StatusManager>().ApplyDamageRpc(damage,transform.position,physicsForce);
+            hitObjects.Add(other.gameObject);
+            if (penetrationCounter > 0)
+            {
+                penetrationCounter--;
+            }
+            else
+            {
+                DespawnLogic(other.ClosestPoint(transform.position));
+            }
+        }
+        else
+        {
+            if(networkObject.IsSpawned)
+            {
+                DespawnLogic(other.ClosestPoint(transform.position));
             }
         }
     }

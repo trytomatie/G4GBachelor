@@ -14,6 +14,8 @@ public class Director : NetworkBehaviour
     public float hordeCounter = 0;
     public float hordeInterval = 50;
     public int spawnedHordes = 0;
+    private Vector3 navMeshCenter;
+    private float navmeshRadius = 0;
 
     public override void OnNetworkSpawn()
     {
@@ -24,15 +26,19 @@ public class Director : NetworkBehaviour
         }
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint").Select(x => x.transform).ToArray();
         flowLine = GameObject.FindFirstObjectByType<SplineContainer>();
+        navMeshCenter = FindObjectOfType<Mapdata>().center;
+        navmeshRadius = FindObjectOfType<Mapdata>().radius;
         InvokeRepeating("LevelProgression", 1, 1);
+        SpawnGooners();
     }
 
-    public void SpawnGooners()
+
+public void SpawnGooners()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
             Vector3 spawnPos = GetRandomPositionOnNavMesh();
-            SpawnEnemyRpc(0,spawnPos);
+            SpawnEnemyRpc(0,spawnPos,false);
         }
     }
 
@@ -41,7 +47,7 @@ public class Director : NetworkBehaviour
         for (int i = 0; i < 30; i++)
         {
             Vector3 spawnPos = GetHordeEventSpawnpoint();
-            SpawnEnemyRpc(0, spawnPos);
+            SpawnEnemyRpc(0, spawnPos,true);
         }
     }
 
@@ -63,21 +69,22 @@ public class Director : NetworkBehaviour
         }
     }
 
-    private Vector3 GetRandomPositionOnNavMesh()
+    private Vector3 GetRandomPositionNearPlayerOnNavMesh()
     {   
         // Get random player 
         GameObject player = NetworkGameManager.GetRandomPlayer();
         NavMeshHit hit;
         NavMeshHit pHit;
         Vector3 spawnPos;
+        int areaMask = ~(1 << NavMesh.GetAreaFromName("TutorialArea"));
         int samples = 0;
         while (samples < 15)
         {
             Vector2 rndCircle = UnityEngine.Random.insideUnitCircle * 30;
             spawnPos = player.transform.position + new Vector3(rndCircle.x, 0, rndCircle.y);
-            if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
+            if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, areaMask))
             {
-                NavMesh.SamplePosition(player.transform.position, out pHit, 1.0f, NavMesh.AllAreas);
+                NavMesh.SamplePosition(new Vector3(0,0,0), out pHit, 1.0f, areaMask);
                 if (!NavMesh.CalculatePath(hit.position, pHit.position, NavMesh.AllAreas, new NavMeshPath())) continue;
                 if(Vector3.Distance(player.transform.position, hit.position) > 15) return hit.position;
             }
@@ -85,6 +92,27 @@ public class Director : NetworkBehaviour
         }
 
 
+        return Vector3.zero;
+    }
+
+    private Vector3 GetRandomPositionOnNavMesh()
+    {
+        NavMeshHit hit;
+        Vector3 spawnPos;
+        int areaMask = ~(1 << NavMesh.GetAreaFromName("TutorialArea"));
+        int samples = 0;
+        while (samples < 15)
+        {
+            Vector2 rndCircle = UnityEngine.Random.insideUnitCircle * navmeshRadius;
+            spawnPos = new Vector3(rndCircle.x, 0, rndCircle.y) + navMeshCenter;
+            if(NavMesh.SamplePosition(spawnPos, out hit, 21.0f, areaMask))
+            {
+                NavMesh.SamplePosition(new Vector3(0, 0, 0), out NavMeshHit pHit, 1.0f, areaMask);
+                if (!NavMesh.CalculatePath(hit.position, pHit.position, areaMask, new NavMeshPath())) continue;
+                return hit.position;
+            }
+            samples++;
+        }
         return Vector3.zero;
     }
 
@@ -120,10 +148,14 @@ public class Director : NetworkBehaviour
 
 
     [Rpc(SendTo.Server)]
-    private void SpawnEnemyRpc(int index,Vector3 position)
+    private void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
         if(position == Vector3.zero) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
+        if(aggroed)
+        {
+            enemyInstance.GetComponent<ZombieAI>().target = NetworkGameManager.GetRandomPlayer();
+        }
         enemyInstance.GetComponent<NetworkObject>().Spawn();
     }
 

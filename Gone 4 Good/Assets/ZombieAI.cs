@@ -29,7 +29,7 @@ public class ZombieAI : NetworkBehaviour
 
     [Header("Attack")]
     public Collider hitbox;
-    public float spawnHitBox = 0; // if this is greater than 0, spawn the hitbox
+    public float triggerAttack = 0; // if this is greater than 0, spawn the hitbox
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
@@ -66,7 +66,18 @@ public class ZombieAI : NetworkBehaviour
 
     public void SpawnHitbox(float lingerTime)
     {
-        spawnHitBox = lingerTime;
+        triggerAttack = lingerTime;
+    }
+
+    public void RotateTowardsTarget()
+    {
+        if (target == null)
+        {
+            return;
+        }
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
     }
 
     public bool LookForClosestTarget()
@@ -144,16 +155,22 @@ public class ZombieAI : NetworkBehaviour
         StartCoroutine(InvokeAttack());
     }
 
+    public void ShootProjectile(Quaternion relativeDirection)
+    {
+        NetworkSpellManager.Instance.FireNPCProjectileRpc(GetComponent<NetworkObject>(), 3, 12, relativeDirection, 6);
+
+    }
+
     private IEnumerator InvokeAttack()
     {
-        while(spawnHitBox == 0)
+        while(triggerAttack == 0)
         {
             yield return null;
         }
         hitbox.gameObject.SetActive(true);
-        yield return new WaitForSeconds(spawnHitBox);
+        yield return new WaitForSeconds(triggerAttack);
         hitbox.gameObject.SetActive(false);
-        spawnHitBox = 0;
+        triggerAttack = 0;
     }
 
     public void Ragdoll()

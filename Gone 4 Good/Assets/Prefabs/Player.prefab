@@ -5422,13 +5422,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.84
+  m_Height: 1.54
   m_Radius: 0.24
   m_SlopeLimit: 50
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.94, z: 0}
+  m_Center: {x: 0, y: 0.79, z: 0}
 --- !u!114 &8224361812236524045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5509,6 +5509,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 505c6a505a475904e81718db81d730a3, type: 2}
   - {fileID: 2100000, guid: bbeb502b0ff220a47bc32d1992e591ca, type: 2}
   - {fileID: 2100000, guid: 2b817cff4dbd89b4293676ff91af5ae5, type: 2}
+  - {fileID: 2100000, guid: b243f1f84ea457945900d7c80e573112, type: 2}
+  - {fileID: 2100000, guid: 4930c6ffa5b9b9f4098249a43abf8506, type: 2}
   currentPlayerState: 0
 --- !u!114 &4592661334032776263
 MonoBehaviour:
@@ -11155,7 +11157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4456113213098170, guid: f11597d739665a54992b8339873fd7bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.12
       objectReference: {fileID: 0}
     - target: {fileID: 4456113213098170, guid: f11597d739665a54992b8339873fd7bc, type: 3}
       propertyPath: m_LocalPosition.z

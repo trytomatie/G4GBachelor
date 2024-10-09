@@ -99,7 +99,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PlayerVisible: 1
-    - _PlayerYPosition: 14.1
+    - _PlayerYPosition: 7.0600004
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius: 1
@@ -108,6 +108,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UseTriplanar: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
