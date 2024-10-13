@@ -280,14 +280,7 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         }
     }
 
-    public void HandleInteraction()
-    {
-        if (InputSystem.GetInputActionMapPlayer().Player.Interact.WasPressedThisFrame())
-        {
-            print("Interacting");
-            interactionManager.Interact(gameObject);
-        }
-    }
+
 
     public void HandleGravity()
     {
@@ -318,12 +311,8 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
         // Rotate the character to movement direction
         if (movementDirection != Vector3.zero)
         {
-
             Quaternion targetCharacterRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetCharacterRotation, rotationSpeed * Time.deltaTime);
-
-
-
         }
         return;
         if (!anim.GetBool("attack"))
@@ -355,6 +344,14 @@ public partial class PlayerController : NetworkBehaviour, IEntityControlls
 
         StartCoroutine(DeathRoutine());
 
+    }
+
+    public void HandleInteraction()
+    {
+        if (InputSystem.GetInputActionMapPlayer().Player.Interact.WasPressedThisFrame())
+        {
+            interactionManager.Interact(gameObject);
+        }
     }
 
     IEnumerator DeathRoutine()

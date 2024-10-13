@@ -26,7 +26,7 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        syncedInventory.onInventoryUpdate += UpdateUI;
+        //syncedInventory.onInventoryUpdate += UpdateUI;
         equipmentContainer.onInventoryUpdate += UpdateUI;
         UpdateUI(0);
         AssignIndciesToInventorySlots();

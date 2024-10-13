@@ -37,26 +37,47 @@ public class NetworkItemEffectsManager : NetworkBehaviour
     public void EquipItemClientRPC(ulong id,string weaponPrefabName,int upperBodyState)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        source.GetComponent<PlayerController>().anim.SetInteger("UpperBody", upperBodyState);
-        if (source.GetComponent<PlayerController>().weaponPivot.transform.childCount > 0)
+        source.GetComponent<FPSController>().anim.SetInteger("UpperBody", upperBodyState);
+        if (source.GetComponent<FPSController>().WeaponPivot.childCount > 0)
         {
-            Destroy(source.GetComponent<PlayerController>().weaponPivot.transform.GetChild(0).gameObject);
+            Destroy(source.GetComponent<FPSController>().WeaponPivot.GetChild(0).gameObject);
         }
+
         GameObject weaponPrefab = weaponPrefabs.FirstOrDefault(weapon => weapon.name == weaponPrefabName);
         if(weaponPrefab == null)
         {
             Debug.LogError("WeaponPrefab not found");
             return;
         }
-        Transform weaponPivot = source.GetComponent<PlayerController>().weaponPivot.transform;
+        Transform weaponPivot = source.GetComponent<FPSController>().WeaponPivot;
+        Transform fpsWeaponPivot = source.GetComponent<FPSController>().FPSWeaponPivot;
+        InstantiateWeaponToPivot(source,weaponPrefab, weaponPivot,false);
+        InstantiateWeaponToPivot(source, weaponPrefab, fpsWeaponPivot,true);
+    }
+
+    private void InstantiateWeaponToPivot(GameObject source,GameObject weaponPrefab, Transform weaponPivot,bool fps)
+    {
         GameObject instaniatedWeapon = Instantiate(weaponPrefab, weaponPivot);
         instaniatedWeapon.transform.localScale = weaponPrefab.transform.localScale;
         Transform gunBarrelEnd = instaniatedWeapon.transform.Find("GunBarrelEnd").transform;
-        if(gunBarrelEnd != null)
+        if (gunBarrelEnd != null)
         {
-            source.GetComponent<PlayerController>().gunBarrelEnd = gunBarrelEnd;
-        }
+            if(fps)
+            {
+                source.GetComponent<FPSController>().fpsgunbarrelEnd = gunBarrelEnd;
+                instaniatedWeapon.layer = LayerMask.NameToLayer("FPSPlayer");
+                // also children
+                foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
+                {
+                    child.gameObject.layer = LayerMask.NameToLayer("FPSPlayer");
+                }
+            }
+            else
+            {
+                source.GetComponent<FPSController>().gunBarrelEnd = gunBarrelEnd;
+            }
 
+        }
     }
 
     [Rpc(SendTo.Server)]
@@ -69,10 +90,10 @@ public class NetworkItemEffectsManager : NetworkBehaviour
     public void UnequipItemClientRPC(ulong id)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        source.GetComponent<PlayerController>().anim.SetInteger("UpperBody", 0);
-        if (source.GetComponent<PlayerController>().weaponPivot.transform.childCount >0)
+        source.GetComponent<FPSController>().anim.SetInteger("UpperBody", 0);
+        if (source.GetComponent<FPSController>().WeaponPivot.childCount >0)
         {
-            Destroy(source.GetComponent<PlayerController>().weaponPivot.transform.GetChild(0).gameObject);
+            Destroy(source.GetComponent<FPSController>().WeaponPivot.GetChild(0).gameObject);
         }
     }
 
