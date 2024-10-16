@@ -75,6 +75,12 @@ public class NetworkItemEffectsManager : NetworkBehaviour
             else
             {
                 source.GetComponent<FPSController>().gunBarrelEnd = gunBarrelEnd;
+                instaniatedWeapon.layer = LayerMask.NameToLayer("Player");
+                // also children
+                foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
+                {
+                    child.gameObject.layer = LayerMask.NameToLayer("Player");
+                }
             }
 
         }

@@ -15,6 +15,10 @@ public class FPSController : NetworkBehaviour, IActor
     public Transform fpsWeaponPivot;
     public Transform fpsgunbarrelEnd;
     public Transform gunBarrelEnd;
+    public GameObject playerCamera;
+    public GameObject fpsOverlayCamera;
+    public Transform playerModel;
+    public GameObject fpsPlayerModel;
 
     public CinemachineVirtualCamera cinemachineCam;
     private Vector3 movementDirection;
@@ -28,7 +32,8 @@ public class FPSController : NetworkBehaviour, IActor
     // PlayerSetup
     public GameObject playerSetup;
     private GameObject playerSetupInstance;
-
+    private float horizontalInput;
+    private float verticalInput;
 
     public override void OnNetworkSpawn()
     {
@@ -49,8 +54,21 @@ public class FPSController : NetworkBehaviour, IActor
         NetworkGameManager.Instance.AddClient(NetworkObject.OwnerClientId, GetComponent<NetworkObject>());
         if (!IsLocalPlayer)
         {
+            playerCamera.GetComponent<Camera>().enabled = false; // Only turning camera off so the aimtarget can still sync
+            fpsOverlayCamera.SetActive(false);
+            fpsPlayerModel.SetActive(false);
+            // set layer to PlayerInvisible
             enabled = false;
             return;
+        }
+
+        // Do all of the following only if local player
+
+        // Setlayermask of playermodel and children to PlayerInvisible
+        playerModel.gameObject.layer = LayerMask.NameToLayer("PlayerInvisible");
+        foreach (Transform child in playerModel.GetComponentsInChildren<Transform>())
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("PlayerInvisible");
         }
 
         sm = GetComponent<StatusManager>();
@@ -87,13 +105,19 @@ public class FPSController : NetworkBehaviour, IActor
         Movement();
         HandleGravity();
         HandleInteraction();
+        Animation();
+    }
 
+    private void Animation()
+    {
+        anim.SetFloat("XDir", horizontalInput);
+        anim.SetFloat("YDir", verticalInput);
     }
 
     public void Movement()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
         movementDirection = transform.right * horizontalInput + transform.forward * verticalInput;
 

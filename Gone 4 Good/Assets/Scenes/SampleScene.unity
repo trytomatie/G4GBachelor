@@ -857,6 +857,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blaster
       objectReference: {fileID: 0}
+    - target: {fileID: 6108802015962838173, guid: ba5cff3f22ebb0144ae5b11ad42c332c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6117594974618441216, guid: ba5cff3f22ebb0144ae5b11ad42c332c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.9999999
@@ -2762,7 +2766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &504107186
 Transform:
   m_ObjectHideFlags: 0
@@ -5839,20 +5843,20 @@ MonoBehaviour:
     e00: 1
     e01: 0
     e02: 0
-    e03: 10.779968
+    e03: 34.75255
     e10: 0
     e11: 1
     e12: 0
-    e13: -3.4866714
+    e13: -14.126965
     e20: 0
     e21: 0
     e22: 1
-    e23: -27.380234
+    e23: -52.43022
     e30: 0
     e31: 0
     e32: 0
     e33: 1
-  cachedHashCode: -631942487
+  cachedHashCode: 449390912
   fillEmptySpaces: 0
   version: 1
   globalVolume: 0
