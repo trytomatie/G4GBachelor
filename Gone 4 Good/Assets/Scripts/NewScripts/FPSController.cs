@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FPSController : NetworkBehaviour, IActor
 {
@@ -19,6 +20,9 @@ public class FPSController : NetworkBehaviour, IActor
     public GameObject fpsOverlayCamera;
     public Transform playerModel;
     public GameObject fpsPlayerModel;
+
+    [Header("Item Usage")]
+    public bool isReloading;
 
     public CinemachineVirtualCamera cinemachineCam;
     private Vector3 movementDirection;
@@ -76,11 +80,11 @@ public class FPSController : NetworkBehaviour, IActor
         inventory = GetComponent<Inventory>();
         viewBobing = cinemachineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-        //InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
-        //InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
+        InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
+        InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
         //InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
         //InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
-        //InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
+        InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
     }
 
@@ -106,6 +110,11 @@ public class FPSController : NetworkBehaviour, IActor
         HandleGravity();
         HandleInteraction();
         Animation();
+        CheckForItemUsage();
+        if (inventory.CurrentHotbarItem.id != 0)
+        {
+            inventory.CurrentHotbarItem.GetItemInteractionEffects.ConstantUpdate(gameObject, inventory.CurrentHotbarItem);
+        }
     }
 
     private void Animation()
@@ -175,6 +184,54 @@ public class FPSController : NetworkBehaviour, IActor
             interactionManager.Interact(gameObject);
         }
     }
+
+    public void HandleItemUsage(bool isUsing)
+    {
+        if (isUsing)
+        {
+
+            inventory.CurrentHotbarItem?.GetItemInteractionEffects.OnUsePerformed(gameObject, inventory.CurrentHotbarItem);
+        }
+        else
+        {
+            inventory.CurrentHotbarItem?.GetItemInteractionEffects.OnUseCancelled(gameObject, inventory.CurrentHotbarItem);
+        }
+    }
+    public void CheckForItemUsage()
+    {
+        inventory.CurrentHotbarItem?.GetItemInteractionEffects?.OnUse(gameObject, inventory.CurrentHotbarItem);
+    }
+
+    public void ReloadCurrentItem()
+    {
+
+        if (((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).CanReload(inventory.CurrentHotbarItem) && !isReloading)
+        {
+            anim.SetTrigger("Reload");
+            isReloading = true;
+            StartCoroutine(ReloadRoutine());
+
+        }
+    }
+    public void HandleAttack(bool handleAttack)
+    {
+        if (handleAttack)
+        {
+            anim.SetBool("attack", true);
+        }
+        else
+        {
+            anim.SetBool("attack", false);
+        }
+    }
+
+    public IEnumerator ReloadRoutine()
+    {
+        yield return new WaitForSeconds(((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).reloadTime);
+        ((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).Reload(inventory.CurrentHotbarItem);
+        isReloading = false;
+    }
+
     public Transform WeaponPivot 
     { 
         get => weaponPivot; 

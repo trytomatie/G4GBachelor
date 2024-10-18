@@ -36,7 +36,6 @@ public class NetworkGameManager : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(NetworkManager.Singleton);
         if(Input.GetKeyDown(KeyCode.J))
         {
             NetworkManager.Singleton.StartHost();

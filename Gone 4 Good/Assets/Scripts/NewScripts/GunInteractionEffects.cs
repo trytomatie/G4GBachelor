@@ -31,7 +31,7 @@ public class GunInteractionEffects : ItemInteractionEffects
         }
         else
         {
-            source.GetComponent<PlayerController>().ReloadCurrentItem();
+            source.GetComponent<FPSController>().ReloadCurrentItem();
             return false;
         }
     }
@@ -66,9 +66,11 @@ public class GunInteractionEffects : ItemInteractionEffects
         GameUI.instance.SetAmmo(item.currentClip, item.currentAmmo);
     }
 
+
+
     public override void OnUseEnd(GameObject source, Item item)
     {
-        source.GetComponent<PlayerController>().anim.speed = 1;
+        source.GetComponent<FPSController>().anim.speed = 1;
         base.OnUseEnd(source, item);
     }
 }

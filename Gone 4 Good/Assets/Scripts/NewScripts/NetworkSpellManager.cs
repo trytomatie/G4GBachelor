@@ -32,7 +32,7 @@ public class NetworkSpellManager : NetworkBehaviour
     {
         RaycastHit hit;
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
-        PlayerController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<PlayerController>();
+        FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
         Vector3 gunBarrel = player.gunBarrelEnd.position;
         bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), Quaternion.Euler(0, clientRotation,0));
         bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);

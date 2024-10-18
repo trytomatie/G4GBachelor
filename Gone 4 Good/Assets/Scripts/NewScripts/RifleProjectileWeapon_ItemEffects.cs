@@ -14,10 +14,10 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     {
         if (isUsing)
         {
-            if(timeLastFired + fireRate < Time.time && !source.GetComponent<PlayerController>().isReloading)
+            if(timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
             {
                 if(SubstractAmmo(source,item) == false) return;
-                PlayerController pc = source.GetComponent<PlayerController>();
+                FPSController pc = source.GetComponent<FPSController>();
                 if(perfectShotCounter < perfectShots)
                 {
                     currentSpread = 0;
@@ -30,14 +30,14 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                 timeLastFired = Time.time;
                 pc.anim.SetTrigger("Attack");
                 slownessDebuff.duration = 0.3f;
-                if(!pc.StatusManager.statusEffects.Contains(slownessDebuff))
+                if(!pc.sm.statusEffects.Contains(slownessDebuff))
                 {
-                    slownessDebuff.ApplyStatusEffect(pc.StatusManager);
+                    slownessDebuff.ApplyStatusEffect(pc.sm);
                 }
                 pc.anim.speed = 0.5f;
-                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
-                NetworkVFXManager.Instance.SpawnVFXRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, source.transform.rotation);
-                AudioManager.instance.PlaySoundFromAudiolistRpc(1, source.gameObject.GetComponent<PlayerController>().gunBarrelEnd.transform.position, 1);
+                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.sm.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
+                NetworkVFXManager.Instance.SpawnVFXRpc(1, pc.gunBarrelEnd.transform.position, source.transform.rotation);
+                AudioManager.instance.PlaySoundFromAudiolistRpc(1, pc.gunBarrelEnd.transform.position, 1);
             }
         }
     }
@@ -57,7 +57,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     public override void OnUseEnd(GameObject source,Item item)
     {
         base.OnUseEnd(source,item);
-        source.GetComponent<PlayerController>().HandleAttack(false);
+        source.GetComponent<FPSController>().HandleAttack(false);
     }
 
     public override string EffectDescription(Item item)
