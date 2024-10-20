@@ -27,31 +27,25 @@ public class NetworkSpellManager : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Server)]
-    public void FireRaycastBulletServerRpc(ulong sourcePlayer,float clientRotation, int damage,float spread)
+    public void FireRaycastBullet(ulong sourcePlayer,float clientRotation, int damage,float spread)
     {
         RaycastHit hit;
-        Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread;
         FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
-        Vector3 gunBarrel = player.gunBarrelEnd.position;
-        bulletAimer.transform.SetPositionAndRotation(player.transform.position + new Vector3(0, 1f, 0), Quaternion.Euler(0, clientRotation,0));
-        bulletAimer.transform.eulerAngles += new Vector3(0, randomSpread.y, 0);
-        Ray ray = new Ray(bulletAimer.transform.position, bulletAimer.transform.forward);
-        if (Physics.Raycast(ray, out hit,30, hitLayer))
+        Ray ray = new Ray(player.playerCamera.transform.position, player.playerCamera.transform.forward);
+        if (Physics.Raycast(ray, out hit,100, hitLayer))
         {
             Debug.Log("Hit Logic");
         }
 
-        float distance = 30;
-        Vector3 impactPosition = ray.GetPoint(30);
+        float distance = 100;
+        Vector3 impactPosition = ray.GetPoint(100);
         if (hit.collider != null)
         {
             distance = hit.distance;
             impactPosition = hit.point;
-            NetworkGameManager.Instance.floatingTextSpawner.transform.position = impactPosition;
-            NetworkGameManager.Instance.floatingTextSpawner.PlayFeedbacks();
+            NetworkVFXManager.Instance.SpawnVFXRpc(0,impactPosition, Quaternion.identity);
         }
-        FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
+        //FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

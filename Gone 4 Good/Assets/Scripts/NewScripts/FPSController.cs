@@ -28,7 +28,8 @@ public class FPSController : NetworkBehaviour, IActor
     private Vector3 movementDirection;
     private float currentSpeed;
     private float ySpeed;
-    private float gravity = 6.5f;
+    private float gravity = 2.5f;
+    public float groundedRaycastDistance = 0.5f;
     private CharacterController cc;
     private CinemachineBasicMultiChannelPerlin viewBobing;
     private Vector3 lastSolidGround;
@@ -82,6 +83,7 @@ public class FPSController : NetworkBehaviour, IActor
 
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
+        InputSystem.GetInputActionMapPlayer().Player.Jump.performed += ctx => HandleJump();
         //InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
         //InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
@@ -153,6 +155,16 @@ public class FPSController : NetworkBehaviour, IActor
         viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed*2,1,4);
     }
 
+    public void HandleJump()
+    {
+        print("Jumping");
+        if (IsGrounded())
+        {
+            ySpeed = 0;
+            ySpeed += 7;
+        }
+    }
+
     public void HandleGravity()
     {
         bool isGrounded = IsGrounded();
@@ -173,8 +185,8 @@ public class FPSController : NetworkBehaviour, IActor
 
     public bool IsGrounded()
     {
-        // raycast to ground, ignoreing triggers
-        return Physics.Raycast(transform.position + new Vector3(0, 0.15f, 0), Vector3.down, 0.3f, groundLayer);
+        // spherecast to ground, ignoreing triggers
+        return Physics.SphereCast(transform.position +new Vector3(0, 0.4f, 0), cc.radius, Vector3.down, out RaycastHit hit, groundedRaycastDistance, groundLayer);
     }
 
     public void HandleInteraction()

@@ -348,6 +348,15 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""4088748a-d963-4c8d-a431-8e0893bd424f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -515,6 +524,17 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""618d6ec5-01a0-4af7-95c0-40dfe9ffc54a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -578,6 +598,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         m_Player_FlashLight = m_Player.FindAction("FlashLight", throwIfNotFound: true);
         m_Player_DropEquipedItem = m_Player.FindAction("DropEquipedItem", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_PrintStackToConsole = m_Debug.FindAction("PrintStackToConsole", throwIfNotFound: true);
@@ -797,6 +818,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_FlashLight;
     private readonly InputAction m_Player_DropEquipedItem;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private @InputActionMapPlayer m_Wrapper;
@@ -816,6 +838,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         public InputAction @FlashLight => m_Wrapper.m_Player_FlashLight;
         public InputAction @DropEquipedItem => m_Wrapper.m_Player_DropEquipedItem;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -870,6 +893,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -919,6 +945,9 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1013,6 +1042,7 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
         void OnFlashLight(InputAction.CallbackContext context);
         void OnDropEquipedItem(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

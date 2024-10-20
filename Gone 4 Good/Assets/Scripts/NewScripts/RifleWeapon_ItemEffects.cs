@@ -25,7 +25,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
         {
             if(timeLastFired + fireRate < Time.time)
             {
-                PlayerController pc = source.GetComponent<PlayerController>();
+                FPSController pc = source.GetComponent<FPSController>();
                 if(perfectShotCounter < perfectShots)
                 {
                     currentSpread = 0;
@@ -36,7 +36,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                NetworkSpellManager.Instance.FireRaycastBulletServerRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread);
+                NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.sm.AttackDamage, currentSpread);
             }
         }
     }
