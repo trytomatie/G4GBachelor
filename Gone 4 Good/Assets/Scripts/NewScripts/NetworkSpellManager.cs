@@ -32,9 +32,15 @@ public class NetworkSpellManager : NetworkBehaviour
         RaycastHit hit;
         FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
         Ray ray = new Ray(player.playerCamera.transform.position, player.playerCamera.transform.forward);
-        if (Physics.Raycast(ray, out hit,100, hitLayer))
+        Physics.Raycast(ray, out hit, 100, hitLayer);
+        // Bullet Fire
+        if(sourcePlayer == NetworkManager.Singleton.LocalClientId)
         {
-            Debug.Log("Hit Logic");
+            NetworkVFXManager.Instance.SpawnVFXRpc(1,player.fpsgunbarrelEnd.position,Quaternion.identity);
+        }
+        else
+        {
+            NetworkVFXManager.Instance.SpawnVFXRpc(1, player.gunBarrelEnd.position, Quaternion.identity);
         }
 
         float distance = 100;

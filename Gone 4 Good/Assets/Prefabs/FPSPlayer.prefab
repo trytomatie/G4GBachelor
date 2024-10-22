@@ -5818,7 +5818,7 @@ Transform:
   m_GameObject: {fileID: 5414514789756407792}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37, y: -0.7, z: 2.2700005}
+  m_LocalPosition: {x: 0.99, y: -0.7, z: 2.2700005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6170,6 +6170,7 @@ MonoBehaviour:
     m_Bits: 1
   sm: {fileID: 0}
   anim: {fileID: 4700966721635612080}
+  fpsAnimator: {fileID: 8787453593516698555}
   interactionManager: {fileID: 4405586223108367669}
   weaponPivot: {fileID: 5325803784460877965}
   fpsWeaponPivot: {fileID: 4693937487743868701}
@@ -6181,6 +6182,7 @@ MonoBehaviour:
   fpsPlayerModel: {fileID: 8694008348749563601}
   isReloading: 0
   cinemachineCam: {fileID: 6935628102689378881}
+  groundedRaycastDistance: 0.5
   playerSetup: {fileID: 2035643944554340856, guid: 5fda762b7584c0a4bb56e6db466369e5, type: 3}
 --- !u!1 &5898742905013297944
 GameObject:
@@ -14654,5 +14656,10 @@ Transform:
 --- !u!4 &8697003877995978999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4767912760411526, guid: f11597d739665a54992b8339873fd7bc, type: 3}
+  m_PrefabInstance: {fileID: 8692236001214637425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8787453593516698555 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95218715033358026, guid: f11597d739665a54992b8339873fd7bc, type: 3}
   m_PrefabInstance: {fileID: 8692236001214637425}
   m_PrefabAsset: {fileID: 0}

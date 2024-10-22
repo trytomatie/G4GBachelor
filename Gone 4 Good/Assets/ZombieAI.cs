@@ -31,6 +31,10 @@ public class ZombieAI : NetworkBehaviour
     public Collider hitbox;
     public float triggerAttack = 0; // if this is greater than 0, spawn the hitbox
 
+    [Header("Debug")]
+    public bool debugPathfinding = false;
+    public bool hasPath = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
     {
@@ -148,6 +152,17 @@ public class ZombieAI : NetworkBehaviour
     public void PathfindToDestination(Vector3 pos)
     {
         agent.SetDestination(pos);
+        // check if the path is valid
+        if (debugPathfinding)
+        {
+            NavMeshPath path = new NavMeshPath();
+            hasPath = agent.CalculatePath(pos, path);
+            Color pathColor  = hasPath ? Color.green : Color.red;
+            for (int i = 0; i < path.corners.Length - 1; i++)
+            {
+                Debug.DrawLine(path.corners[i], path.corners[i + 1], pathColor);
+            }
+        }
     }
 
     public void Attack()

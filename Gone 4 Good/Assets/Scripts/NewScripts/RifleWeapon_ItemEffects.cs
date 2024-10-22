@@ -25,6 +25,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
         {
             if(timeLastFired + fireRate < Time.time)
             {
+                source.GetComponent<FPSController>().TriggerAttack();
                 FPSController pc = source.GetComponent<FPSController>();
                 if(perfectShotCounter < perfectShots)
                 {
@@ -53,7 +54,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
 
     public override void OnUseEnd(GameObject source,Item item)
     {
-        source.GetComponent<PlayerController>().HandleAttack(false);
+
     }
 
     public override string EffectDescription(Item item)

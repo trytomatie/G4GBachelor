@@ -57,7 +57,6 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     public override void OnUseEnd(GameObject source,Item item)
     {
         base.OnUseEnd(source,item);
-        source.GetComponent<FPSController>().HandleAttack(false);
     }
 
     public override string EffectDescription(Item item)

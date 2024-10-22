@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class NetworkGameManager : NetworkBehaviour

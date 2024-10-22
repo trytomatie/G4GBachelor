@@ -11,6 +11,7 @@ public class FPSController : NetworkBehaviour, IActor
     [Header("References")]  
     public StatusManager sm;
     public Animator anim;
+    public Animator fpsAnimator;
     public InteractionManager interactionManager;
     public Transform weaponPivot;
     public Transform fpsWeaponPivot;
@@ -145,10 +146,6 @@ public class FPSController : NetworkBehaviour, IActor
         }
 
         currentSpeed = shouldWalk ? inputMagnitude * 1.333f : inputMagnitude;
-        if (anim.GetBool("attack"))
-        {
-            currentSpeed *= 0.3f;
-        }
         cc.Move(movementDirection * currentSpeed * 5 * Time.deltaTime);
 
         // Handle Viewbob Intensity
@@ -225,16 +222,10 @@ public class FPSController : NetworkBehaviour, IActor
 
         }
     }
-    public void HandleAttack(bool handleAttack)
+    public void TriggerAttack()
     {
-        if (handleAttack)
-        {
-            anim.SetBool("attack", true);
-        }
-        else
-        {
-            anim.SetBool("attack", false);
-        }
+        anim.SetTrigger("Attack");
+        fpsAnimator.SetTrigger("Attack");
     }
 
     public IEnumerator ReloadRoutine()
