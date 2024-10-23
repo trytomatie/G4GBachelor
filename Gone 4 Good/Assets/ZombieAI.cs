@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,6 +24,9 @@ public class ZombieAI : NetworkBehaviour
 
     [Header("Movement")]
     public float moveSpeed = 1;
+    public float currentMovespeed;
+    public float climbSpeed = 0.4f;
+    private NavMeshLink currentLink;
 
     [Header("Senses")]
     public Transform eyes;
@@ -43,6 +47,7 @@ public class ZombieAI : NetworkBehaviour
             enabled = false;
             return;
         }
+        currentMovespeed = moveSpeed;
         statusManager = GetComponent<StatusManager>();
         enemyStates = new State[4];
         enemyStates[0] = new IdleState();
@@ -50,6 +55,7 @@ public class ZombieAI : NetworkBehaviour
         enemyStates[2] = new WanderState();
         enemyStates[(int)currentState].OnEnter(this);
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
+        DeactivateRagdoll();
     }
 
     // Update is called once per frame
@@ -58,7 +64,56 @@ public class ZombieAI : NetworkBehaviour
         if (!IsSpawned) return;
         enemyStates[(int)currentState].OnUpdate(this);
         Animation();
-        agent.speed = moveSpeed * statusManager.MovementSpeedMultiplier;
+        agent.speed = currentMovespeed * statusManager.MovementSpeedMultiplier;
+        CheckOffMeshLink();
+    }
+
+    public void CheckOffMeshLink()
+    {
+        if(agent.isOnOffMeshLink)
+        {
+            OffMeshLinkData data = agent.currentOffMeshLinkData;
+            // if can be cast to offmeshlink data, skip
+            if (data.linkType == OffMeshLinkType.LinkTypeDropDown || data.linkType == OffMeshLinkType.LinkTypeJumpAcross)
+            {
+                currentMovespeed = moveSpeed / 2;
+                animator.SetTrigger("Jumping");
+                return;
+            }
+            currentLink = (NavMeshLink)data.owner;
+            if(currentLink == null)
+            {
+                return;
+            }
+            currentLink.costModifier = 3000;
+
+            // Rotate towards link 
+            agent.updateRotation = false;
+            Vector3 direction = (currentLink.endPoint - currentLink.startPoint).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(-direction.x, 0, -direction.z));
+            transform.rotation = lookRotation;
+            // if link length is greater than 1, use climbing anim, otherwise jump
+            if (Vector3.Distance(currentLink.endPoint, currentLink.startPoint) > 1.5f)
+            {
+                currentMovespeed = climbSpeed;
+                animator.SetBool("Climbing",true);
+            }
+            else
+            {
+                animator.SetTrigger("Jumping");
+            }
+        }
+        else
+        {
+            agent.updateRotation = true;
+            currentMovespeed = moveSpeed;
+            animator.SetBool("Climbing", false);
+            if(currentLink != null)
+            {
+                currentLink.costModifier = -1;
+                currentLink = null;
+            }
+        }
     }
 
     public void SwitchState(EnemyState newState)
@@ -82,6 +137,17 @@ public class ZombieAI : NetworkBehaviour
         Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+    }
+
+    public void RotateTowardsTargetInstant()
+    {
+        if (target == null)
+        {
+            return;
+        }
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = lookRotation;
     }
 
     public bool LookForClosestTarget()
@@ -197,6 +263,17 @@ public class ZombieAI : NetworkBehaviour
         {
             rb.isKinematic = false;
         }
+
+    }
+
+    public void DeactivateRagdoll()
+    {
+        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody rb in rbs)
+        {
+            rb.isKinematic = true;
+        }
+
     }
 
     public void OnDrawGizmosSelected()
@@ -310,6 +387,7 @@ public class ChaseState : State
            
             if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)
             {
+                pc.RotateTowardsTargetInstant();
                 int rnd = Random.Range(0, 3);
                 pc.Attack();
                 attackTimer = Time.time;

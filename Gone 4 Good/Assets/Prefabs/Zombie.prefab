@@ -106,7 +106,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414350159727963061}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -446,10 +446,14 @@ MonoBehaviour:
   agent: {fileID: 1134306891324310806}
   currentState: 0
   target: {fileID: 0}
-  moveSpeed: 4.5
+  moveSpeed: 6.5
+  currentMovespeed: 0
+  climbSpeed: 0.8
   eyes: {fileID: 0}
   hitbox: {fileID: 392935098263672059}
   triggerAttack: 0
+  debugPathfinding: 0
+  hasPath: 0
 --- !u!195 &1134306891324310806
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1483,7 +1487,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 229373857
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: 1137391654
+    TransitionIndex: 1
   m_Animator: {fileID: 1043839360927437720}
 --- !u!114 &5951349599625677203
 MonoBehaviour:

@@ -1031,6 +1031,7 @@ Transform:
   - {fileID: 8575071343715342741}
   - {fileID: 8426908186107396383}
   - {fileID: 4227793606919751526}
+  - {fileID: 7692552821895497061}
   m_Father: {fileID: 6549886739718937344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6470189285015147522
@@ -2924,6 +2925,7 @@ MonoBehaviour:
   - {fileID: 8575071343715342741}
   - {fileID: 8426908186107396383}
   - {fileID: 4227793606919751526}
+  - {fileID: 7692552821895497061}
   - {fileID: 5932781050246775164}
   - {fileID: 3252146211760307782}
   - {fileID: 3450810251359673600}
@@ -4227,6 +4229,61 @@ MonoBehaviour:
   - {fileID: 4500269937080696047}
   center: {x: -115.5, y: 8.05392, z: 53.794964}
   radius: 156.71187
+--- !u!1 &8261963743198928901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7692552821895497061}
+  - component: {fileID: 7798388343513395755}
+  m_Layer: 0
+  m_Name: NavMesh Link
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7692552821895497061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261963743198928901}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -28.95, y: 0.94, z: 25.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2931485670820733299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7798388343513395755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261963743198928901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_StartPoint: {x: 0.45495987, y: -0.70531344, z: -0.8127613}
+  m_EndPoint: {x: 0.8805256, y: 2.953884, z: -0.7884331}
+  m_StartTransform: {fileID: 7692552821895497061}
+  m_EndTransform: {fileID: 7692552821895497061}
+  m_Activated: 1
+  m_Width: 9.97
+  m_CostModifier: -1
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 4
 --- !u!1 &8470308200409469511
 GameObject:
   m_ObjectHideFlags: 0
