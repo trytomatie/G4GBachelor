@@ -6183,6 +6183,7 @@ MonoBehaviour:
   fpsPlayerModel: {fileID: 8694008348749563601}
   isReloading: 0
   cinemachineCam: {fileID: 6935628102689378881}
+  acceleration: 3.5
   groundedRaycastDistance: 0.5
   playerSetup: {fileID: 2035643944554340856, guid: 5fda762b7584c0a4bb56e6db466369e5, type: 3}
 --- !u!208 &5025569090208643092

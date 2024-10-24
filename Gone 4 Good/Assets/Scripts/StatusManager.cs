@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.Netcode;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -129,23 +130,21 @@ public class StatusManager : NetworkBehaviour
         {
             Hp.Value -= calculatedDamage;
         }
-        NetworkGameManager.Instance.floatingTextSpawner.transform.position = position;
-        NetworkGameManager.Instance.floatingTextSpawner.GetFeedbackOfType<MMF_FloatingText>().Value = calculatedDamage.ToString();
-        NetworkGameManager.Instance.floatingTextSpawner.PlayFeedbacks();
         GetComponentInChildren<Animator>().SetTrigger("Damage");
         if (Hp.Value <= 0)
         {
             OnDeath.Invoke();
-            RagdollForce(force);
+            RagdollForce(position,force);
         }
     }
 
-    private void RagdollForce(float force)
+    private void RagdollForce(Vector3 source,float force)
     {
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
-            rb.AddForce(Vector3.up * force, ForceMode.Impulse);
+            rb.isKinematic = false;
+            rb.AddForce((rb.transform.position - source).normalized * force, ForceMode.Impulse);
         }
     }
 

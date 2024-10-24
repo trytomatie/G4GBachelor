@@ -28,6 +28,8 @@ public class FPSController : NetworkBehaviour, IActor
     public CinemachineVirtualCamera cinemachineCam;
     private Vector3 movementDirection;
     private float currentSpeed;
+    public float acceleration = 0.5f;
+    private float currentAcceleration = 0;
     private float ySpeed;
     private float gravity = 2.5f;
     public float groundedRaycastDistance = 0.5f;
@@ -130,8 +132,16 @@ public class FPSController : NetworkBehaviour, IActor
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        if(horizontalInput != 0 || verticalInput != 0)
+        {
+            currentAcceleration = Mathf.Clamp01(currentAcceleration + acceleration * Time.deltaTime);
+            movementDirection = transform.right * horizontalInput + transform.forward * verticalInput;
+        }
+        else
+        {
+            currentAcceleration = Mathf.Clamp01(currentAcceleration - acceleration * Time.deltaTime);
+        }
 
-        movementDirection = transform.right * horizontalInput + transform.forward * verticalInput;
 
         float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
 
@@ -146,7 +156,7 @@ public class FPSController : NetworkBehaviour, IActor
         }
 
         currentSpeed = shouldWalk ? inputMagnitude * 1.333f : inputMagnitude;
-        cc.Move(movementDirection * currentSpeed * 5 * Time.deltaTime);
+        cc.Move(movementDirection * currentSpeed * currentAcceleration * 3 * Time.deltaTime);
 
         // Handle Viewbob Intensity
         viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed*2,1,4);

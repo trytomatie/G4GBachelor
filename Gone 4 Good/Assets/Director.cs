@@ -30,6 +30,9 @@ public class Director : NetworkBehaviour
         navmeshRadius = FindObjectOfType<Mapdata>().radius;
         InvokeRepeating("LevelProgression", 1, 1);
         SpawnGooners();
+        // get all vertecies of the navmesh
+        NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
+        Vector3[] navMeshVertices = navMeshData.vertices;
     }
 
 

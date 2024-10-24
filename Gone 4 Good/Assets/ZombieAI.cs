@@ -192,7 +192,7 @@ public class ZombieAI : NetworkBehaviour
 
     private IEnumerator Despawn()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(13);
         NetworkObject networkObject = GetComponent<NetworkObject>();
         networkObject.Despawn(true);
     }
@@ -201,7 +201,7 @@ public class ZombieAI : NetworkBehaviour
     {
         yield return new WaitForSeconds(0);
         float timer = 0;
-        float dissolveTime = 2;
+        float dissolveTime = 12;
         Material mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         while (timer < dissolveTime)
         {

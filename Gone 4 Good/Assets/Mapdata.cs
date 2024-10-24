@@ -1,7 +1,5 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
-using static Unity.VisualScripting.Metadata;
 
 public class Mapdata : MonoBehaviour
 {
@@ -31,6 +29,7 @@ public class Mapdata : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 // EditorScript
 public class MapdataEditor : Editor
 {
@@ -44,3 +43,4 @@ public class MapdataEditor : Editor
 
 
 }
+#endif

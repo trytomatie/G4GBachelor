@@ -50,6 +50,7 @@ public class NetworkSpellManager : NetworkBehaviour
             distance = hit.distance;
             impactPosition = hit.point;
             NetworkVFXManager.Instance.SpawnVFXRpc(0,impactPosition, Quaternion.identity);
+            hit.collider.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 55);
         }
         //FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
