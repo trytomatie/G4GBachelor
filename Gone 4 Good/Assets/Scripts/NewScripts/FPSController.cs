@@ -159,7 +159,7 @@ public class FPSController : NetworkBehaviour, IActor
         cc.Move(movementDirection * currentSpeed * currentAcceleration * 3 * Time.deltaTime);
 
         // Handle Viewbob Intensity
-        viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed*2,1,4);
+        viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed*2,0,3);
     }
 
     public void HandleJump()

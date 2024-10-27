@@ -63,6 +63,11 @@ public class NetworkGameManager : NetworkBehaviour
         return Instance.connectedClients[id].gameObject;
     }
 
+    public static GameObject[] GetAllConnectedPlayers()
+    {
+        return Instance.connectedClients.Values.Select(x => x.gameObject).ToArray();
+    }
+
     public static GameObject GetRandomPlayer()
     {
         if (Instance.connectedClients.Count == 0) return null;

@@ -5954,6 +5954,7 @@ GameObject:
   - component: {fileID: 5946455593978112332}
   - component: {fileID: 7159757783570178418}
   - component: {fileID: 2540030700015802237}
+  - component: {fileID: 6955019850649352618}
   - component: {fileID: 5025569090208643092}
   m_Layer: 3
   m_Name: FPSPlayer
@@ -6186,6 +6187,30 @@ MonoBehaviour:
   acceleration: 3.5
   groundedRaycastDistance: 0.5
   playerSetup: {fileID: 2035643944554340856, guid: 5fda762b7584c0a4bb56e6db466369e5, type: 3}
+--- !u!114 &6955019850649352618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848615779863950307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6f2051bed34f94e858d32f49be5c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damgeReceivedBias:
+    m_InternalValue: 0.5
+  maxDamageInstancesPerSecond:
+    m_InternalValue: 5
+  enemyTargetingProbability:
+    m_InternalValue: 0.5
+  navmeshAvoidanceRadiusMultiplier:
+    m_InternalValue: 1
+  damageOutgoingExecuteTreshold:
+    m_InternalValue: 0
+  weaponSpherecastRadius:
+    m_InternalValue: 0.5
 --- !u!208 &5025569090208643092
 NavMeshObstacle:
   m_ObjectHideFlags: 0
