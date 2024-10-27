@@ -5,17 +5,29 @@ using UnityEngine.AI;
 using System.Linq;
 using UnityEngine.Splines;
 using Unity.Mathematics;
+using NUnit.Framework;
+using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 public class Director : NetworkBehaviour
 {
     public GameObject zombie;
-    public SplineContainer flowLine;
-    public Transform[] spawnPoints;
-    public float hordeCounter = 0;
-    public float hordeInterval = 50;
-    public int spawnedHordes = 0;
-    private Vector3 navMeshCenter;
-    private float navmeshRadius = 0;
+    public Vector3[] navMeshVertices;
+    public enum DirectorState
+    {
+        BuildUp,
+        Peak,
+        Relax
+    }
+    public DirectorState currentState = DirectorState.BuildUp;
+    public float buildUpTime = 80;
+    public float buildUpTimer = 0;
+    public float peakTime = 10;
+    public float peakTimer = 0;
+    public float relaxTime = 20;
+    public float relaxTimer = 0;
+    public float enemySpawnTimer = 0;
+    public float enemySpawnInterval = 6;
 
     public override void OnNetworkSpawn()
     {
@@ -24,136 +36,137 @@ public class Director : NetworkBehaviour
             enabled = false;
             return;
         }
-        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint").Select(x => x.transform).ToArray();
-        flowLine = GameObject.FindFirstObjectByType<SplineContainer>();
-        navMeshCenter = FindObjectOfType<Mapdata>().center;
-        navmeshRadius = FindObjectOfType<Mapdata>().radius;
-        InvokeRepeating("LevelProgression", 1, 1);
-        SpawnGooners();
         // get all vertecies of the navmesh
         NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
-        Vector3[] navMeshVertices = navMeshData.vertices;
+        navMeshVertices = navMeshData.vertices;
     }
 
-
-public void SpawnGooners()
+    // Update is called once per frame
+    void Update()
     {
-        for (int i = 0; i < 100; i++)
+        if(!IsServer) return;
+        switch (currentState)
         {
-            Vector3 spawnPos = GetRandomPositionOnNavMesh();
-            SpawnEnemyRpc(0,spawnPos,false);
+            case DirectorState.BuildUp:
+                enemySpawnInterval = 6;
+                buildUpTimer += Time.deltaTime;
+                if (buildUpTimer > buildUpTime)
+                {
+                    currentState = DirectorState.Peak;
+                    buildUpTimer = 0;
+                }
+                EnemySpawning();
+                break;
+            case DirectorState.Peak:
+                peakTimer += Time.deltaTime;
+                if (peakTimer > peakTime)
+                {
+                    currentState = DirectorState.Relax;
+                    peakTimer = 0;
+                }
+                enemySpawnInterval = 1;
+                EnemySpawning();
+                break;
+            case DirectorState.Relax:
+                enemySpawnInterval = 30;
+                relaxTimer += Time.deltaTime;
+                if(relaxTimer > relaxTime)
+                {
+                    currentState = DirectorState.BuildUp;
+                    relaxTimer = 0;
+                }
+                break;
         }
     }
 
-    public void SpawnHorde()
+    private void EnemySpawning()
     {
-        for (int i = 0; i < 30; i++)
+        enemySpawnTimer += Time.deltaTime;
+        if (enemySpawnTimer > enemySpawnInterval)
         {
-            Vector3 spawnPos = GetHordeEventSpawnpoint();
-            SpawnEnemyRpc(0, spawnPos,true);
+            List<Vector3> spawnPositions = GetRandomVertNearPlayer(4);
+            foreach (Vector3 spawnPos in spawnPositions)
+            {
+                if (spawnPos != Vector3.zero)
+                {
+                    SpawnEnemyRpc(UnityEngine.Random.Range(0, 2), spawnPos, true);
+                }
+            }
+            enemySpawnTimer = 0;
         }
     }
 
-    
-    public void LevelProgression()
+    private List<Vector3> GetRandomVertNearPlayer(int amountOfPositions)
     {
-        // Get all players
-        GameObject players = NetworkGameManager.GetRandomPlayer();
-        // Find the player that is closesed to the flowline
-        float test = SplineUtility.GetNearestPoint(flowLine.Spline, players.transform.position,out float3 newPos,out float t,4,2);
-        float progress = flowLine.CalculateLength(0) * t;
-        print($"t: {t} splinePos: {newPos} progress: {progress}m");
-        // spawn Horde every 50 progress
-        hordeCounter = progress - spawnedHordes * hordeInterval;
-        if(hordeCounter > hordeInterval)
-        {
-            SpawnHorde();
-            spawnedHordes++;
-        }
-    }
-
-    private Vector3 GetRandomPositionNearPlayerOnNavMesh()
-    {   
+        List<Vector3> positions = new List<Vector3>();
         // Get random player 
         GameObject player = NetworkGameManager.GetRandomPlayer();
-        NavMeshHit hit;
-        NavMeshHit pHit;
-        Vector3 spawnPos;
+        GameObject[] players = NetworkGameManager.GetAllConnectedPlayers();
+        Vector3 averagePlayerPosition;
+        if(players.Length == 1)
+        {
+            averagePlayerPosition = player.transform.position;
+        }
+        else
+        {
+            averagePlayerPosition = Vector3.zero;
+            foreach(GameObject p in players)
+            {
+                averagePlayerPosition += p.transform.position;
+            }
+            averagePlayerPosition /= players.Length;
+        }
         int areaMask = ~(1 << NavMesh.GetAreaFromName("TutorialArea"));
         int samples = 0;
-        while (samples < 15)
+        Camera[] playerCameras = new Camera[players.Length];
+        for(int i = 0; i < players.Length; i++)
         {
-            Vector2 rndCircle = UnityEngine.Random.insideUnitCircle * 30;
-            spawnPos = player.transform.position + new Vector3(rndCircle.x, 0, rndCircle.y);
-            if(NavMesh.SamplePosition(spawnPos, out hit, 1.0f, areaMask))
+            playerCameras[i] = players[i].GetComponent<FPSController>().playerCamera.GetComponent<Camera>();
+        }
+        // Sample a random position near the players
+        while(samples < 100)
+        {
+            Vector3 randomPos = averagePlayerPosition + UnityEngine.Random.onUnitSphere * 50 
+                + new Vector3(UnityEngine.Random.Range(-10,10),0, UnityEngine.Random.Range(-10, 10));
+            NavMeshHit hit;
+            if(NavMesh.SamplePosition(randomPos,out hit,10,areaMask) && samples < 100)
             {
-                NavMesh.SamplePosition(new Vector3(0,0,0), out pHit, 1.0f, areaMask);
-                if (!NavMesh.CalculatePath(hit.position, pHit.position, NavMesh.AllAreas, new NavMeshPath())) continue;
-                if(Vector3.Distance(player.transform.position, hit.position) > 15) return hit.position;
+                // check if position collides with wall
+                if(Physics.CheckBox(hit.position + new Vector3(0,1.5f,0),new Vector3(0.5f, 0.5f, 0.5f)))
+                {
+                    print("WallCollsion");
+                    samples++;
+                    continue;
+                }
+                foreach (Camera c in playerCameras)
+                {
+                    Vector3 viewPoint = c.WorldToViewportPoint(hit.position + new Vector3(0,1.5f,0));
+                    if (viewPoint.x > 0 && viewPoint.x < 1 && viewPoint.y > 0 && viewPoint.y < 1)
+                    {
+                        
+                    }
+                    else 
+                    {
+                        positions.Add(hit.position);
+                        if(positions.Count == amountOfPositions)
+                        {
+                            print("Samples needed for Spawn " + samples);
+                            return positions;
+                        }
+                    }
+                }
             }
             samples++;
         }
-
-
-        return Vector3.zero;
-    }
-
-    private Vector3 GetRandomPositionOnNavMesh()
-    {
-        NavMeshHit hit;
-        Vector3 spawnPos;
-        int areaMask = ~(1 << NavMesh.GetAreaFromName("TutorialArea"));
-        int samples = 0;
-        while (samples < 15)
-        {
-            Vector2 rndCircle = UnityEngine.Random.insideUnitCircle * navmeshRadius;
-            spawnPos = new Vector3(rndCircle.x, 0, rndCircle.y) + navMeshCenter;
-            if(NavMesh.SamplePosition(spawnPos, out hit, 21.0f, areaMask))
-            {
-                NavMesh.SamplePosition(new Vector3(0, 0, 0), out NavMeshHit pHit, 1.0f, areaMask);
-                if (!NavMesh.CalculatePath(hit.position, pHit.position, areaMask, new NavMeshPath())) continue;
-                return hit.position;
-            }
-            samples++;
-        }
-        return Vector3.zero;
-    }
-
-    private Vector3 GetHordeEventSpawnpoint()
-    {
-        // Find spawnpoint that is within 40 meters of the players, but not closer than 15 meters
-        GameObject[] players = NetworkGameManager.Instance.connectedClients.Values.Select(x => x.gameObject).ToArray();
-        NavMeshHit hit;
-        bool validSpawn = true;
-        // Shuffle spawnpointlist
-        spawnPoints = spawnPoints.OrderBy(x => UnityEngine.Random.value).ToArray();
-        foreach(Transform spawnPoint in spawnPoints)
-        {
-            validSpawn = true;
-            foreach (GameObject player in players)
-            {
-                if(Vector3.Distance(player.transform.position,spawnPoint.position) < 15 || Vector3.Distance(player.transform.position,spawnPoint.position) > 40)
-                {
-                    validSpawn = false;
-                    break;
-                }
-            }
-            if(validSpawn)
-            {
-                if (NavMesh.SamplePosition(spawnPoint.position + UnityEngine.Random.insideUnitSphere * 2, out hit, 1.0f, NavMesh.AllAreas))
-                {
-                    return hit.position;
-                }
-            }
-        }
-        return Vector3.zero;
+        Debug.LogError("Could not find a suitable position");
+        return positions;
     }
 
 
     [Rpc(SendTo.Server)]
     private void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
-        if(position == Vector3.zero) return;
+        if(position == Vector3.zero || ZombieAI.zombies.Count >= 120) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
         if(aggroed)
         {
@@ -162,9 +175,5 @@ public void SpawnGooners()
         enemyInstance.GetComponent<NetworkObject>().Spawn();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
