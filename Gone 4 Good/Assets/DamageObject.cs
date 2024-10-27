@@ -30,11 +30,26 @@ public class DamageObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         StatusManager sm = other.GetComponent<StatusManager>() ?? null;
-        
+        DDAData data = other.GetComponent<DDAData>() ?? null;
         if (sm != null && !hitList.Contains(sm))
         {
+            int dmg = 3;
+            if (data != null)
+            {
+
+                for (int i = 0; i < 3; i++)
+                {
+                    dmg += Random.Range(0f, 1f) < data.damgeReceivedBias.Value ? 1 : 0;
+                }
+            }
+            else
+            {
+                dmg = Random.Range(1,6);
+                Debug.LogError("No DDAData found on " + other.name);
+            }
+
             if (sm.faction == faction) return;
-            sm.ApplyDamageRpc(10,sm.transform.position,20);
+            sm.ApplyDamageRpc(dmg,sm.transform.position,20);
             Slowness slowness = new Slowness();
             slowness.duration = 1;
             slowness.slowAmount = 0.15f;
