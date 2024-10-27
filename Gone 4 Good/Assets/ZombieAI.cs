@@ -6,6 +6,7 @@ using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Android;
 
 [RequireComponent(typeof(StatusManager))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -39,14 +40,19 @@ public class ZombieAI : NetworkBehaviour
     public bool debugPathfinding = false;
     public bool hasPath = false;
 
+    public static List<ZombieAI> zombies = new List<ZombieAI>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
     {
-        if(!IsServer)
+        // Random Scale
+        float scale = Random.Range(0.95f, 1.2f);
+        transform.localScale = new Vector3(scale, scale, scale);
+        if (!IsServer)
         {
             enabled = false;
             return;
         }
+        zombies.Add(this);
         currentMovespeed = moveSpeed;
         statusManager = GetComponent<StatusManager>();
         enemyStates = new State[4];
@@ -57,6 +63,8 @@ public class ZombieAI : NetworkBehaviour
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
         DeactivateRagdoll();
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -85,7 +93,7 @@ public class ZombieAI : NetworkBehaviour
             {
                 return;
             }
-            currentLink.costModifier = 3000;
+            currentLink.costModifier = -30;
 
             // Rotate towards link 
             agent.updateRotation = false;
@@ -187,12 +195,16 @@ public class ZombieAI : NetworkBehaviour
         StartCoroutine(Dissolve());
         StartCoroutine(Despawn());
         Ragdoll();
+        if(IsServer && zombies.Contains(this))
+        {
+            zombies.Remove(this);
+        }
 
     }
 
     private IEnumerator Despawn()
     {
-        yield return new WaitForSeconds(13);
+        yield return new WaitForSeconds(16);
         NetworkObject networkObject = GetComponent<NetworkObject>();
         networkObject.Despawn(true);
     }
@@ -217,18 +229,14 @@ public class ZombieAI : NetworkBehaviour
 
     public void PathfindToDestination(Vector3 pos)
     {
-        agent.SetDestination(pos);
-        // check if the path is valid
-        if (debugPathfinding)
+        if(agent.isOnOffMeshLink)
         {
-            NavMeshPath path = new NavMeshPath();
-            hasPath = agent.CalculatePath(pos, path);
-            Color pathColor  = hasPath ? Color.green : Color.red;
-            for (int i = 0; i < path.corners.Length - 1; i++)
-            {
-                Debug.DrawLine(path.corners[i], path.corners[i + 1], pathColor);
-            }
+            return;
         }
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(pos, path);
+        agent.SetPath(path);
+
     }
 
     public void Attack()
@@ -367,6 +375,9 @@ public class ChaseState : State
     private float attackTimer = 0;
     private float attackCooldown = 1.5f;
     private float[] attackspeed = { 2f, 2, 3 };
+    private float pathfindUpdateTimer;
+    private float[] pathindUpdateTimes = { 0, 1, 5 };
+    private float pathfindUpdateTime = 0;
 
     public void OnEnter(ZombieAI pc)
     {
@@ -375,7 +386,25 @@ public class ChaseState : State
 
     public void OnUpdate(ZombieAI pc)
     {
-        pc.PathfindToDestination(pc.target.transform.position);
+        pathfindUpdateTimer += Time.deltaTime;
+        switch(Vector3.Distance(pc.transform.position, pc.target.transform.position))
+        {
+
+            case >= 40:
+                pathfindUpdateTime = pathindUpdateTimes[2];
+                break;
+            case >= 20:
+                pathfindUpdateTime = pathindUpdateTimes[1];
+                break;
+            default:
+                pathfindUpdateTime = Time.deltaTime;
+                break;
+        }
+        if(pathfindUpdateTime < pathfindUpdateTimer)
+        {
+            pc.PathfindToDestination(pc.target.transform.position);
+            pathfindUpdateTimer = 0;
+        }
         pc.Animation();
         if (attackTimer + attackCooldown < Time.time)
         {

@@ -315,9 +315,9 @@ MonoBehaviour:
   materialType: 0
   deathSound: 0
   level: 1
-  maxHp: 7
+  maxHp: 100
   hp:
-    m_InternalValue: 7
+    m_InternalValue: 100
   maxStamina: 0
   stamina: 0
   staminaRegenPerSecond: 5
@@ -326,7 +326,7 @@ MonoBehaviour:
   bonusDefense: 0
   experienceDrop: 1
   statsScaling: {fileID: 0}
-  bonusAttackDamage: 0
+  bonusAttackDamage: 3
   bonusAttackDamageMultiplier: 1
   weaponAttackDamage: 0
   OnDeath:
@@ -475,7 +475,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!1001 &1094205530342124616
 PrefabInstance:
   m_ObjectHideFlags: 0

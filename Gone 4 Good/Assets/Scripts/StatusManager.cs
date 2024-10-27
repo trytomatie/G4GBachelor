@@ -48,7 +48,7 @@ public class StatusManager : NetworkBehaviour
     public UnityEvent NetworkDespawnEvent;
 
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
-
+    private DDAData ddaData;
 
 
     // Start is called before the first frame update
@@ -70,6 +70,7 @@ public class StatusManager : NetworkBehaviour
         OnDeath.AddListener(() => StopAllCoroutines());
         OnDeath.AddListener(() => AddToFactionDictonary());
         OnDeath.AddListener(() => AudioManager.PlaySound(transform.position, deathSound));
+        ddaData = GetComponent<DDAData>();
     }
 
     private void OnEnable()
