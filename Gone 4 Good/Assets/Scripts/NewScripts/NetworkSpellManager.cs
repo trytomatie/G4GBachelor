@@ -1,7 +1,10 @@
 using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
+using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -26,13 +29,13 @@ public class NetworkSpellManager : NetworkBehaviour
             Destroy(this);
         }
     }
-
-    public void FireRaycastBullet(ulong sourcePlayer,float clientRotation, int damage,float spread)
+    List<StatusManager> hitlist = new List<StatusManager>();
+    public void FireRaycastBullet(ulong sourcePlayer,float clientRotation, int damage,int penetration)
     {
-        RaycastHit hit;
+        hitlist.Clear();
         FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
         Ray ray = new Ray(player.playerCamera.transform.position, player.playerCamera.transform.forward);
-        Physics.Raycast(ray, out hit, 100, hitLayer);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 100, hitLayer);
         // Bullet Fire
         if(sourcePlayer == NetworkManager.Singleton.LocalClientId)
         {
@@ -45,13 +48,41 @@ public class NetworkSpellManager : NetworkBehaviour
 
         float distance = 100;
         Vector3 impactPosition = ray.GetPoint(100);
-        if (hit.collider != null)
+        hits = hits.OrderBy(hits => hits.distance).ToArray();
+        foreach(RaycastHit hit in hits)
         {
-            distance = hit.distance;
-            impactPosition = hit.point;
-            NetworkVFXManager.Instance.SpawnVFXRpc(0,impactPosition, Quaternion.identity);
-            hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 55);
+            print(hit.collider.gameObject.name);
         }
+        foreach(RaycastHit hit in hits)
+        {
+            if (hit.collider != null)
+            {
+                distance = hit.distance;
+                impactPosition = hit.point;
+                NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.identity);
+                StatusManager sm = hit.collider.transform.root.GetComponent<StatusManager>() ?? null;
+                
+                if (sm != null)
+                {
+                    if(hitlist.Contains(sm))
+                    {
+                        continue;
+                    }
+                    hitlist.Add(sm);
+                    hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 55);
+                }
+                else
+                {
+                    break;
+                }
+                penetration--;
+            }
+            if(penetration <= 0)
+            {
+                break;
+            }
+        }
+
         //FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
 

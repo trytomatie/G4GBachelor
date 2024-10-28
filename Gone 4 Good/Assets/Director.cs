@@ -134,7 +134,6 @@ public class Director : NetworkBehaviour
                 // check if position collides with wall
                 if(Physics.CheckBox(hit.position + new Vector3(0,1.5f,0),new Vector3(0.5f, 0.5f, 0.5f)))
                 {
-                    print("WallCollsion");
                     samples++;
                     continue;
                 }

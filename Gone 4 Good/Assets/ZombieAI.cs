@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+
 using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.Android;
 
 [RequireComponent(typeof(StatusManager))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -276,6 +275,8 @@ public class ZombieAI : NetworkBehaviour
 
     public void DeactivateRagdoll()
     {
+        print("ACTIAVE THIS AGAIN");
+        return;
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {

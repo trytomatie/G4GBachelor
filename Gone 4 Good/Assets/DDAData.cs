@@ -13,7 +13,7 @@ public class DDAData : NetworkBehaviour
     // Probabilty of beeing Targeted by Enemies [0...1]
     public NetworkVariable<float> enemyTargetingProbability = new NetworkVariable<float>(0.5f);
 
-    // Navmesh Avoidance Radius [0.25...1]
+    // Navmesh Avoidance Radius [0.5...1]
     public NetworkVariable<float> navmeshAvoidanceRadiusMultiplier = new NetworkVariable<float>(0.5f);
 
     [Header("Offensive Parameters")]

@@ -2076,7 +2076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.6100016
+      value: -6.74
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2084,7 +2084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2
+      value: 8.81
       objectReference: {fileID: 0}
     - target: {fileID: 7665778810798366793, guid: 4bdd7071bda27684aa120a7a3d83a10d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2766,7 +2766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &504107186
 Transform:
   m_ObjectHideFlags: 0
@@ -3278,6 +3278,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 326608236360061664, guid: 6e415fc7b1174df47ae53feed48d8f67, type: 3}
   m_PrefabInstance: {fileID: 574612675}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &577234105
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 179766299914063270, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 239451695
+      objectReference: {fileID: 0}
+    - target: {fileID: 179766299914063270, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3796546734
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.065707
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.832455
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378827528024041916, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823043149500789535, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
+      propertyPath: m_Name
+      value: Zombie_AR
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcc3a7076648ece4ca77eb3ddd2e23b1, type: 3}
 --- !u!4 &585662673 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4671192010257730, guid: 66588b2f1f8096040b3ab1ce89b3af47, type: 3}
@@ -11634,3 +11699,4 @@ SceneRoots:
   - {fileID: 1520579349}
   - {fileID: 1541242824}
   - {fileID: 2092037081}
+  - {fileID: 577234105}
