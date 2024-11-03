@@ -22,9 +22,10 @@ public class StatusManager : NetworkBehaviour
     public int level = 1;
     public int maxHp = 30;
     public NetworkVariable<int> hp = new NetworkVariable<int>(30);
-    [SerializeField] private int maxStamina = 0;
+    public int maxStamina = 0;
     [SerializeField] private int stamina = 0;
     [SerializeField] private int staminaRegenPerSecond = 5;
+    public int staminaConsumptionPerSecond = 0;
     [SerializeField] private int baseAttackDamage = 1;
     public float movementSpeedMultiplier = 1;
     public int bonusDefense = 0;
@@ -44,9 +45,12 @@ public class StatusManager : NetworkBehaviour
     public UnityEvent OnDeath;
     public UnityEvent OnDamage;
     public UnityEvent NetworkDespawnEvent;
+    public UnityEvent OnStaminaUpdate;
 
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
     private DDAData ddaData;
+
+    private float[] damagedTimers = new float[10];
 
 
     // Start is called before the first frame update
@@ -68,7 +72,7 @@ public class StatusManager : NetworkBehaviour
         OnDeath.AddListener(() => StopAllCoroutines());
         OnDeath.AddListener(() => AddToFactionDictonary());
         OnDeath.AddListener(() => AudioManager.PlaySound(transform.position, deathSound));
-        ddaData = GetComponent<DDAData>();
+        ddaData = GetComponent<DDAData>() ?? null;
     }
 
     private void OnEnable()
@@ -109,14 +113,25 @@ public class StatusManager : NetworkBehaviour
         while (true)
         {
             yield return new WaitForFixedUpdate();
-
-            if (stamina < maxStamina)
+            if (staminaConsumptionPerSecond > 0)
             {
+                regenFloat -= staminaConsumptionPerSecond * Time.fixedDeltaTime;
+                if (regenFloat <= 0)
+                {
+                    regenFloat += 1;
+                    Stamina--;
+                }
+                continue;
+            }
+
+            if (Stamina < maxStamina)
+            {
+
                 regenFloat += staminaRegenPerSecond * Time.fixedDeltaTime;
                 if (regenFloat >= 1)
                 {
                     regenFloat -= 1;
-                    stamina++;
+                    Stamina++;
                 }
             }
         }
@@ -124,26 +139,51 @@ public class StatusManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void ApplyDamageRpc(int damage,Vector3 position,float force)
     {
+        if (Hp.Value <= 0) return;
         int calculatedDamage = Mathf.Clamp(damage - bonusDefense, 1, 9999);
         if (IsServer)
         {
-            Hp.Value -= calculatedDamage;
+            bool canTakeDamage = true;
+            if (ddaData != null)
+            {
+                canTakeDamage = false;
+                // Check damage timers
+                for(int i = 0; i < ddaData.maxDamageInstancesPerSecond.Value; i++)
+                {
+                    if (Time.time -1 >= damagedTimers[i])
+                    {
+                        damagedTimers[i] = Time.time;
+                        canTakeDamage = true;
+                        break;
+                    }
+                }
+            }
+            if (canTakeDamage)
+            {
+                Hp.Value -= calculatedDamage;
+            }
+            if (Hp.Value <= 0)
+            {
+                InvokeDeathRpc();
+            }
         }
         GetComponentInChildren<Animator>().SetTrigger("Damage");
-        if (Hp.Value <= 0)
-        {
-            OnDeath.Invoke();
-            RagdollForce(position,force);
-        }
+
     }
 
-    private void RagdollForce(Vector3 source,float force)
+    [Rpc(SendTo.Everyone)]
+    public void InvokeDeathRpc()
+    {
+        OnDeath.Invoke();
+    }
+
+    public void RagdollForce(Vector3 source,float force)
     {
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {
             rb.isKinematic = false;
-            rb.AddForce((rb.transform.position - source).normalized * force, ForceMode.Impulse);
+            rb.AddForce(source * force, ForceMode.Impulse);
         }
     }
 
@@ -193,4 +233,14 @@ public class StatusManager : NetworkBehaviour
 
     public int AttackDamage { get => Mathf.CeilToInt((baseAttackDamage + weaponAttackDamage + bonusAttackDamage) * bonusAttackDamageMultiplier); }
     public int Defense { get => bonusDefense; }
+    public int Stamina 
+    { 
+        get => stamina;
+        set
+        {
+            stamina = Mathf.Clamp(value,0,maxStamina);
+            OnStaminaUpdate.Invoke();
+            
+        }
+    }
 }

@@ -39,6 +39,16 @@ public class Director : NetworkBehaviour
         // get all vertecies of the navmesh
         NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
         navMeshVertices = navMeshData.vertices;
+        InitialSpawn();
+    }
+
+    public void InitialSpawn()
+    {
+        for(int i = 0; i < 200;i++)
+        {
+            int randomPosition = UnityEngine.Random.Range(0,navMeshVertices.Length);
+            SpawnEnemyRpc(0, navMeshVertices[randomPosition], false);
+        }
     }
 
     // Update is called once per frame

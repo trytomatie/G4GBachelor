@@ -194,7 +194,8 @@ public class ZombieAI : NetworkBehaviour
         StartCoroutine(Dissolve());
         StartCoroutine(Despawn());
         Ragdoll();
-        if(IsServer && zombies.Contains(this))
+        statusManager.RagdollForce(transform.forward, 15);
+        if (IsServer && zombies.Contains(this))
         {
             zombies.Remove(this);
         }
@@ -275,8 +276,6 @@ public class ZombieAI : NetworkBehaviour
 
     public void DeactivateRagdoll()
     {
-        print("ACTIAVE THIS AGAIN");
-        return;
         Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rbs)
         {

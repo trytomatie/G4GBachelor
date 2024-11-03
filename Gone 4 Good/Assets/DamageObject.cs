@@ -45,14 +45,14 @@ public class DamageObject : MonoBehaviour
             else
             {
                 dmg = Random.Range(1,6);
-                Debug.LogError("No DDAData found on " + other.name);
+                Debug.LogWarning("No DDAData found on " + other.name);
             }
 
             if (sm.faction == faction) return;
             sm.ApplyDamageRpc(dmg,sm.transform.position,20);
             Slowness slowness = new Slowness();
-            slowness.duration = 1;
-            slowness.slowAmount = 0.15f;
+            slowness.duration = 0.1f;
+            slowness.slowAmount = 0.35f;
             slowness.ApplyStatusEffect(sm);
             hitList.Add(sm);
         }

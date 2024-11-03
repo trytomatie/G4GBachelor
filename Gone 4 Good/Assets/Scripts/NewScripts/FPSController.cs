@@ -1,5 +1,6 @@
 using Cinemachine;
 using System.Collections;
+using Unity.Collections;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
@@ -8,6 +9,8 @@ using UnityEngine.EventSystems;
 public class FPSController : NetworkBehaviour, IActor
 {
     public LayerMask groundLayer;
+
+    public NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>("string.Empty");
     [Header("References")]  
     public StatusManager sm;
     public Animator anim;
@@ -21,11 +24,16 @@ public class FPSController : NetworkBehaviour, IActor
     public GameObject fpsOverlayCamera;
     public Transform playerModel;
     public GameObject fpsPlayerModel;
+    public GameObject playerRemnant;
+    public Animator CameraAnimator;
+    public GameObject flashLightRef;
+    public NetworkVariable<bool> flashLight = new NetworkVariable<bool>(false);
 
     [Header("Item Usage")]
     public bool isReloading;
 
     public CinemachineVirtualCamera cinemachineCam;
+    private float cameraFOV = 60;
     private Vector3 movementDirection;
     private float currentSpeed;
     public float acceleration = 0.5f;
@@ -36,7 +44,7 @@ public class FPSController : NetworkBehaviour, IActor
     private CharacterController cc;
     private CinemachineBasicMultiChannelPerlin viewBobing;
     private Vector3 lastSolidGround;
-    private Inventory inventory;
+    public Inventory inventory;
     // PlayerSetup
     public GameObject playerSetup;
     private GameObject playerSetupInstance;
@@ -57,11 +65,13 @@ public class FPSController : NetworkBehaviour, IActor
         }
         base.OnNetworkSpawn();
     }
+
     public void Start()
     {
         NetworkGameManager.Instance.AddClient(NetworkObject.OwnerClientId, GetComponent<NetworkObject>());
         if (!IsLocalPlayer)
         {
+            CameraAnimator.gameObject.SetActive(false);
             playerCamera.GetComponent<Camera>().enabled = false; // Only turning camera off so the aimtarget can still sync
             fpsOverlayCamera.SetActive(false);
             fpsPlayerModel.SetActive(false);
@@ -83,14 +93,63 @@ public class FPSController : NetworkBehaviour, IActor
         cc = GetComponent<CharacterController>();
         inventory = GetComponent<Inventory>();
         viewBobing = cinemachineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
+        sm.OnStaminaUpdate.AddListener(UpdateStamina);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
         InputSystem.GetInputActionMapPlayer().Player.Jump.performed += ctx => HandleJump();
-        //InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
-        //InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
+        InputSystem.GetInputActionMapPlayer().Player.FlashLight.performed += ctx => ToggleFlashLight();
+        InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
+    }
+
+    private void UpdateStamina()
+    {
+        GameUI.instance.playerStaminaBar.SetStamina((float)sm.Stamina / sm.maxStamina);
+    }
+
+    private void DropEqipedItem()
+    {
+        print(inventory.CurrentHotbarItem.id);
+        if (inventory.CurrentHotbarItem.id != 0)
+        {
+            print("Dropping item");
+            Item item = inventory.CurrentHotbarItem;
+            item.GetItemInteractionEffects.OnDrop(gameObject, inventory.CurrentHotbarItem);
+            NetworkItemData data = new NetworkItemData()
+            {
+                affinity = 0,
+                currentAmmo = item.currentAmmo,
+                currentClip = item.currentClip
+            };
+            DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id, data);
+            inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
+        }
+    }
+
+    private void ToggleFlashLight()
+    {
+        flashLight.Value = !flashLight.Value;
+        ToggleFlashLightRpc(flashLight.Value);
+    }
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ToggleFlashLightRpc(bool value)
+    {
+        flashLightRef.SetActive(value);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DropEquipedItemRpc(ulong playerId, int itemId, NetworkItemData networkItemData)
+    {
+        GameObject playerGo = NetworkGameManager.GetPlayerById(playerId);
+        FPSController player = playerGo.GetComponent<FPSController>();
+        GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab, player.playerCamera.transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
+        _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
+        networkObject.Spawn();
+        Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
+        rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+        rb.linearVelocity = UnityEngine.Random.Range(1, 2) * player.playerCamera.transform.forward;
     }
 
     public void PlayerSetupSetup()
@@ -111,15 +170,20 @@ public class FPSController : NetworkBehaviour, IActor
 
     private void Update()
     {
-        Movement();
         HandleGravity();
-        HandleInteraction();
         Animation();
-        CheckForItemUsage();
         if (inventory.CurrentHotbarItem.id != 0)
         {
             inventory.CurrentHotbarItem.GetItemInteractionEffects.ConstantUpdate(gameObject, inventory.CurrentHotbarItem);
         }
+        if (sm.Hp.Value < 0)
+        {
+            return;
+        }
+        Movement();
+        HandleInteraction();
+        CheckForItemUsage();
+
     }
 
     private void Animation()
@@ -145,31 +209,88 @@ public class FPSController : NetworkBehaviour, IActor
 
         float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
 
-        bool shouldWalk = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        if (shouldWalk)
+        bool sprinting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        if (sprinting)
         {
+            sm.staminaConsumptionPerSecond = 20;
             anim.SetFloat("AnimationSpeed", 1.3f);
+            print(sm.Stamina);
+            if(sm.Stamina > 0)
+            {
+                CameraFOV = 70;
+                currentSpeed = inputMagnitude * 1.333f;
+            }
+            else
+            {
+                CameraFOV = 60;
+                currentSpeed = inputMagnitude;
+            }
         }
         else
         {
+            sm.staminaConsumptionPerSecond = 0;
             anim.SetFloat("AnimationSpeed", 1);
+            currentSpeed = inputMagnitude;
+            CameraFOV = 60;
         }
-
-        currentSpeed = shouldWalk ? inputMagnitude * 1.333f : inputMagnitude;
-        cc.Move(movementDirection * currentSpeed * currentAcceleration * 3 * Time.deltaTime);
+        
+        cc.Move(movementDirection * currentSpeed * currentAcceleration * 5 * sm.MovementSpeedMultiplier * Time.deltaTime);
 
         // Handle Viewbob Intensity
-        viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed*2,0,3);
+        viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed * currentAcceleration * 1.5f, 0,3);
     }
 
     public void HandleJump()
     {
-        print("Jumping");
+        if (sm.Hp.Value <= 0) return;
         if (IsGrounded())
         {
             ySpeed = 0;
             ySpeed += 7;
         }
+    }
+
+    public void TriggerRemnantTransformation()
+    {
+        if (!IsServer) return;
+        BecomeRemnantRpc();
+        BecomeRemnantLocalRpc();
+    }
+
+    public void RecoverFromRemnantTransformation()
+    {
+        if (!IsServer) return;
+        sm.Hp.Value = 30 + UnityEngine.Random.Range(0,10);
+        RecoverFromRemnantRemnantRpc();
+        RecoverFromRemnantLocalRpc();
+    }
+
+    [Rpc(SendTo.NotOwner)]
+    private void BecomeRemnantRpc()
+    {
+        playerRemnant.SetActive(true);
+        playerModel.gameObject.SetActive(false);
+    }
+    [Rpc(SendTo.Owner)]
+    private void BecomeRemnantLocalRpc()
+    {
+        CameraAnimator.SetInteger("CameraState", 1);
+        playerRemnant.SetActive(true);
+        playerModel.gameObject.SetActive(false);
+    }
+    [Rpc(SendTo.NotOwner)]
+    private void RecoverFromRemnantRemnantRpc()
+    {
+        playerRemnant.SetActive(false);
+        playerModel.gameObject.SetActive(true);
+    }
+
+    [Rpc(SendTo.Owner)]
+    private void RecoverFromRemnantLocalRpc()
+    {
+        CameraAnimator.SetInteger("CameraState", 0);
+        playerRemnant.SetActive(false);
+        playerModel.gameObject.SetActive(true);
     }
 
     public void HandleGravity()
@@ -227,6 +348,7 @@ public class FPSController : NetworkBehaviour, IActor
         if (((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).CanReload(inventory.CurrentHotbarItem) && !isReloading)
         {
             anim.SetTrigger("Reload");
+            fpsAnimator.SetTrigger("Reload");
             isReloading = true;
             StartCoroutine(ReloadRoutine());
 
@@ -241,8 +363,21 @@ public class FPSController : NetworkBehaviour, IActor
     public IEnumerator ReloadRoutine()
     {
         yield return new WaitForSeconds(((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).reloadTime);
-        ((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).Reload(inventory.CurrentHotbarItem);
         isReloading = false;
+        ((GunInteractionEffects)inventory.CurrentHotbarItem.GetItemInteractionEffects).Reload(inventory.CurrentHotbarItem);
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void UpdateRemnantRevivalBarUIRpc(ulong id, float fillAmount)
+    {
+        
+        FPSController player = NetworkGameManager.GetPlayerById(id).GetComponent<FPSController>();
+        RemnantRevivalBarUI bar = GameUI.instance.remnantRevivalBarUI;
+        bar.SetBar(player.playerName.Value.ToString(), fillAmount);
+        if(fillAmount == 0)
+        {
+            bar.HideBar();
+        }
     }
 
     public Transform WeaponPivot 
@@ -255,5 +390,15 @@ public class FPSController : NetworkBehaviour, IActor
     {
         get => fpsWeaponPivot;
         set => fpsWeaponPivot = value;
+    }
+    public float CameraFOV 
+    { 
+        get => cameraFOV; 
+        set
+        {
+            // Lerp Camera FOV
+            cameraFOV = Mathf.Lerp(cameraFOV, value, 0.25f);
+            cinemachineCam.m_Lens.FieldOfView = cameraFOV;
+        }
     }
 }

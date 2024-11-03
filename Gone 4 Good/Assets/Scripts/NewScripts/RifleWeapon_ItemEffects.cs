@@ -3,16 +3,8 @@ using UnityEngine;
 using static Unity.VisualScripting.Member;
 
 [CreateAssetMenu(fileName = "RifleWeapon_ItemEffects", menuName = "ScriptableObjects/ItemInteractionEffects/RifleWeapon_ItemEffects", order = 1)]
-public class RifleWeapon_ItemEffects : ItemInteractionEffects
+public class RifleWeapon_ItemEffects : GunInteractionEffects
 {
-    public int attackDamage = 1;
-    public GameObject weaponPrefab;
-    public float fireRate = 0.1f;
-    public float spreadAccumulation = 0.05f;
-    public float perfectShots = 3;
-    public float startSpread = 0f;
-    public float spreadLimit = 1;
-    public float spreadDecay = 0.25f;
     public Skill skill;
     public Skill skill2;
 
@@ -25,6 +17,7 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
         {
             if(timeLastFired + fireRate < Time.time)
             {
+                if (SubstractAmmo(source, item) == false) return;
                 source.GetComponent<FPSController>().TriggerAttack();
                 FPSController pc = source.GetComponent<FPSController>();
                 if(perfectShotCounter < perfectShots)
@@ -39,16 +32,6 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
                 timeLastFired = Time.time;
                 NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, Random.Range(40,60), 3);
             }
-        }
-    }
-
-    public override void ConstantUpdate(GameObject source,Item item)
-    {
-        if(!isUsing)
-        {
-            
-            currentSpread = Mathf.Clamp(currentSpread - (spreadDecay * Time.deltaTime),0,spreadLimit);
-            perfectShotCounter = 0;
         }
     }
 
@@ -90,6 +73,8 @@ public class RifleWeapon_ItemEffects : ItemInteractionEffects
 
     public override void OnDrop(GameObject source, Item item)
     {
+        NetworkItemEffectsManager.Instance.UnequipItemServerRpc(NetworkGameManager.GetLocalPlayerId);
+        source.GetComponent<StatusManager>().weaponAttackDamage = 0;
         Debug.Log("Dropping " + item.id);
     }
 }

@@ -321,6 +321,7 @@ MonoBehaviour:
   maxStamina: 0
   stamina: 0
   staminaRegenPerSecond: 5
+  staminaConsumptionPerSecond: 0
   baseAttackDamage: 1
   movementSpeedMultiplier: 1
   bonusDefense: 0
@@ -398,6 +399,9 @@ MonoBehaviour:
   NetworkDespawnEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnStaminaUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &268022218545924848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,7 +450,7 @@ MonoBehaviour:
   agent: {fileID: 1134306891324310806}
   currentState: 0
   target: {fileID: 0}
-  moveSpeed: 6.5
+  moveSpeed: 10
   currentMovespeed: 0
   climbSpeed: 0.8
   eyes: {fileID: 0}

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02c5d4658e9dc9c43863b143e021744e, type: 3}
-  m_Name: AssaultRifle
+  m_Name: MediPack
   m_EditorClassIdentifier: 
-  id: 18
-  itemType: 5
-  itemName: Assault Rifle
-  itemDescription: 
-  itemIcon: {fileID: 21300008, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+  id: 21
+  itemType: 8
+  itemName: Medi Pack
+  itemDescription: Heals Player
+  itemIcon: {fileID: -1331788603, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
   maxStackSize: 1
   keyItem: 0
-  itemInteractionEffects: {fileID: 11400000, guid: 304389e7544cf9242a47cbcd39fe2d40, type: 2}
-  droppedPrefab: {fileID: 6519648963754419163, guid: ada8477f1d2534c4c87c07bd89c1ed90, type: 3}
+  itemInteractionEffects: {fileID: 11400000, guid: f7b1e861328a36b40a4bda3fdcea573e, type: 2}
+  droppedPrefab: {fileID: 6519648963754419163, guid: 027d577af195ce448b2b73f8dc601464, type: 3}

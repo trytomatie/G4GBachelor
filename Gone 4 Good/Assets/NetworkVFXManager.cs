@@ -26,7 +26,8 @@ public class NetworkVFXManager : NetworkBehaviour
         switch(vfxIndex)
         {
             case 0:
-                vfx[vfxIndex].GetFeedbackOfType<MMF_ParticlesInstantiation>().TargetWorldPosition = position;
+                vfx[vfxIndex].transform.position = position;
+                vfx[vfxIndex].transform.rotation = rotation;
                 vfx[vfxIndex].PlayFeedbacks();
                 break;
             case 1:

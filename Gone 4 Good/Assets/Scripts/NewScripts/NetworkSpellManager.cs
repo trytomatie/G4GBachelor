@@ -59,7 +59,7 @@ public class NetworkSpellManager : NetworkBehaviour
             {
                 distance = hit.distance;
                 impactPosition = hit.point;
-                NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.identity);
+                NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.LookRotation(-hit.normal));
                 StatusManager sm = hit.collider.transform.root.GetComponent<StatusManager>() ?? null;
                 
                 if (sm != null)
@@ -69,7 +69,7 @@ public class NetworkSpellManager : NetworkBehaviour
                         continue;
                     }
                     hitlist.Add(sm);
-                    hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 55);
+                    hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0);
                 }
                 else
                 {

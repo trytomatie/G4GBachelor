@@ -23,8 +23,9 @@ public class GameUI : MonoBehaviour
 
 
 
-    [Header("HpBars")]
+    [Header("Statusbars")]
     public HealthBar playerHealthBar;
+    public StaminaBarUI playerStaminaBar;
     public GameObject healthBarPrefab;
     public Transform allyHealthbarPanel;
     public HealthBar[] allyHealthBars;
@@ -42,6 +43,9 @@ public class GameUI : MonoBehaviour
 
     [Header("Ammo")]
     public TextMeshProUGUI ammoText;
+
+    [Header("Remnant Revival Bar")]
+    public RemnantRevivalBarUI remnantRevivalBarUI;
 
     [HideInInspector] public Animator interfaceAnimator;
 
@@ -166,7 +170,7 @@ public class GameUI : MonoBehaviour
         {
             playerHealthBar.SetHealth(newValue, statusManager.maxHp);
         };
-        // TODO: ADD Name
+        playerHealthBar.playerName.text = statusManager.GetComponent<FPSController>().playerName.Value.ToString();
     }
 
     public void SyncHpAllyBar(StatusManager statusManager)
@@ -174,6 +178,11 @@ public class GameUI : MonoBehaviour
         GameObject healthBar = Instantiate(healthBarPrefab, allyHealthbarPanel);
         HealthBar healthBarScript = healthBar.GetComponent<HealthBar>();
         healthBarScript.SetHealth(statusManager.Hp.Value, statusManager.maxHp);
+        healthBarScript.playerName.text = statusManager.GetComponent<FPSController>().playerName.Value.ToString();
+        statusManager.GetComponent<FPSController>().playerName.OnValueChanged += (oldValue, newValue) =>
+        {
+            healthBarScript.playerName.text = newValue.ToString();
+        };
         statusManager.Hp.OnValueChanged += (oldValue, newValue) =>
         {
             healthBarScript.SetHealth(newValue, statusManager.maxHp);

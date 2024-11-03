@@ -37,7 +37,8 @@ public class NetworkItemEffectsManager : NetworkBehaviour
     public void EquipItemClientRPC(ulong id,string weaponPrefabName,int upperBodyState)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        source.GetComponent<FPSController>().anim.SetInteger("UpperBody", upperBodyState);
+        source.GetComponent<FPSController>().anim.SetInteger("WeaponEquiped", upperBodyState);
+        source.GetComponent<FPSController>().fpsAnimator.SetInteger("WeaponEquiped", upperBodyState);
         if (source.GetComponent<FPSController>().WeaponPivot.childCount > 0)
         {
             Destroy(source.GetComponent<FPSController>().WeaponPivot.GetChild(0).gameObject);
@@ -53,44 +54,54 @@ public class NetworkItemEffectsManager : NetworkBehaviour
         Transform fpsWeaponPivot = source.GetComponent<FPSController>().FPSWeaponPivot;
         if(source.GetComponent<NetworkObject>().OwnerClientId == NetworkManager.LocalClientId)
         {
-            InstantiateWeaponToPivot(source, weaponPrefab, fpsWeaponPivot, true);
+            InstantiateWeaponToPivot(source, weaponPrefab, fpsWeaponPivot, 0);
+            InstantiateWeaponToPivot(source, weaponPrefab, weaponPivot, 2);
         }
         else
         {
-            InstantiateWeaponToPivot(source, weaponPrefab, weaponPivot, false);
+            InstantiateWeaponToPivot(source, weaponPrefab, weaponPivot, 1);
         }
 
     }
 
-    private void InstantiateWeaponToPivot(GameObject source,GameObject weaponPrefab, Transform weaponPivot,bool fps)
+    private void InstantiateWeaponToPivot(GameObject source,GameObject weaponPrefab, Transform weaponPivot,int fps)
     {
         GameObject instaniatedWeapon = Instantiate(weaponPrefab, weaponPivot);
         instaniatedWeapon.transform.localScale = weaponPrefab.transform.localScale;
-        Transform gunBarrelEnd = instaniatedWeapon.transform.Find("GunBarrelEnd").transform;
+        Transform gunBarrelEnd = instaniatedWeapon.transform.Find("GunBarrelEnd") ?? instaniatedWeapon.transform;
         if (gunBarrelEnd != null)
         {
-            if(fps)
+            switch (fps)
             {
-                source.GetComponent<FPSController>().fpsgunbarrelEnd = gunBarrelEnd;
-                instaniatedWeapon.layer = LayerMask.NameToLayer("FPSPlayer");
-                // also children
-                foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
-                {
-                    child.gameObject.layer = LayerMask.NameToLayer("FPSPlayer");
+                case 0:
+                    source.GetComponent<FPSController>().fpsgunbarrelEnd = gunBarrelEnd;
+                    instaniatedWeapon.layer = LayerMask.NameToLayer("FPSPlayer");
+                    // also children
+                    foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
+                    {
+                        child.gameObject.layer = LayerMask.NameToLayer("FPSPlayer");
+                    }
+                    break;
+                case 1:
+                    source.GetComponent<FPSController>().gunBarrelEnd = gunBarrelEnd;
+                    instaniatedWeapon.layer = LayerMask.NameToLayer("Player");
+                    // also children
+                    foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
+                    {
+                        child.gameObject.layer = LayerMask.NameToLayer("Player");
+                    }
+                    break;
+                case 2:
+                    source.GetComponent<FPSController>().gunBarrelEnd = gunBarrelEnd;
+                    instaniatedWeapon.layer = LayerMask.NameToLayer("PlayerInvisible");
+                    // also children
+                    foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
+                    {
+                        child.gameObject.layer = LayerMask.NameToLayer("PlayerInvisible");
+                    }
+                    break;
                 }
             }
-            else
-            {
-                source.GetComponent<FPSController>().gunBarrelEnd = gunBarrelEnd;
-                instaniatedWeapon.layer = LayerMask.NameToLayer("Player");
-                // also children
-                foreach (Transform child in instaniatedWeapon.GetComponentsInChildren<Transform>())
-                {
-                    child.gameObject.layer = LayerMask.NameToLayer("Player");
-                }
-            }
-
-        }
     }
 
     [Rpc(SendTo.Server)]
@@ -103,11 +114,17 @@ public class NetworkItemEffectsManager : NetworkBehaviour
     public void UnequipItemClientRPC(ulong id)
     {
         GameObject source = NetworkGameManager.GetPlayerById(id);
-        source.GetComponent<FPSController>().anim.SetInteger("UpperBody", 0);
+        source.GetComponent<FPSController>().anim.SetInteger("WeaponEquiped", 0);
+        source.GetComponent<FPSController>().fpsAnimator.SetInteger("WeaponEquiped", 0);
         if (source.GetComponent<FPSController>().WeaponPivot.childCount >0)
         {
             Destroy(source.GetComponent<FPSController>().WeaponPivot.GetChild(0).gameObject);
         }
+        if(source.GetComponent<FPSController>().fpsWeaponPivot.childCount > 0)
+        {
+            Destroy(source.GetComponent<FPSController>().fpsWeaponPivot.GetChild(0).gameObject);
+        }
+
     }
 
 
