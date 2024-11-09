@@ -45,21 +45,16 @@ public class NetworkSpellManager : NetworkBehaviour
         {
             NetworkVFXManager.Instance.SpawnVFXRpc(1, player.gunBarrelEnd.position, Quaternion.identity);
         }
-
+        AudioManager.instance.PlaySoundFromAudiolistRpc(1, player.transform.position, 1);
         float distance = 100;
         Vector3 impactPosition = ray.GetPoint(100);
         hits = hits.OrderBy(hits => hits.distance).ToArray();
-        foreach(RaycastHit hit in hits)
-        {
-            print(hit.collider.gameObject.name);
-        }
         foreach(RaycastHit hit in hits)
         {
             if (hit.collider != null)
             {
                 distance = hit.distance;
                 impactPosition = hit.point;
-                NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.LookRotation(-hit.normal));
                 StatusManager sm = hit.collider.transform.root.GetComponent<StatusManager>() ?? null;
                 
                 if (sm != null)
@@ -70,9 +65,11 @@ public class NetworkSpellManager : NetworkBehaviour
                     }
                     hitlist.Add(sm);
                     hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0);
+                    NetworkVFXManager.Instance.SpawnVFXRpc(2, impactPosition, Quaternion.LookRotation(-hit.normal));
                 }
                 else
                 {
+                    NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.LookRotation(-hit.normal));
                     break;
                 }
                 penetration--;

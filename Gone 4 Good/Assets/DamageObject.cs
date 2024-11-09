@@ -51,10 +51,11 @@ public class DamageObject : MonoBehaviour
             if (sm.faction == faction) return;
             sm.ApplyDamageRpc(dmg,sm.transform.position,20);
             Slowness slowness = new Slowness();
-            slowness.duration = 0.1f;
-            slowness.slowAmount = 0.35f;
+            slowness.duration = 0.2f;
+            slowness.slowAmount = 0.55f;
             slowness.ApplyStatusEffect(sm);
             hitList.Add(sm);
+            AudioManager.instance.PlaySoundFromAudiolistRpc(3, transform.position, 1);
         }
     }
 

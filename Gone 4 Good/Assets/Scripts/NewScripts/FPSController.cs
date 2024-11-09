@@ -94,6 +94,8 @@ public class FPSController : NetworkBehaviour, IActor
         inventory = GetComponent<Inventory>();
         viewBobing = cinemachineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         sm.OnStaminaUpdate.AddListener(UpdateStamina);
+        InputSystem.GetInputActionMapPlayer().Player.Hotkey1.performed += ctx => SwitchHotbarItem(0);
+        InputSystem.GetInputActionMapPlayer().Player.Hotkey2.performed += ctx => SwitchHotbarItem(1);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.performed += ctx => HandleItemUsage(true);
         InputSystem.GetInputActionMapPlayer().Player.UseSelectedItem.canceled += ctx => HandleItemUsage(false);
         InputSystem.GetInputActionMapPlayer().Player.Jump.performed += ctx => HandleJump();
@@ -103,6 +105,11 @@ public class FPSController : NetworkBehaviour, IActor
 
     }
 
+    public void SwitchHotbarItem(int index)
+    {
+        inventory.SwitchHotbarItem(index);
+    }
+
     private void UpdateStamina()
     {
         GameUI.instance.playerStaminaBar.SetStamina((float)sm.Stamina / sm.maxStamina);
@@ -110,7 +117,6 @@ public class FPSController : NetworkBehaviour, IActor
 
     private void DropEqipedItem()
     {
-        print(inventory.CurrentHotbarItem.id);
         if (inventory.CurrentHotbarItem.id != 0)
         {
             print("Dropping item");
@@ -139,7 +145,7 @@ public class FPSController : NetworkBehaviour, IActor
     }
 
     [Rpc(SendTo.Server)]
-    private void DropEquipedItemRpc(ulong playerId, int itemId, NetworkItemData networkItemData)
+    public void DropEquipedItemRpc(ulong playerId, int itemId, NetworkItemData networkItemData)
     {
         GameObject playerGo = NetworkGameManager.GetPlayerById(playerId);
         FPSController player = playerGo.GetComponent<FPSController>();
@@ -214,11 +220,10 @@ public class FPSController : NetworkBehaviour, IActor
         {
             sm.staminaConsumptionPerSecond = 20;
             anim.SetFloat("AnimationSpeed", 1.3f);
-            print(sm.Stamina);
             if(sm.Stamina > 0)
             {
                 CameraFOV = 70;
-                currentSpeed = inputMagnitude * 1.333f;
+                currentSpeed = inputMagnitude * 1.25f;
             }
             else
             {
@@ -234,7 +239,7 @@ public class FPSController : NetworkBehaviour, IActor
             CameraFOV = 60;
         }
         
-        cc.Move(movementDirection * currentSpeed * currentAcceleration * 5 * sm.MovementSpeedMultiplier * Time.deltaTime);
+        cc.Move(movementDirection * currentSpeed * currentAcceleration * 3.55f * sm.MovementSpeedMultiplier * Time.deltaTime);
 
         // Handle Viewbob Intensity
         viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed * currentAcceleration * 1.5f, 0,3);

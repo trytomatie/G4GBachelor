@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179ebeb0152285544ad70eb050ccc43d, type: 3}
+  m_Name: ZombieGroaning
+  m_EditorClassIdentifier: 
+  randomPitchRange: 0.09
+  audioClips:
+  - {fileID: 8300000, guid: a9ae9cec4c566dc4bb425c50976e8c5e, type: 3}
+  - {fileID: 8300000, guid: 34405fb1506b3364284d1d56587d2894, type: 3}
+  - {fileID: 8300000, guid: fc180ae629cf68b41b4615fd8755eeea, type: 3}
+  - {fileID: 8300000, guid: 42cd13a773eb3704ca89755823296618, type: 3}

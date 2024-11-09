@@ -26,6 +26,7 @@ public class Item
     public int id;
     public int amount;
     public int currentAmmo = 0;
+    public int maxAmmo = 360;
     public int currentClip = 0;
     public int varriant = 0;
     public int maxStackSize => ItemDatabase.GetItem(id).maxStackSize;

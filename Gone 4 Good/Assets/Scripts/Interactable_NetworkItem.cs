@@ -13,6 +13,8 @@ public class Interactable_NetworkItem : Interactable
     {
         NetworkObject networkObject = source.GetComponent<NetworkObject>();
         ulong id = networkObject.OwnerClientId;
+        ItemBlueprint itemBlueprint = ItemDatabase.GetItem(itemID);
+        Inventory inventory = source.GetComponent<Inventory>();
         GivePickupServerRpc(id);
     }
 
@@ -41,15 +43,48 @@ public class Interactable_NetworkItem : Interactable
     public void GivePickupClientRpc(ulong id, NetworkItemData networkItemData,RpcParams rpcParams = default)
     {
         NetworkObject player = NetworkGameManager.GetPlayerById(id).GetComponent<NetworkObject>();
-        
+        Inventory inventory = player.GetComponent<Inventory>();
         // Add Item to Player
         Item item = new Item(itemID, amount);
-        item.currentAmmo = networkItemData.currentAmmo;
-        item.currentClip = networkItemData.currentClip;
-        player.GetComponent<Inventory>().AddItem(item);
-        player.GetComponent<Inventory>().SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
-        NetworkObject networkObject = GetComponent<NetworkObject>();
-        DespawnRpc();
+        int assignedSlot = -1;
+        switch (item.BluePrint.itemType)
+        {
+            case ItemType.Weapon:
+                item.currentAmmo = networkItemData.currentAmmo;
+                item.currentClip = networkItemData.currentClip;
+                assignedSlot = 0;
+                break;
+            case ItemType.Consumable:
+                assignedSlot = 1;
+                break;
+            default:
+                break;
+        }
+        
+        if (assignedSlot != -1)
+        {
+            if (inventory.items[assignedSlot] == new Item(0,0) || inventory.items[assignedSlot] == null)
+            {
+                inventory.items[assignedSlot] = item;
+                inventory.SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
+            }
+            else
+            {
+                inventory.items[assignedSlot].GetItemInteractionEffects.OnDrop(player.gameObject, inventory.items[assignedSlot]);
+                NetworkItemData data = new NetworkItemData()
+                {
+                    affinity = 0,
+                    currentAmmo = inventory.items[assignedSlot].currentAmmo,
+                    currentClip = inventory.items[assignedSlot].currentClip
+                };
+                player.GetComponent<FPSController>().DropEquipedItemRpc(OwnerClientId, inventory.items[assignedSlot].id, data);
+                inventory.items[assignedSlot] = item;
+                inventory.SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
+            }
+            DespawnRpc();
+
+        }
+
     }
 
     [Rpc(SendTo.Server)]

@@ -124,7 +124,7 @@ Material:
     - _OverlayAmount: 0.5
     - _Parallax: 0.005
     - _PlayerVisible: 1
-    - _PlayerYPosition: 7.0600004
+    - _PlayerYPosition: 4.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius: 1

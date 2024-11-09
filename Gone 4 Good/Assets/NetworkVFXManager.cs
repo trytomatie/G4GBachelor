@@ -35,6 +35,11 @@ public class NetworkVFXManager : NetworkBehaviour
                 vfx[vfxIndex].transform.rotation = rotation;
                 vfx[vfxIndex].PlayFeedbacks();
                 break;
+            case 2:
+                vfx[vfxIndex].transform.position = position;
+                vfx[vfxIndex].transform.rotation = rotation;
+                vfx[vfxIndex].PlayFeedbacks();
+                break;
         }
 
     }

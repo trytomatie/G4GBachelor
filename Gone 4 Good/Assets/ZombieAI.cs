@@ -257,8 +257,10 @@ public class ZombieAI : NetworkBehaviour
             yield return null;
         }
         hitbox.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(triggerAttack);
         hitbox.gameObject.SetActive(false);
+
         triggerAttack = 0;
     }
 
@@ -378,6 +380,7 @@ public class ChaseState : State
     private float pathfindUpdateTimer;
     private float[] pathindUpdateTimes = { 0, 1, 5 };
     private float pathfindUpdateTime = 0;
+    private float groanTimer = 0;
 
     public void OnEnter(ZombieAI pc)
     {
@@ -386,6 +389,11 @@ public class ChaseState : State
 
     public void OnUpdate(ZombieAI pc)
     {
+        if (groanTimer < Time.time)
+        {
+            groanTimer = Time.time + Random.Range(5, 10);
+            AudioManager.instance.PlaySoundFromAudiolistRpc(2, pc.transform.position,1);
+        }
         pathfindUpdateTimer += Time.deltaTime;
         switch(Vector3.Distance(pc.transform.position, pc.target.transform.position))
         {

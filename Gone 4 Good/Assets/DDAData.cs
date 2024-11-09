@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class DDAData : NetworkBehaviour
 {
+    [Header("DDA Parameters")]
+    // The Level of Adjustment the DDA System is currently in [1...5]
+    public int adjustmentLevel = 3;
+
     [Header("Defensive Parameters")]
     // Weights the randomness favoring lower or higher damage recevied [0...1]
     public NetworkVariable<float> damgeReceivedBias = new NetworkVariable<float>(0.5f);
