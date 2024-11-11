@@ -1,0 +1,184 @@
+{
+    "questions": [
+        {
+            "question": "How quickly do you react to sudden changes on-screen, like spotting an enemy or dodging an attack?",
+            "answers": [
+                "I react instantly without thinking, always on high alert.",
+                "I react quickly, though I take a split-second to assess.",
+                "I react slowly, focusing more on the experience than speed.",
+                "I don't rush.if I miss it, I miss it. No big deal."
+            ]
+        },
+        {
+            "question": "How often do you practice aiming and shooting drills (e.g., in aim trainers or warm-up sessions)?",
+            "answers": [
+                "Every day.I never skip aim practice.",
+                "A few times a week, when I need a refresh.",
+                "I don't focus on drills but occasionally warm up.",
+                "I jump right into the game and go with the flow."
+            ]
+        },
+        {
+            "question": "How comfortable are you with quick adjustments to your aim under pressure?",
+            "answers": [
+                "Completely comfortable, even in intense situations.",
+                "I can adjust well, but I take a moment if needed.",
+                "It's a challenge, but I do my best to adapt.",
+                "I play for fun, so missing shots is okay by me."
+            ]
+        },
+        {
+            "question": "How well do you keep track of the map layout and key locations (e.g., choke points, spawn areas)?",
+            "answers": [
+                "I know every inch of the map and plan my moves.",
+                "I know most main spots, though not every detail.",
+                "I get familiar with the basics over time.",
+                "I like discovering the map naturally as I go."
+            ]
+        },
+        {
+            "question": "Can you predict enemy movements based on prior encounters or in-game sounds?",
+            "answers": [
+                "Yes, I'm skilled at predicting and countering moves.",
+                "Sometimes I can guess, but not always perfectly.",
+                "Rarely, I mostly react to what's happening around me.",
+                "I go with the flow, no need to overthink it."
+            ]
+        },
+        {
+            "question": "Do you regularly use visual or audio cues to inform your decisions in-game?",
+            "answers": [
+                "Yes, I rely heavily on every sound and visual cue.",
+                "I use them often, but I don't rely solely on them.",
+                "I notice some cues, but I play intuitively too.",
+                "I mostly follow the main action and don't focus on cues."
+            ]
+        },
+        {
+            "question": "Do you prefer to follow a plan or react spontaneously to changing in-game situations?",
+            "answers": [
+                "I always have a strategy and adapt it as needed.",
+                "I like to have a plan but can adjust quickly.",
+                "I'm spontaneous and go with the flow.",
+                "I just see what happens.planning isn't my style."
+            ]
+        },
+        {
+            "question": "How often do you analyze your gameplay (through replays or critiques) to improve your tactics?",
+            "answers": [
+                "I review my games often to improve my skills.",
+                "Sometimes, if I feel like I made mistakes.",
+                "Rarely, I mostly just try to play better each time.",
+                "I'm here to have fun, not overanalyze gameplay."
+            ]
+        },
+        {
+            "question": "How comfortable are you with using voice or text chat to communicate with teammates?",
+            "answers": [
+                "Very comfortable; I communicate constantly.",
+                "Fairly comfortable; I talk when necessary.",
+                "I'm not big on chatting, but I listen to others.",
+                "I prefer to avoid chat and play my own way."
+            ]
+        },
+        {
+            "question": "Do you typically take the lead in providing information or instructions to your team?",
+            "answers": [
+                "Yes, I often take charge in calling out plays.",
+                "Sometimes, when I know it's needed.",
+                "I prefer to follow and support others.",
+                "I let others handle strategy and just follow along."
+            ]
+        },
+        {
+            "question": "How do you handle receiving feedback or instructions from others during a match?",
+            "answers": [
+                "I welcome feedback and adapt accordingly.",
+                "I'm open to it, though I decide if I use it.",
+                "I try to listen but can find it a bit annoying.",
+                "I prefer to do my own thing without feedback."
+            ]
+        },
+        {
+            "question": "How quickly do you adapt to new maps, weapons, or updates that change game mechanics?",
+            "answers": [
+                "I adapt almost instantly, always learning fast.",
+                "I get the hang of it after a few rounds.",
+                "It takes a while for me to get used to changes.",
+                "I take my time exploring and figuring things out."
+            ]
+        },
+        {
+            "question": "When you encounter a challenging opponent, do you analyze and adjust your approach?",
+            "answers": [
+                "Yes, I adapt my tactics to counter them.",
+                "Sometimes, I adjust my playstyle a bit.",
+                "Rarely, I usually stick to what I know best.",
+                "I keep playing my way and see what happens."
+            ]
+        },
+        {
+            "question": "How often do you watch tutorials, streams, or professional matches to learn new tactics?",
+            "answers": [
+                "I regularly watch to improve my skills.",
+                "Occasionally, when I need specific tips.",
+                "Rarely, I just focus on playing.",
+                "I play my own way, no need for tutorials."
+            ]
+        },
+        {
+            "question": "How comfortable are you with controlling recoil and mastering weapon mechanics?",
+            "answers": [
+                "Very comfortable; I have precise control.",
+                "Fairly comfortable, though I'm not perfect.",
+                "Not very comfortable, I struggle sometimes.",
+                "I go with the flow and enjoy experimenting."
+            ]
+        },
+        {
+            "question": "How frequently do you practice specific skills, like strafing, weapon-switching, or peeking?",
+            "answers": [
+                "I practice daily to keep my skills sharp.",
+                "I practice sometimes, though not regularly.",
+                "Rarely, only if I feel rusty.",
+                "I don't practice. I pick it up during play."
+            ]
+        },
+        {
+            "question": "What is your level of experience with different weapons and their effective ranges?",
+            "answers": [
+                "I know each weapon's strength and ideal range.",
+                "I know most weapons decently.",
+                "I stick to a few favorites I know well.",
+                "I pick up whatever and figure it out as I go."
+            ]
+        },
+        {
+            "question": "How do you manage stress and stay calm in high-stakes or fast-paced scenarios?",
+            "answers": [
+                "I stay calm and keep my focus under pressure.",
+                "I manage well, though I feel some nerves.",
+                "It's challenging, but I try my best.",
+                "I let the excitement drive me, win or lose."
+            ]
+        },
+        {
+            "question": "How often do you play long sessions, and how do you maintain focus over time?",
+            "answers": [
+                "I can play for hours with full focus.",
+                "I play long sessions but take breaks.",
+                "I tend to lose focus in extended sessions.",
+                "I play short sessions and take it easy."
+            ]
+        },
+        {
+            "question": "How do you handle losses, and do you feel motivated to improve after tough matches?",
+            "answers": [
+                "I see losses as motivation to improve.",
+                "Sometimes, though losses can be discouraging.",
+                "I'm neutral about losses; I play to have fun.",
+                "I don't focus on winning.just on enjoying the game."
+            ]
+        }
+    ]
+}

@@ -5521,21 +5521,25 @@ MonoBehaviour:
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   space: 4
@@ -6567,7 +6571,7 @@ MonoBehaviour:
   fpsPlayerModel: {fileID: 8694008348749563601}
   playerRemnant: {fileID: 4407893860893359511}
   CameraAnimator: {fileID: 2353657490912762553}
-  flashLightRef: {fileID: 0}
+  flashLightRef: {fileID: 6768555352074643716}
   flashLight:
     m_InternalValue: 0
   isReloading: 0
@@ -6588,6 +6592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6f2051bed34f94e858d32f49be5c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  adjustmentLevel: 3
   damgeReceivedBias:
     m_InternalValue: 0.5
   maxDamageInstancesPerSecond:
