@@ -198,6 +198,38 @@ public class FPSController : NetworkBehaviour, IActor
         anim.SetFloat("YDir", verticalInput);
     }
 
+    [Rpc(SendTo.Owner)]
+    public void TriggerDamageIndicatorsRpc(Vector3 originPosition)
+    {
+        print("GASSASS");
+        Direction dir = Direction.Front;
+        Vector3 direction = (transform.position - originPosition).normalized;
+        float angle = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
+        if (angle > 45 && angle < 135)
+        {
+            dir = Direction.Right;
+        }
+        else if (angle < -45 && angle > -135)
+        {
+            dir = Direction.Left;
+        }
+        else if (angle > 135 || angle < -135)
+        {
+            dir = Direction.Front;
+        }
+        else if (angle < 45 && angle > -45)
+        {
+            dir = Direction.Back;
+        }
+        GameUI.instance.TriggerDamageIndicator(dir);
+    }
+
+    public void Teleport(Vector3 position)
+    {
+        cc.enabled = false;
+        transform.position = position;
+        cc.enabled = true;
+    }
     public void Movement()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");

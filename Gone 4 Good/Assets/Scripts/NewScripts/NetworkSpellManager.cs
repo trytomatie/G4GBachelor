@@ -49,6 +49,8 @@ public class NetworkSpellManager : NetworkBehaviour
         float distance = 100;
         Vector3 impactPosition = ray.GetPoint(100);
         hits = hits.OrderBy(hits => hits.distance).ToArray();
+        bool hasHitEntity = false;
+        bool hasHitHead = false;
         foreach(RaycastHit hit in hits)
         {
             if (hit.collider != null)
@@ -63,12 +65,20 @@ public class NetworkSpellManager : NetworkBehaviour
                     {
                         continue;
                     }
+                    if(sm.Hp.Value > 0)
+                    {
+                        hasHitEntity = true;
+                        hasHitHead = sm.gameObject.name.Contains("head");
+                    }
+
                     hitlist.Add(sm);
                     hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0);
                     NetworkVFXManager.Instance.SpawnVFXRpc(2, impactPosition, Quaternion.LookRotation(-hit.normal));
+
                 }
                 else
                 {
+                    PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHead);
                     NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.LookRotation(-hit.normal));
                     break;
                 }
@@ -76,6 +86,7 @@ public class NetworkSpellManager : NetworkBehaviour
             }
             if(penetration <= 0)
             {
+                PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHead);
                 break;
             }
         }

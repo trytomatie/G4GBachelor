@@ -5045,21 +5045,25 @@ MonoBehaviour:
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   - id: 0
     amount: 0
     currentAmmo: 0
+    maxAmmo: 0
     currentClip: 0
     varriant: 0
   space: 4
@@ -5441,7 +5445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3621923576
+  GlobalObjectIdHash: 3002704556
   InScenePlacedSourceGlobalObjectIdHash: 3002704556
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -5549,6 +5553,7 @@ MonoBehaviour:
   maxStamina: 0
   stamina: 0
   staminaRegenPerSecond: 5
+  staminaConsumptionPerSecond: 0
   baseAttackDamage: 1
   movementSpeedMultiplier: 1
   bonusDefense: 0
@@ -5600,6 +5605,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   NetworkDespawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStaminaUpdate:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7159757783570178418

@@ -18,7 +18,7 @@ public class GameUI : MonoBehaviour
     public InventoryUI inventoryUI;
 
     [Header("Interaction")]
-    public FollowGameObjectUI interactionToolTip;
+    public Transform interactionToolTip;
 
 
 
@@ -47,6 +47,12 @@ public class GameUI : MonoBehaviour
     [Header("Remnant Revival Bar")]
     public RemnantRevivalBarUI remnantRevivalBarUI;
 
+    [Header("Damage Indicators")]
+    public Animator damageIndicatorFront;
+    public Animator damageIndicatorLeft;
+    public Animator damageIndicatorRight;
+    public Animator damageIndicatorBack;
+
     [HideInInspector] public Animator interfaceAnimator;
 
     // Singleton
@@ -70,6 +76,26 @@ public class GameUI : MonoBehaviour
         for(int i = 0; i < skillslots.Length; i++)
         {
             skillslots[i].index = i;
+        }
+    }
+
+
+    public void TriggerDamageIndicator(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Front:
+                damageIndicatorFront.SetTrigger("Damage");
+                break;
+            case Direction.Left:
+                damageIndicatorLeft.SetTrigger("Damage");
+                break;
+            case Direction.Right:
+                damageIndicatorRight.SetTrigger("Damage");
+                break;
+            case Direction.Back:
+                damageIndicatorBack.SetTrigger("Damage");
+                break;
         }
     }
 
@@ -194,3 +220,5 @@ public class GameUI : MonoBehaviour
     }
     #endregion
 }
+
+public enum Direction { Front, Left, Right, Back }

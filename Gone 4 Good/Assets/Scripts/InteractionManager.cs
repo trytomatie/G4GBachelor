@@ -6,7 +6,7 @@ using UnityEngine;
 public class InteractionManager : MonoBehaviour
 {
     public List<Interactable> interactablesInRange = new List<Interactable>();
-    public FollowGameObjectUI interactionToolTip;
+    public Transform interactionToolTip;
     private void OnTriggerEnter(Collider other)
     {
         Interactable interactable = other.GetComponent<Interactable>();
@@ -30,7 +30,7 @@ public class InteractionManager : MonoBehaviour
         if (interactablesInRange.Count > 0)
         {
             GameUI.instance.interactionToolTip.gameObject.SetActive(true);
-            GameUI.instance.interactionToolTip.objectToFollow = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First().gameObject;
+            //GameUI.instance.interactionToolTip.objectToFollow = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First().gameObject;
         }
         else
         {

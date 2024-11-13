@@ -8,6 +8,7 @@ public class DamageObject : MonoBehaviour
     public bool destoyDamageObject = true;
     public StatusManager.Faction faction = StatusManager.Faction.Neutral;
     private List<StatusManager> hitList = new List<StatusManager>();
+    public StatusManager source;
 
     private void OnEnable()
     {
@@ -33,6 +34,7 @@ public class DamageObject : MonoBehaviour
         DDAData data = other.GetComponent<DDAData>() ?? null;
         if (sm != null && !hitList.Contains(sm))
         {
+            if (sm.faction == faction) return;
             int dmg = 3;
             if (data != null)
             {
@@ -48,8 +50,12 @@ public class DamageObject : MonoBehaviour
                 Debug.LogWarning("No DDAData found on " + other.name);
             }
 
-            if (sm.faction == faction) return;
-            sm.ApplyDamageRpc(dmg,sm.transform.position,20);
+
+            sm.ApplyDamageRpc(dmg, source.transform.position,20);
+            if(sm.GetComponent<FPSController>() != null)
+            {
+                sm.GetComponent<FPSController>().TriggerDamageIndicatorsRpc(source.transform.position);
+            }
             Slowness slowness = new Slowness();
             slowness.duration = 0.2f;
             slowness.slowAmount = 0.55f;
