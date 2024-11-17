@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -53,6 +54,10 @@ public class GameUI : MonoBehaviour
     public Animator damageIndicatorRight;
     public Animator damageIndicatorBack;
 
+    [Header("Pause Menu")]
+    public GameObject pauseMenu;
+    public GameObject generalUI;
+
     [HideInInspector] public Animator interfaceAnimator;
 
     // Singleton
@@ -76,6 +81,42 @@ public class GameUI : MonoBehaviour
         for(int i = 0; i < skillslots.Length; i++)
         {
             skillslots[i].index = i;
+        }
+        generalUI.SetActive(true);
+        pauseMenu.SetActive(false);
+        Options.LoadOptions();
+        // Map pause menu
+        InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed += ctx => TogglePauseMenu(!pauseMenu.activeSelf);
+        
+    }
+
+    public void TogglePauseMenu(bool state)
+    {
+        pauseMenu.SetActive(state);
+        generalUI.SetActive(!state);
+        if(state)
+        {
+            InputSystem.GetInputActionMapPlayer().Camera.Disable();
+            InputSystem.GetInputActionMapPlayer().Player.Disable();
+        }
+        else
+        {
+            InputSystem.GetInputActionMapPlayer().Camera.Enable();
+            InputSystem.GetInputActionMapPlayer().Player.Enable();
+        }
+    }
+
+    private void Update()
+    {
+        if(pauseMenu.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -107,7 +148,7 @@ public class GameUI : MonoBehaviour
     {
         InputSystem.GetInputActionMapPlayer().IngameUI.Inventory.performed -= ToggleInventory;
         InputSystem.GetInputActionMapPlayer().IngameUI.BuildingMenu.performed -= ToggleBuildingMenu;
-        InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed -= ctx => CloseAllWindows();
+        InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed -= ctx => TogglePauseMenu(false);
     }
 
     /// <summary>
@@ -117,7 +158,6 @@ public class GameUI : MonoBehaviour
     {
         InputSystem.GetInputActionMapPlayer().IngameUI.Inventory.performed += ToggleInventory;
         InputSystem.GetInputActionMapPlayer().IngameUI.BuildingMenu.performed += ToggleBuildingMenu;
-        InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed += ctx => CloseAllWindows();  
     }
 
 

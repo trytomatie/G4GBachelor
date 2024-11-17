@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FPSCameraController : MonoBehaviour
 {
-    public float mouseSensitivity = 100f;
+    private float moseSensitivityModifier = 0.25f;
     public Transform playerBody;
 
 
@@ -18,9 +18,10 @@ public class FPSCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 mouseMovement = InputSystem.GetInputActionMapPlayer().Camera.MouseMovement.ReadValue<Vector2>();
         // Mouse input
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = mouseMovement.x * moseSensitivityModifier * Time.deltaTime * Options.mouseSensitivity;
+        float mouseY = mouseMovement.y * moseSensitivityModifier * Time.deltaTime * Options.mouseSensitivity;
 
         // Rotate player body (left and right)
         playerBody.Rotate(Vector3.up * mouseX);

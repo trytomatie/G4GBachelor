@@ -35,7 +35,7 @@ public class NetworkSpellManager : NetworkBehaviour
         hitlist.Clear();
         FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
         Ray ray = new Ray(player.playerCamera.transform.position, player.playerCamera.transform.forward);
-        RaycastHit[] hits = Physics.RaycastAll(ray, 100, hitLayer);
+        RaycastHit[] hits = Physics.SphereCastAll(ray, player.GetComponent<DDAData>().weaponSpherecastRadius.Value, 100, hitLayer);
         // Bullet Fire
         if(sourcePlayer == NetworkManager.Singleton.LocalClientId)
         {
@@ -58,7 +58,7 @@ public class NetworkSpellManager : NetworkBehaviour
                 distance = hit.distance;
                 impactPosition = hit.point;
                 StatusManager sm = hit.collider.transform.root.GetComponent<StatusManager>() ?? null;
-                
+                print(hit.collider.gameObject.name);
                 if (sm != null)
                 {
                     if(hitlist.Contains(sm))
@@ -68,10 +68,14 @@ public class NetworkSpellManager : NetworkBehaviour
                     if(sm.Hp.Value > 0)
                     {
                         hasHitEntity = true;
-                        hasHitHead = sm.gameObject.name.Contains("head");
+                        hasHitHead = hit.collider.gameObject.name.Contains("Head");
                     }
 
                     hitlist.Add(sm);
+                    if(hasHitHead)
+                    {
+                        damage *= 3;
+                    }
                     hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0);
                     NetworkVFXManager.Instance.SpawnVFXRpc(2, impactPosition, Quaternion.LookRotation(-hit.normal));
 

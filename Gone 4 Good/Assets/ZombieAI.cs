@@ -38,6 +38,7 @@ public class ZombieAI : NetworkBehaviour
     [Header("Debug")]
     public bool debugPathfinding = false;
     public bool hasPath = false;
+    public float spawnTime;
 
     public static List<ZombieAI> zombies = new List<ZombieAI>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -60,6 +61,7 @@ public class ZombieAI : NetworkBehaviour
         enemyStates[2] = new WanderState();
         enemyStates[(int)currentState].OnEnter(this);
         animator.SetFloat("RunAnimation", Random.Range(0, 3));
+        spawnTime = Time.time;
         DeactivateRagdoll();
     }
 
