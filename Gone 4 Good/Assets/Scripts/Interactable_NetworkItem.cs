@@ -81,6 +81,7 @@ public class Interactable_NetworkItem : Interactable
                 inventory.items[assignedSlot] = item;
                 inventory.SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
             }
+            inventory.onInventoryUpdate(assignedSlot);
             DespawnRpc();
 
         }

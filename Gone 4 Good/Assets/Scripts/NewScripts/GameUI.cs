@@ -63,6 +63,8 @@ public class GameUI : MonoBehaviour
     // Singleton
     public static GameUI instance;
 
+    public bool forceMouseVisible = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -108,7 +110,7 @@ public class GameUI : MonoBehaviour
 
     private void Update()
     {
-        if(pauseMenu.activeSelf)
+        if(pauseMenu.activeSelf || forceMouseVisible)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

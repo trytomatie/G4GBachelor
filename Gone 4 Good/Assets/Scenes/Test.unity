@@ -986,7 +986,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 654373413}
         m_TargetAssemblyTypeName: BartleTestHandler, Assembly-CSharp
-        m_MethodName: StartQuestionaire
+        m_MethodName: GoBackToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -55,6 +55,7 @@ public class FPSController : NetworkBehaviour, IActor
     {
         if (IsLocalPlayer)
         {
+            playerName.Value = PlayerPrefs.GetString("PlayerName", "Unknown");
             PlayerSetupSetup();
             GameUI.instance.SyncHpBar(GetComponent<StatusManager>());
         }
@@ -91,7 +92,6 @@ public class FPSController : NetworkBehaviour, IActor
 
         sm = GetComponent<StatusManager>();
         cc = GetComponent<CharacterController>();
-        inventory = GetComponent<Inventory>();
         viewBobing = cinemachineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         sm.OnStaminaUpdate.AddListener(UpdateStamina);
         InputSystem.GetInputActionMapPlayer().Player.Hotkey1.performed += ctx => SwitchHotbarItem(0);
@@ -108,6 +108,7 @@ public class FPSController : NetworkBehaviour, IActor
     public void SwitchHotbarItem(int index)
     {
         inventory.SwitchHotbarItem(index);
+        InventoryUI.Instance.UpdateUI(0);
     }
 
     private void UpdateStamina()
@@ -130,6 +131,7 @@ public class FPSController : NetworkBehaviour, IActor
             };
             DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id, data);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
+            inventory.onInventoryUpdate?.Invoke(inventory.currentHotbarIndex);
         }
     }
 
@@ -163,6 +165,7 @@ public class FPSController : NetworkBehaviour, IActor
         playerSetupInstance = Instantiate(playerSetup, transform.position, transform.rotation);
         GameUI gameUI = playerSetupInstance.GetComponentInChildren<GameUI>();
         gameUI.inventoryUI.syncedInventory = inventory;
+        gameUI.inventoryUI.syncedInventory.onInventoryUpdate += gameUI.inventoryUI.UpdateUI;
     }
 
     private IEnumerator SyncAfterDelay()
@@ -182,7 +185,7 @@ public class FPSController : NetworkBehaviour, IActor
         {
             inventory.CurrentHotbarItem.GetItemInteractionEffects.ConstantUpdate(gameObject, inventory.CurrentHotbarItem);
         }
-        if (sm.Hp.Value < 0)
+        if (sm.Hp.Value <= 0)
         {
             return;
         }
@@ -201,7 +204,6 @@ public class FPSController : NetworkBehaviour, IActor
     [Rpc(SendTo.Owner)]
     public void TriggerDamageIndicatorsRpc(Vector3 originPosition)
     {
-        print("GASSASS");
         Direction dir = Direction.Front;
         Vector3 direction = (transform.position - originPosition).normalized;
         float angle = Vector3.SignedAngle(transform.forward, direction, Vector3.up);

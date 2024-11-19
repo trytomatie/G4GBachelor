@@ -51,7 +51,14 @@ public class NetworkSpellManager : NetworkBehaviour
         hits = hits.OrderBy(hits => hits.distance).ToArray();
         bool hasHitEntity = false;
         bool hasHitHead = false;
-        foreach(RaycastHit hit in hits)
+        foreach (RaycastHit hit in hits)
+        {
+            if(hit.collider.gameObject.name.Contains("Head"))
+            {
+                hasHitHead = true;
+            }
+        }
+        foreach (RaycastHit hit in hits)
         {
             if (hit.collider != null)
             {
@@ -68,7 +75,6 @@ public class NetworkSpellManager : NetworkBehaviour
                     if(sm.Hp.Value > 0)
                     {
                         hasHitEntity = true;
-                        hasHitHead = hit.collider.gameObject.name.Contains("Head");
                     }
 
                     hitlist.Add(sm);

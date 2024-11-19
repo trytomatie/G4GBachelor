@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class TutorialHandler : NetworkBehaviour
 {
@@ -25,6 +26,7 @@ public class TutorialHandler : NetworkBehaviour
 
     [Header("Survival Fight")]
     public Transform[] survivalFightSpawnPoints;
+    public Animation tutorialEndAnimation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -139,6 +141,13 @@ public class TutorialHandler : NetworkBehaviour
     public void EndSurvivalFight()
     {
         PerformanceTracker.EndCurrentStack();
+        tutorialEndAnimation.Play();
+        GameUI.instance.forceMouseVisible = true;
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
 

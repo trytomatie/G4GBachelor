@@ -44,7 +44,7 @@ public class PerformanceTracker : MonoBehaviour
 
     public void SaveStackToFile()
     {
-        string path = Application.persistentDataPath + "/PerformanceStacks";
+        string path = Application.persistentDataPath;
         if (!System.IO.Directory.Exists(path))
         {
             System.IO.Directory.CreateDirectory(path);

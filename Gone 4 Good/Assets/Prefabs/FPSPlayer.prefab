@@ -292,7 +292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c093ed75292fdc419ee2bded61a812d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
   playerBody: {fileID: 2546574561982158823}
 --- !u!1 &2170641769235018017
 GameObject:
@@ -6578,7 +6577,7 @@ MonoBehaviour:
   cinemachineCam: {fileID: 6935628102689378881}
   acceleration: 3.5
   groundedRaycastDistance: 0.5
-  inventory: {fileID: 0}
+  inventory: {fileID: 4592661334032776263}
   playerSetup: {fileID: 2035643944554340856, guid: 5fda762b7584c0a4bb56e6db466369e5, type: 3}
 --- !u!114 &6955019850649352618
 MonoBehaviour:
@@ -7443,7 +7442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c093ed75292fdc419ee2bded61a812d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
   playerBody: {fileID: 2546574561982158823}
 --- !u!1 &8167990221768273351
 GameObject:

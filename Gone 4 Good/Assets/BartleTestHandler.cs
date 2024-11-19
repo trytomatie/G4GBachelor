@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BartleTestHandler : MonoBehaviour
 {
@@ -91,6 +92,19 @@ public class BartleTestHandler : MonoBehaviour
             StartCoroutine(FadeInCanvasGroup(canvasGroupAnalysis, 3));
             analysisTitle.text = GetAnalysisTitle(score);
             analysisText.text = GetAnalysisText(score);
+            // Save to File
+            string path = Application.persistentDataPath;
+            if (System.IO.Directory.Exists(path)) // Check if the folder exists
+            {
+                BartleTestResults result = new BartleTestResults();
+                result.score = score;
+                string json = JsonUtility.ToJson(result);
+                System.IO.File.WriteAllText(path + "/BartleTestResults.json", json);
+            }
+            else
+            {
+                print("The specified folder does not exist.");
+            }
         }
         foreach (Toggle toggle in toggles)
         {
@@ -186,6 +200,11 @@ public class BartleTestHandler : MonoBehaviour
         }
         return "Error";
     }
+
+    public void GoBackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
 
 
@@ -200,4 +219,9 @@ public class Question
 {
     public string question;
     public List<string> answers;
+}
+
+public class BartleTestResults
+{
+    public int score;
 }

@@ -51,8 +51,9 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    private void UpdateUI(int updateIndex)
+    public void UpdateUI(int updateIndex)
     {
+        print("Update Inventory");
         for (int i = 0; i < syncedInventory.items.Count; i++)
         {
             if (i < hotbarSlots.Count)
