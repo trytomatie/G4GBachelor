@@ -51,7 +51,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PlayerYPosition: 7.0600004
+    - _PlayerYPosition: 52.33
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

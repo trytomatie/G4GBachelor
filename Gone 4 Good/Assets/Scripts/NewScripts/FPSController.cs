@@ -10,7 +10,7 @@ public class FPSController : NetworkBehaviour, IActor
 {
     public LayerMask groundLayer;
 
-    public NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>("string.Empty");
+    public NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>("string.Empty",NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [Header("References")]  
     public StatusManager sm;
     public Animator anim;
@@ -27,7 +27,7 @@ public class FPSController : NetworkBehaviour, IActor
     public GameObject playerRemnant;
     public Animator CameraAnimator;
     public GameObject flashLightRef;
-    public NetworkVariable<bool> flashLight = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> flashLight = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
     [Header("Item Usage")]
     public bool isReloading;
@@ -103,6 +103,8 @@ public class FPSController : NetworkBehaviour, IActor
         InputSystem.GetInputActionMapPlayer().Player.DropEquipedItem.performed += ctx => DropEqipedItem();
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
+        PerformanceTracker.StartNewStack("Level", playerName.Value.ToString(), "Performance of the Player in the Main Scenairo Level.");
+
     }
 
     public void SwitchHotbarItem(int index)
@@ -129,7 +131,7 @@ public class FPSController : NetworkBehaviour, IActor
                 currentAmmo = item.currentAmmo,
                 currentClip = item.currentClip
             };
-            DropEquipedItemRpc(OwnerClientId, inventory.CurrentHotbarItem.id, data);
+            DropEquipedItemRpc(NetworkObject, inventory.CurrentHotbarItem.id, data);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
             inventory.onInventoryUpdate?.Invoke(inventory.currentHotbarIndex);
         }
@@ -140,6 +142,7 @@ public class FPSController : NetworkBehaviour, IActor
         flashLight.Value = !flashLight.Value;
         ToggleFlashLightRpc(flashLight.Value);
     }
+
     [Rpc(SendTo.ClientsAndHost)]
     public void ToggleFlashLightRpc(bool value)
     {
@@ -147,17 +150,28 @@ public class FPSController : NetworkBehaviour, IActor
     }
 
     [Rpc(SendTo.Server)]
-    public void DropEquipedItemRpc(ulong playerId, int itemId, NetworkItemData networkItemData)
+    public void DropEquipedItemRpc(NetworkObjectReference reference, int itemId, NetworkItemData networkItemData)
     {
-        GameObject playerGo = NetworkGameManager.GetPlayerById(playerId);
-        FPSController player = playerGo.GetComponent<FPSController>();
-        GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab, player.playerCamera.transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-        NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
-        _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
-        networkObject.Spawn();
-        Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
-        rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
-        rb.linearVelocity = UnityEngine.Random.Range(1, 2) * player.playerCamera.transform.forward;
+        GameObject playerGo;
+        if(reference.TryGet(out NetworkObject playerNetworkObject))
+        {
+            playerGo = playerNetworkObject.gameObject;
+            FPSController player = playerGo.GetComponent<FPSController>();
+            print(itemId);
+            print(ItemDatabase.instance.items[itemId].droppedPrefab);
+            GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab, player.transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
+            _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
+            networkObject.Spawn();
+            Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
+            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+            rb.linearVelocity = UnityEngine.Random.Range(1, 2) * player.playerCamera.transform.forward;
+        }
+        else
+        {
+            Debug.LogError("Could not get player object");
+        }
+
     }
 
     public void PlayerSetupSetup()
@@ -166,6 +180,7 @@ public class FPSController : NetworkBehaviour, IActor
         GameUI gameUI = playerSetupInstance.GetComponentInChildren<GameUI>();
         gameUI.inventoryUI.syncedInventory = inventory;
         gameUI.inventoryUI.syncedInventory.onInventoryUpdate += gameUI.inventoryUI.UpdateUI;
+        interactionManager.gameObject.SetActive(false);
     }
 
     private IEnumerator SyncAfterDelay()

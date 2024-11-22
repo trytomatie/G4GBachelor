@@ -29,12 +29,11 @@ public class ShotgunProjectileWeapon_ItemEffects : ItemInteractionEffects
             if(timeLastFired + fireRate < Time.time)
             {
                 PlayerController pc = source.GetComponent<PlayerController>();
-                currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
+                currentSpread = 7;
                 timeLastFired = Time.time;
                 for(int i = 0; i < pelets; i++)
                 {
-                    NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.StatusManager.AttackDamage, currentSpread, projectileSize, projectileSpeed, penetration, 2);
-
+                    NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40, 60), 3);
                 }
                 source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
                 // Gun Fire

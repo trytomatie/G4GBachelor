@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 369023839677285585}
   - component: {fileID: 856566846975771767}
   m_Layer: 8
-  m_Name: Shotgun
+  m_Name: Shotgun_Raycast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

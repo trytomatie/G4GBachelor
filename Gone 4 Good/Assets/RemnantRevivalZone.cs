@@ -50,6 +50,7 @@ public class RemnantRevivalZone : MonoBehaviour
     {
         remnantRevivalTimer = 0;
         fpsController.UpdateRemnantRevivalBarUIRpc(fpsController.OwnerClientId, 0);
+        playersReviving = new FPSController[4];
     }
 
     public void OnTriggerEnter(Collider other)

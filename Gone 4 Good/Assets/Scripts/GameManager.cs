@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public delegate void GameTick();
     public static event GameTick OnGameTick;
     public GameObject player;
+    public string relayCode;
 
     [Header("Prefabs")]
     public GameObject droppedItem;

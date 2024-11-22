@@ -21,7 +21,7 @@ public class StatusManager : NetworkBehaviour
     public SoundType deathSound;
     public int level = 1;
     public int maxHp = 30;
-    public NetworkVariable<int> hp = new NetworkVariable<int>(30);
+    public NetworkVariable<int> hp = new NetworkVariable<int>(30,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Server);
     public int maxStamina = 0;
     [SerializeField] private int stamina = 0;
     [SerializeField] private int staminaRegenPerSecond = 5;
@@ -63,7 +63,6 @@ public class StatusManager : NetworkBehaviour
             experienceDrop += statsScaling.expGrowth * level-1;
 
         }
-        Hp.Value = maxHp;
         if(maxStamina > 0) 
         { 
             StartCoroutine(RegenStamina());
@@ -73,6 +72,11 @@ public class StatusManager : NetworkBehaviour
         OnDeath.AddListener(() => AddToFactionDictonary());
         OnDeath.AddListener(() => AudioManager.PlaySound(transform.position, deathSound));
         ddaData = GetComponent<DDAData>() ?? null;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        hp.Value = maxHp;
     }
 
     private void OnEnable()

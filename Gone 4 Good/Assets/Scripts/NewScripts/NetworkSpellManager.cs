@@ -30,11 +30,16 @@ public class NetworkSpellManager : NetworkBehaviour
         }
     }
     List<StatusManager> hitlist = new List<StatusManager>();
-    public void FireRaycastBullet(ulong sourcePlayer,float clientRotation, int damage,int penetration)
+    public void FireRaycastBullet(ulong sourcePlayer,float spread, int damage,int penetration)
     {
         hitlist.Clear();
         FPSController player = NetworkGameManager.GetPlayerById(sourcePlayer).GetComponent<FPSController>();
-        Ray ray = new Ray(player.playerCamera.transform.position, player.playerCamera.transform.forward);
+        Vector3 forward = player.playerCamera.transform.forward;
+        // factor in spread
+        Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread * 0.01f;
+        forward.x += randomSpread.x;
+        forward.y += randomSpread.y;
+        Ray ray = new Ray(player.playerCamera.transform.position, forward);
         RaycastHit[] hits = Physics.SphereCastAll(ray, player.GetComponent<DDAData>().weaponSpherecastRadius.Value, 100, hitLayer);
         // Bullet Fire
         if(sourcePlayer == NetworkManager.Singleton.LocalClientId)

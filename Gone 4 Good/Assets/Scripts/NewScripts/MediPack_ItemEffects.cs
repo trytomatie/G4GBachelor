@@ -11,7 +11,7 @@ public class MediPack_ItemEffects : ItemInteractionEffects
         if (isUsing)
         {
             Inventory inventory = source.GetComponent<FPSController>().inventory;
-            source.GetComponent<StatusManager>().Hp.Value += healAmount + Random.Range(0, 10);
+            source.GetComponent<StatusManager>().Hp.Value = Mathf.Clamp(source.GetComponent<StatusManager>().Hp.Value + healAmount + Random.Range(0, 10),0,100);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
             OnUnequip(source, item);
         }

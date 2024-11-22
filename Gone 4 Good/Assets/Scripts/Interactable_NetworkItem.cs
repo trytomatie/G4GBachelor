@@ -77,7 +77,7 @@ public class Interactable_NetworkItem : Interactable
                     currentAmmo = inventory.items[assignedSlot].currentAmmo,
                     currentClip = inventory.items[assignedSlot].currentClip
                 };
-                player.GetComponent<FPSController>().DropEquipedItemRpc(OwnerClientId, inventory.items[assignedSlot].id, data);
+                player.GetComponent<FPSController>().DropEquipedItemRpc(player, inventory.items[assignedSlot].id, data);
                 inventory.items[assignedSlot] = item;
                 inventory.SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
             }

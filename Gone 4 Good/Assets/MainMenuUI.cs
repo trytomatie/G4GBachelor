@@ -1,11 +1,24 @@
+using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Update after the MonoBehaviour is create
+    // TMP Inputfield
+    public TMP_InputField playerNameInputField;
+    public TMP_InputField relayCodeInputField;
+
+    public GameObject mainMenu;
+    public GameObject connectionMenu;
     void Start()
     {
-        
+        // load the player name
+        if (PlayerPrefs.HasKey("PlayerName"))
+        {
+            playerNameInputField.text = PlayerPrefs.GetString("PlayerName");
+        }
     }
 
     public void LoadScene(string sceneName)
@@ -36,5 +49,40 @@ public class MainMenuUI : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void SwitchToConnectionMenu()
+    {
+        mainMenu.SetActive(false);
+        connectionMenu.SetActive(true);
+    }
+
+    public void SwitchToMainMenu()
+    {
+        mainMenu.SetActive(true);
+        connectionMenu.SetActive(false);
+    }
+
+    public void StartHost()
+    {
+        // chagne scene and start host once scene is loaded
+        SceneManager.sceneLoaded += (scene, mode) =>
+        {
+            G4GNetworkManager networkManager = FindObjectOfType<G4GNetworkManager>();
+            networkManager.StartRelayGame();
+        };
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void ConnectToRelay()
+    { 
+        // chagne scene and start host once scene is loaded
+        SceneManager.sceneLoaded += (scene, mode) =>
+        {
+
+            G4GNetworkManager networkManager = FindObjectOfType<G4GNetworkManager>();
+            networkManager.JoinRelayGame(relayCodeInputField.text);
+        };
+        SceneManager.LoadScene("SampleScene");
     }
 }

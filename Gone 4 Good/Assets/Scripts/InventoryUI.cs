@@ -26,7 +26,6 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        syncedInventory.onInventoryUpdate += UpdateUI;
         //equipmentContainer.onInventoryUpdate += UpdateUI;
         UpdateUI(0);
         AssignIndciesToInventorySlots();
@@ -70,5 +69,7 @@ public class InventoryUI : MonoBehaviour
     public void SelectSlot(int index)
     {
         selectedInventorySlot.position = hotbarSlots[index].transform.position;
+        // adjust size to hotbarslot
+        selectedInventorySlot.sizeDelta = hotbarSlots[index].GetComponent<RectTransform>().sizeDelta;
     }
 }

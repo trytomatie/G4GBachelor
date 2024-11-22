@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -58,6 +59,10 @@ public class GameUI : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject generalUI;
 
+    [Header("Relay Code")]
+    public TextMeshProUGUI relayCodeText;
+    public Animation relayCodeCopiedText;
+
     [HideInInspector] public Animator interfaceAnimator;
 
     // Singleton
@@ -89,8 +94,21 @@ public class GameUI : MonoBehaviour
         Options.LoadOptions();
         // Map pause menu
         InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed += ctx => TogglePauseMenu(!pauseMenu.activeSelf);
-        
+        SetRelayCode();
     }
+
+    public void SetRelayCode()
+    {
+        relayCodeText.text = "Lobby Code: " + ((G4GNetworkManager)NetworkManager.Singleton).relayCode;
+    }
+
+    public void CopyRelayCodeToClipboard()
+    {
+        GUIUtility.systemCopyBuffer = ((G4GNetworkManager)NetworkManager.Singleton).relayCode;
+        relayCodeCopiedText.Play();
+    }
+
+    
 
     public void TogglePauseMenu(bool state)
     {
