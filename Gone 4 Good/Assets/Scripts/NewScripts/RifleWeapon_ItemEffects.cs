@@ -30,8 +30,18 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, Random.Range(40,60), 3);
+                NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40,60), 3);
             }
+        }
+    }
+
+    public override void ConstantUpdate(GameObject source, Item item)
+    {
+        base.ConstantUpdate(source, item);
+        if (!isUsing)
+        {
+            currentSpread = Mathf.Clamp(currentSpread - (spreadDecay * Time.deltaTime), 0, spreadLimit);
+            perfectShotCounter = 0;
         }
     }
 

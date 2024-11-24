@@ -76,6 +76,7 @@ public class FPSController : NetworkBehaviour, IActor
             playerCamera.GetComponent<Camera>().enabled = false; // Only turning camera off so the aimtarget can still sync
             fpsOverlayCamera.SetActive(false);
             fpsPlayerModel.SetActive(false);
+            interactionManager.gameObject.SetActive(false);
             // set layer to PlayerInvisible
             enabled = false;
             return;
@@ -104,6 +105,15 @@ public class FPSController : NetworkBehaviour, IActor
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
         PerformanceTracker.StartNewStack("Level", playerName.Value.ToString(), "Performance of the Player in the Main Scenairo Level.");
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
+        if(spawnPoint != null)
+        {
+            Teleport(spawnPoint.transform.position);
+        }
+        else
+        {
+            Debug.LogError("No spawnpoint found");
+        }
 
     }
 
@@ -180,7 +190,6 @@ public class FPSController : NetworkBehaviour, IActor
         GameUI gameUI = playerSetupInstance.GetComponentInChildren<GameUI>();
         gameUI.inventoryUI.syncedInventory = inventory;
         gameUI.inventoryUI.syncedInventory.onInventoryUpdate += gameUI.inventoryUI.UpdateUI;
-        interactionManager.gameObject.SetActive(false);
     }
 
     private IEnumerator SyncAfterDelay()

@@ -35,7 +35,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                     slownessDebuff.ApplyStatusEffect(pc.sm);
                 }
                 pc.anim.speed = 0.5f;
-                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, source.transform.eulerAngles.y, pc.sm.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
+                NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, currentSpread, pc.sm.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, pc.gunBarrelEnd.transform.position, source.transform.rotation);
                 AudioManager.instance.PlaySoundFromAudiolistRpc(1, pc.gunBarrelEnd.transform.position, 1);
             }

@@ -39,6 +39,7 @@ public class NetworkSpellManager : NetworkBehaviour
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * spread * 0.01f;
         forward.x += randomSpread.x;
         forward.y += randomSpread.y;
+        forward.Normalize();
         Ray ray = new Ray(player.playerCamera.transform.position, forward);
         RaycastHit[] hits = Physics.SphereCastAll(ray, player.GetComponent<DDAData>().weaponSpherecastRadius.Value, 100, hitLayer);
         // Bullet Fire

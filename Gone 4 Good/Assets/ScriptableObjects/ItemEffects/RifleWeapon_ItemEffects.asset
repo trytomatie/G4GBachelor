@@ -15,10 +15,16 @@ MonoBehaviour:
   attackDamage: 1
   weaponPrefab: {fileID: 1312551688009478, guid: da29ba09b0ae85b44a5c25f14124dc88, type: 3}
   fireRate: 0.125
+  projectileSpeed: 30
+  projectileSize: 0.2
+  penetration: 0
   spreadAccumulation: 1
   perfectShots: 3
   startSpread: 0
-  spreadLimit: 7
+  spreadLimit: 3
   spreadDecay: 15
+  maxAmmo: 240
+  maxClip: 30
+  reloadTime: 2.5
   skill: {fileID: 0}
   skill2: {fileID: 0}

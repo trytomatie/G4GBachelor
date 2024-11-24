@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FlowLine
   - SpawnPoint
+  - PlayerSpawnPoint
   layers:
   - Default
   - TransparentFX
