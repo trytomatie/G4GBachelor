@@ -15,3 +15,7 @@ MonoBehaviour:
   randomPitchRange: 0.09
   audioClips:
   - {fileID: 8300000, guid: a9ae9cec4c566dc4bb425c50976e8c5e, type: 3}
+  - {fileID: 8300000, guid: 72c57da6cecf0a84c8d0d552b908a5b5, type: 3}
+  - {fileID: 8300000, guid: a88d136e68f9a8442b99f5c49572bc26, type: 3}
+  - {fileID: 8300000, guid: ea2d5d4c85073ce4ba047565a71c8a41, type: 3}
+  - {fileID: 8300000, guid: 3ae1d8b5d0a2df94580fcb7799584d1f, type: 3}

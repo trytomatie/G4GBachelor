@@ -9854,8 +9854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgMusic:
-  - {fileID: 8300000, guid: 59a0a1680d66200488937d4dfad86e3f, type: 3}
-  - {fileID: 8300000, guid: adb2fac36b6170d4c88030d14e6d3428, type: 3}
+  - {fileID: 8300000, guid: 9222390cd4a84e84ca839494c9b5be5a, type: 3}
   audioLists:
   - {fileID: 11400000, guid: 8a175ac2387ac5b4d975f26d61e951a4, type: 2}
   - {fileID: 11400000, guid: 3e543ee6aa4acc242a8c3b82458a7368, type: 2}

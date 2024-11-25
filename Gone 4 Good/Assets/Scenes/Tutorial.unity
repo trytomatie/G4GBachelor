@@ -6873,7 +6873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 1
-  size: {x: 97.00255, y: 50.00133, z: 191.0013}
+  size: {x: 97.00254, y: 50.00133, z: 191.0013}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -6913,7 +6913,7 @@ Transform:
   m_GameObject: {fileID: 477093795}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.998726, y: -10.499334, z: -79.00063}
+  m_LocalPosition: {x: -40.99873, y: -10.499334, z: -79.00063}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27843,8 +27843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgMusic:
-  - {fileID: 8300000, guid: 59a0a1680d66200488937d4dfad86e3f, type: 3}
-  - {fileID: 8300000, guid: adb2fac36b6170d4c88030d14e6d3428, type: 3}
+  - {fileID: 8300000, guid: 9222390cd4a84e84ca839494c9b5be5a, type: 3}
   audioLists:
   - {fileID: 11400000, guid: 8a175ac2387ac5b4d975f26d61e951a4, type: 2}
   - {fileID: 11400000, guid: 3e543ee6aa4acc242a8c3b82458a7368, type: 2}

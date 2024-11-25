@@ -26,7 +26,6 @@ public class AudioManager : NetworkBehaviour
         {
             Destroy(this);
         }
-        PlayMusic();
     }
 
     public static void PlaySound(Vector3 position, SoundType type)
@@ -61,21 +60,29 @@ public class AudioManager : NetworkBehaviour
     }
 
     private int musicIndex = 0;
-    public void PlayMusic()
+    public void PlayMusic(int index)
     {
-        return;
-        if (musicIndex < instance.bgMusic.Length - 1)
-        {
-            musicIndex++;
-        }
-        else
-        {
-            musicIndex = 0;
-        }
         GetComponent<AudioSource>().clip = instance.bgMusic[musicIndex];
         GetComponent<AudioSource>().outputAudioMixerGroup = instance.musicAudioGroup;
         GetComponent<AudioSource>().Play();
-        Invoke("PlayMusic", GetComponent<AudioSource>().clip.length);
+    }
+
+    public void StopMusic(float delay)
+    {
+        StartCoroutine(FadeMusicOut(delay));
+    }
+
+    public IEnumerator FadeMusicOut(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        float startVolume = GetComponent<AudioSource>().volume;
+        while (GetComponent<AudioSource>().volume > 0)
+        {
+            GetComponent<AudioSource>().volume -= startVolume * Time.deltaTime * 0.125f;
+            yield return null;
+        }
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().volume = startVolume;
     }
 }
 

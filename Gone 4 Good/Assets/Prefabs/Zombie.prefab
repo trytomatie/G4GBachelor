@@ -451,7 +451,7 @@ MonoBehaviour:
   agent: {fileID: 1134306891324310806}
   currentState: 0
   target: {fileID: 0}
-  moveSpeed: 10
+  moveSpeed: 7
   currentMovespeed: 0
   climbSpeed: 0.8
   eyes: {fileID: 0}
@@ -459,6 +459,7 @@ MonoBehaviour:
   triggerAttack: 0
   debugPathfinding: 0
   hasPath: 0
+  spawnTime: 0
 --- !u!195 &1134306891324310806
 NavMeshAgent:
   m_ObjectHideFlags: 0

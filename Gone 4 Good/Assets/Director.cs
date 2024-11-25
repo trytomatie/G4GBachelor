@@ -46,7 +46,14 @@ public class Director : NetworkBehaviour
     {
         for(int i = 0; i < 200;i++)
         {
+            int areaMask = ~(1 << NavMesh.GetAreaFromName("TutorialArea"));
             int randomPosition = UnityEngine.Random.Range(0,navMeshVertices.Length);
+            NavMesh.SamplePosition(navMeshVertices[randomPosition], out NavMeshHit hit, 10, areaMask);
+            if (CollidesWithWall(ref hit))
+            {
+                i--;
+                continue;
+            }
             SpawnEnemyRpc(0, navMeshVertices[randomPosition], false);
         }
     }
@@ -64,6 +71,8 @@ public class Director : NetworkBehaviour
                 {
                     currentState = DirectorState.Peak;
                     buildUpTimer = 0;
+                    AudioManager.instance.PlayMusic(0);
+                    enemySpawnInterval = 0;
                 }
                 EnemySpawning();
                 break;
@@ -72,10 +81,11 @@ public class Director : NetworkBehaviour
                 if (peakTimer > peakTime)
                 {
                     currentState = DirectorState.Relax;
+                    AudioManager.instance.StopMusic(35);
                     peakTimer = 0;
                 }
-                enemySpawnInterval = 1;
-                EnemySpawning();
+                enemySpawnInterval = 2f;
+                EnemySpawning(20);
                 break;
             case DirectorState.Relax:
                 enemySpawnInterval = 30;
@@ -89,12 +99,12 @@ public class Director : NetworkBehaviour
         }
     }
 
-    private void EnemySpawning()
+    private void EnemySpawning(int amount = 4)
     {
         enemySpawnTimer += Time.deltaTime;
         if (enemySpawnTimer > enemySpawnInterval)
         {
-            List<Vector3> spawnPositions = GetRandomVertNearPlayer(4);
+            List<Vector3> spawnPositions = GetRandomVertNearPlayer(amount);
             foreach (Vector3 spawnPos in spawnPositions)
             {
                 if (spawnPos != Vector3.zero)
@@ -134,30 +144,30 @@ public class Director : NetworkBehaviour
             playerCameras[i] = players[i].GetComponent<FPSController>().playerCamera.GetComponent<Camera>();
         }
         // Sample a random position near the players
-        while(samples < 100)
+        while(samples < 5000)
         {
             Vector3 randomPos = averagePlayerPosition + UnityEngine.Random.onUnitSphere * 50 
                 + new Vector3(UnityEngine.Random.Range(-10,10),0, UnityEngine.Random.Range(-10, 10));
             NavMeshHit hit;
-            if(NavMesh.SamplePosition(randomPos,out hit,10,areaMask) && samples < 100)
+            if(NavMesh.SamplePosition(randomPos,out hit,10,areaMask) && samples < 5000)
             {
                 // check if position collides with wall
-                if(Physics.CheckBox(hit.position + new Vector3(0,1.5f,0),new Vector3(0.5f, 0.5f, 0.5f)))
+                if (CollidesWithWall(ref hit))
                 {
                     samples++;
                     continue;
                 }
                 foreach (Camera c in playerCameras)
                 {
-                    Vector3 viewPoint = c.WorldToViewportPoint(hit.position + new Vector3(0,1.5f,0));
+                    Vector3 viewPoint = c.WorldToViewportPoint(hit.position + new Vector3(0, 1.5f, 0));
                     if (viewPoint.x > 0 && viewPoint.x < 1 && viewPoint.y > 0 && viewPoint.y < 1)
                     {
-                        
+
                     }
-                    else 
+                    else
                     {
                         positions.Add(hit.position);
-                        if(positions.Count == amountOfPositions)
+                        if (positions.Count == amountOfPositions)
                         {
                             print("Samples needed for Spawn " + samples);
                             return positions;
@@ -171,11 +181,15 @@ public class Director : NetworkBehaviour
         return positions;
     }
 
+    private static bool CollidesWithWall(ref NavMeshHit hit)
+    {
+        return Physics.CheckBox(hit.position + new Vector3(0, 1.5f, 0), new Vector3(0.5f, 0.5f, 0.5f));
+    }
 
     [Rpc(SendTo.Server)]
     private void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
-        if(position == Vector3.zero || ZombieAI.zombies.Count >= 120) return;
+        if(position == Vector3.zero || ZombieAI.zombies.Count >= 1024) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
         if(aggroed)
         {
