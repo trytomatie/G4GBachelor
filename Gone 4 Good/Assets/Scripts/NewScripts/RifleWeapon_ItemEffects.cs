@@ -15,7 +15,7 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
     {
         if (isUsing)
         {
-            if(timeLastFired + fireRate < Time.time)
+            if(timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
             {
                 if (SubstractAmmo(source, item) == false) return;
                 source.GetComponent<FPSController>().TriggerAttack();

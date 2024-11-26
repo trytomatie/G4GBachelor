@@ -26,7 +26,7 @@ public class ShotgunProjectileWeapon_ItemEffects : ItemInteractionEffects
     {
         if (isUsing)
         {
-            if(timeLastFired + fireRate < Time.time)
+            if(timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
             {
                 PlayerController pc = source.GetComponent<PlayerController>();
                 currentSpread = 7;
