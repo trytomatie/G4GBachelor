@@ -60,14 +60,16 @@ public class AudioManager : NetworkBehaviour
     }
 
     private int musicIndex = 0;
-    public void PlayMusic(int index)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void PlayMusicRpc(int index)
     {
         GetComponent<AudioSource>().clip = instance.bgMusic[musicIndex];
         GetComponent<AudioSource>().outputAudioMixerGroup = instance.musicAudioGroup;
         GetComponent<AudioSource>().Play();
     }
 
-    public void StopMusic(float delay)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void StopMusicRpc(float delay)
     {
         StartCoroutine(FadeMusicOut(delay));
     }

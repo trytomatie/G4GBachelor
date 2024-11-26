@@ -71,7 +71,7 @@ public class Director : NetworkBehaviour
                 {
                     currentState = DirectorState.Peak;
                     buildUpTimer = 0;
-                    AudioManager.instance.PlayMusic(0);
+                    AudioManager.instance.PlayMusicRpc(0);
                     enemySpawnInterval = 0;
                 }
                 EnemySpawning();
@@ -81,7 +81,7 @@ public class Director : NetworkBehaviour
                 if (peakTimer > peakTime)
                 {
                     currentState = DirectorState.Relax;
-                    AudioManager.instance.StopMusic(35);
+                    AudioManager.instance.StopMusicRpc(35);
                     peakTimer = 0;
                 }
                 enemySpawnInterval = 2f;
