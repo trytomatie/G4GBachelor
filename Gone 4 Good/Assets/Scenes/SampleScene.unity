@@ -5444,7 +5444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 3521293848103354461
+    rid: 3521294343869825118
   m_Scenario:
     rid: -2
   m_IsScenarioSettingsFolded: 0
@@ -5454,7 +5454,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3521293848103354461
+    - rid: 3521294343869825118
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
         <Name>k__BackingField: 'Mobile 3.75G [HDSDPA+, H+, ''11]'
@@ -14187,6 +14187,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4170634492268072349, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 960763421
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6963707
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.71768236
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 91.727
+      objectReference: {fileID: 0}
     - target: {fileID: 5193540830601498113, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -14227,21 +14243,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6469682530084874455, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3194261971
+      objectReference: {fileID: 0}
     - target: {fileID: 6652047728759785708, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1839260689
       objectReference: {fileID: 0}
-    - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_BoundingSphereOverride.w
-      value: -7.6434776e+33
+    - target: {fileID: 7172768398549316750, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1092945125
       objectReference: {fileID: 0}
     - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_BoundingSphereOverride.x
+      propertyPath: m_BoundingSphereOverride.w
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 3e-45
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

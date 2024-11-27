@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -65,6 +66,10 @@ public class GameUI : MonoBehaviour
 
     [HideInInspector] public Animator interfaceAnimator;
 
+    [Header("Options")]
+    public AudioMixerGroup musicAudioGroup;
+    public AudioMixerGroup sfxAudioGroup;
+
     // Singleton
     public static GameUI instance;
 
@@ -91,6 +96,7 @@ public class GameUI : MonoBehaviour
         }
         generalUI.SetActive(true);
         pauseMenu.SetActive(false);
+        Options.Initilize(musicAudioGroup, sfxAudioGroup);
         Options.LoadOptions();
         // Map pause menu
         InputSystem.GetInputActionMapPlayer().IngameUI.Escape.performed += ctx => TogglePauseMenu(!pauseMenu.activeSelf);

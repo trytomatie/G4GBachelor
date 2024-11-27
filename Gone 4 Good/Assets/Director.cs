@@ -187,7 +187,7 @@ public class Director : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
+    public void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
         if(position == Vector3.zero || ZombieAI.zombies.Count >= 1024) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
