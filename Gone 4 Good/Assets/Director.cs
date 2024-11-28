@@ -193,7 +193,21 @@ public class Director : NetworkBehaviour
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
         if(aggroed)
         {
-            enemyInstance.GetComponent<ZombieAI>().target = NetworkGameManager.GetRandomPlayer();
+            GameObject[] allConnectedPlayers = NetworkGameManager.GetAllConnectedPlayers();
+            int[] targetingRolls = new int[allConnectedPlayers.Length];
+            for(int i =0; i < allConnectedPlayers.Length; i++)
+            {
+                targetingRolls[i] = Mathf.RoundToInt(UnityEngine.Random.Range(0, 100) * allConnectedPlayers[i].GetComponent<DDAData>().enemyTargetingProbability.Value);
+            }
+            int targetIndex = 0;
+            for(int i = 0; i < targetingRolls.Length; i++)
+            {
+                if (targetingRolls[i] > targetingRolls[targetIndex])
+                {
+                    targetIndex = i;
+                }
+            }
+            enemyInstance.GetComponent<ZombieAI>().target = allConnectedPlayers[targetIndex];
         }
         enemyInstance.GetComponent<NetworkObject>().Spawn();
     }

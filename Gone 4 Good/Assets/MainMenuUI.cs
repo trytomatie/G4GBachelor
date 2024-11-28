@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MainMenuUI : MonoBehaviour
 
     public GameObject mainMenu;
     public GameObject connectionMenu;
+
+    public Toggle toggleDDA;
     void Start()
     {
         // load the player name
@@ -65,6 +68,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartHost()
     {
+        NetworkGameManager.enableDDA = toggleDDA.isOn;
         // chagne scene and start host once scene is loaded
         SceneManager.sceneLoaded += (scene, mode) =>
         {
@@ -76,6 +80,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void ConnectToRelay()
     { 
+        NetworkGameManager.enableDDA = toggleDDA.isOn;
         // chagne scene and start host once scene is loaded
         SceneManager.sceneLoaded += (scene, mode) =>
         {

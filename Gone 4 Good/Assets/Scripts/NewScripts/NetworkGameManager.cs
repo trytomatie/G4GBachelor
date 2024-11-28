@@ -15,7 +15,7 @@ public class NetworkGameManager : NetworkBehaviour
 
     // Singleton
     private static NetworkGameManager instance;
-
+    public static bool enableDDA = false;
 
 
     public void Awake()
