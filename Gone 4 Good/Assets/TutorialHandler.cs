@@ -136,6 +136,7 @@ public class TutorialHandler : NetworkBehaviour
         StartCoroutine(SurvivalFight());
         FPSController player = FindObjectOfType<FPSController>();
         player.GetComponent<StatusManager>().OnDeath.AddListener(EndSurvivalFight);
+        AudioManager.instance.PlayMusicRpc(0);
     }
 
     public void EndSurvivalFight()
