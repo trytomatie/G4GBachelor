@@ -20,6 +20,7 @@ public class FPSController : NetworkBehaviour, IActor
     public Transform fpsWeaponPivot;
     public Transform fpsgunbarrelEnd;
     public Transform gunBarrelEnd;
+    public GameObject equipedObject;
     public GameObject playerCamera;
     public GameObject fpsOverlayCamera;
     public Transform playerModel;
@@ -53,6 +54,7 @@ public class FPSController : NetworkBehaviour, IActor
 
     public override void OnNetworkSpawn()
     {
+
         if (IsLocalPlayer)
         {
             playerName.Value = PlayerPrefs.GetString("PlayerName", "Unknown");
@@ -190,6 +192,7 @@ public class FPSController : NetworkBehaviour, IActor
         GameUI gameUI = playerSetupInstance.GetComponentInChildren<GameUI>();
         gameUI.inventoryUI.syncedInventory = inventory;
         gameUI.inventoryUI.syncedInventory.onInventoryUpdate += gameUI.inventoryUI.UpdateUI;
+        flashLightRef.transform.parent = playerCamera.transform;
     }
 
     private IEnumerator SyncAfterDelay()
@@ -417,10 +420,10 @@ public class FPSController : NetworkBehaviour, IActor
 
         }
     }
-    public void TriggerAttack()
+    public void TriggerAttack(bool value)
     {
-        anim.SetTrigger("Attack");
-        fpsAnimator.SetTrigger("Attack");
+        anim.SetBool("Attack", value);
+        fpsAnimator.SetBool("Attack", value);
     }
 
     public IEnumerator ReloadRoutine()

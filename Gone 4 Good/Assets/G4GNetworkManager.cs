@@ -14,6 +14,7 @@ public class G4GNetworkManager : NetworkManager
     public UnityTransport relayTransport;
     public string relayCode;
 
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -78,6 +79,10 @@ public class G4GNetworkManager : NetworkManager
                 allocation.Key,
                 allocation.ConnectionData
             );
+            Singleton.OnClientConnectedCallback += (clientId) =>
+            {
+                NetworkGameManager.Instance.RequestSpawnOnServerRpc(clientId);
+            };
             StartHost();
 
 
@@ -109,6 +114,7 @@ public class G4GNetworkManager : NetworkManager
                 joinAllocation.HostConnectionData
                 );
             NetworkManager.Singleton.StartClient();
+
         }
         catch (RelayServiceException e)
         {

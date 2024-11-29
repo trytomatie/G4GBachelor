@@ -148,6 +148,9 @@ public class TutorialHandler : NetworkBehaviour
 
     public void BackToMainMenu()
     {
+        // Close Server
+        networkManager.Shutdown();
+        Destroy(networkManager.gameObject);
         SceneManager.LoadScene("MainMenu");
     }
 

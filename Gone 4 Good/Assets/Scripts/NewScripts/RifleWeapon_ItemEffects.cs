@@ -18,9 +18,10 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
             if(timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
             {
                 if (SubstractAmmo(source, item) == false) return;
-                source.GetComponent<FPSController>().TriggerAttack();
+
                 FPSController pc = source.GetComponent<FPSController>();
-                if(perfectShotCounter < perfectShots)
+                pc.TriggerAttack(true);
+                if (perfectShotCounter < perfectShots)
                 {
                     currentSpread = 0;
                     perfectShotCounter++;
@@ -33,6 +34,11 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
                 NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40,60), 3);
             }
         }
+        else
+        {
+            source.GetComponent<FPSController>().TriggerAttack(false);
+        }
+
     }
 
     public override void ConstantUpdate(GameObject source, Item item)
@@ -47,7 +53,7 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
 
     public override void OnUseEnd(GameObject source,Item item)
     {
-
+        source.GetComponent<FPSController>().TriggerAttack(false);
     }
 
     public override string EffectDescription(Item item)

@@ -46,10 +46,12 @@ public class NetworkSpellManager : NetworkBehaviour
         if(sourcePlayer == NetworkManager.Singleton.LocalClientId)
         {
             NetworkVFXManager.Instance.SpawnVFXRpc(1,player.fpsgunbarrelEnd.position,Quaternion.identity);
+            NetworkVFXManager.Instance.SpawnVFXRpc(3, player.fpsgunbarrelEnd.position, player.fpsgunbarrelEnd.rotation);
         }
         else
         {
             NetworkVFXManager.Instance.SpawnVFXRpc(1, player.gunBarrelEnd.position, Quaternion.identity);
+            NetworkVFXManager.Instance.SpawnVFXRpc(3, player.gunBarrelEnd.position, player.gunBarrelEnd.rotation);
         }
         AudioManager.instance.PlaySoundFromAudiolistRpc(1, player.transform.position, 1);
         float distance = 100;

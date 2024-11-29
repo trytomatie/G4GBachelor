@@ -1,11 +1,9 @@
 ﻿using MoreMountains.Feedbacks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.AI.Navigation;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.AI;
 
 
 public class NetworkGameManager : NetworkBehaviour
@@ -16,7 +14,9 @@ public class NetworkGameManager : NetworkBehaviour
     // Singleton
     private static NetworkGameManager instance;
     public static bool enableDDA = false;
+    public static string connectedPlayerName;
 
+    public GameObject playerPrefab;
 
     public void Awake()
     {
@@ -33,6 +33,21 @@ public class NetworkGameManager : NetworkBehaviour
     void Start()
     {
 
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void RequestSpawnOnServerRpc(ulong clientId)
+    {
+        SpawnPlayerOnServerRpc(PlayerPrefs.GetString("PlayerName", "Unknown"),clientId);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SpawnPlayerOnServerRpc(FixedString128Bytes value,ulong clientId)
+    {
+        string playerName = value.ToString();
+        if (playerName == "Spectator1337") return;
+        GameObject go = Instantiate(playerPrefab);
+        go.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
     }
 
     // Update is called once per frame

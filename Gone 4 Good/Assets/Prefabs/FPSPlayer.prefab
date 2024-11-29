@@ -64,7 +64,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 912338877903769717}
   - {fileID: 8696119211290258891}
   - {fileID: 5181744560090433208}
   - {fileID: 8673050666129876002}
@@ -6564,6 +6563,7 @@ MonoBehaviour:
   fpsWeaponPivot: {fileID: 4693937487743868701}
   fpsgunbarrelEnd: {fileID: 0}
   gunBarrelEnd: {fileID: 0}
+  equipedObject: {fileID: 0}
   playerCamera: {fileID: 1262847237521022063}
   fpsOverlayCamera: {fileID: 7656948438513142838}
   playerModel: {fileID: 4638897241558938560}
@@ -6591,7 +6591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6f2051bed34f94e858d32f49be5c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adjustmentLevel: 3
+  adjustmentLevel:
+    m_InternalValue: -1
   damgeReceivedBias:
     m_InternalValue: 0.5
   maxDamageInstancesPerSecond:
@@ -7051,13 +7052,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6768555352074643716}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000004768371, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.11501281, y: 0.010996637, z: 0.02799534, w: 0.9929086}
+  m_LocalPosition: {x: -1.1, y: 12.9, z: 29.3}
+  m_LocalScale: {x: 99.99996, y: 100, z: 99.99994}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7873218735915288138}
-  m_Father: {fileID: 3665491995972889411}
+  m_Father: {fileID: 4647232457284545536}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &330160992653614195
 Light:
@@ -15432,6 +15433,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4066769422669792, guid: f11597d739665a54992b8339873fd7bc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5325803784460877965}
+    - targetCorrespondingSourceObject: {fileID: 4840003218823034, guid: f11597d739665a54992b8339873fd7bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 912338877903769717}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1781282677531552, guid: f11597d739665a54992b8339873fd7bc, type: 3}
       insertIndex: -1

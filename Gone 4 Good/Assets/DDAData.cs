@@ -10,27 +10,27 @@ public class DDAData : NetworkBehaviour
 {
     [Header("DDA Parameters")]
     // The Level of Adjustment the DDA System is currently in [1...5]
-    public NetworkVariable<int> adjustmentLevel = new NetworkVariable<int>(-1);
+    public NetworkVariable<int> adjustmentLevel = new NetworkVariable<int>(-1,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
     [Header("Defensive Parameters")]
     // Weights the randomness favoring lower or higher damage recevied [0...1]
-    public NetworkVariable<float> damgeReceivedBias = new NetworkVariable<float>(0.5f); // Works
+    public NetworkVariable<float> damgeReceivedBias = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Works
 
     // Maximum number of Damage Instances per Second [1...10]
-    public NetworkVariable<int> maxDamageInstancesPerSecond = new NetworkVariable<int>(5); // Workds
+    public NetworkVariable<int> maxDamageInstancesPerSecond = new NetworkVariable<int>(5, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Workds
 
     // Probabilty of beeing Targeted by Enemies [0...1]
-    public NetworkVariable<float> enemyTargetingProbability = new NetworkVariable<float>(0.5f); // works
+    public NetworkVariable<float> enemyTargetingProbability = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // works
 
     // Navmesh Avoidance Radius [0.5...1]
-    public NetworkVariable<float> navmeshAvoidanceRadiusMultiplier = new NetworkVariable<float>(0.5f); // works
+    public NetworkVariable<float> navmeshAvoidanceRadiusMultiplier = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // works
 
     [Header("Offensive Parameters")]
     // The number of hitpoints a Target has to be reduced to be defeated [0...20]
-    public NetworkVariable<int> damageOutgoingExecuteTreshold = new NetworkVariable<int>(0); // Works
+    public NetworkVariable<int> damageOutgoingExecuteTreshold = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Works
 
     // Spherecast Radius for Weapons Calculation [0...1.5]
-    public NetworkVariable<float> weaponSpherecastRadius = new NetworkVariable<float>(0.5f); // Works
+    public NetworkVariable<float> weaponSpherecastRadius = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Works
 
     private void OnConnectedToServer()
     {
@@ -57,7 +57,7 @@ public class DDAData : NetworkBehaviour
                 enemyTargetingProbability.Value = 0.25f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.5f;
                 damageOutgoingExecuteTreshold.Value = 20;
-                weaponSpherecastRadius.Value = 0.5f;
+                weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 2:
                 damgeReceivedBias.Value = 0.25f;
@@ -65,7 +65,7 @@ public class DDAData : NetworkBehaviour
                 enemyTargetingProbability.Value = 0.4f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.2f;
                 damageOutgoingExecuteTreshold.Value = 15;
-                weaponSpherecastRadius.Value = 0.2f;
+                weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 3:
                 damgeReceivedBias.Value = 0.4f;
@@ -73,7 +73,7 @@ public class DDAData : NetworkBehaviour
                 enemyTargetingProbability.Value = 0.45f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.1f;
                 damageOutgoingExecuteTreshold.Value = 10;
-                weaponSpherecastRadius.Value = 0.2f;
+                weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 4: // Normal
                 damgeReceivedBias.Value = 0.5f;

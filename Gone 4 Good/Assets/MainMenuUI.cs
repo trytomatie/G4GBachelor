@@ -79,7 +79,7 @@ public class MainMenuUI : MonoBehaviour
     }
 
     public void ConnectToRelay()
-    { 
+    {
         NetworkGameManager.enableDDA = toggleDDA.isOn;
         // chagne scene and start host once scene is loaded
         SceneManager.sceneLoaded += (scene, mode) =>
@@ -89,5 +89,6 @@ public class MainMenuUI : MonoBehaviour
             networkManager.JoinRelayGame(relayCodeInputField.text);
         };
         SceneManager.LoadScene("SampleScene");
+
     }
 }

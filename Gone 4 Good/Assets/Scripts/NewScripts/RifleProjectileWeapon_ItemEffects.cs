@@ -14,10 +14,11 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     {
         if (isUsing)
         {
-            if(timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
+            FPSController pc = source.GetComponent<FPSController>();
+            if (timeLastFired + fireRate < Time.time && !source.GetComponent<FPSController>().isReloading)
             {
                 if(SubstractAmmo(source,item) == false) return;
-                FPSController pc = source.GetComponent<FPSController>();
+
                 if(perfectShotCounter < perfectShots)
                 {
                     currentSpread = 0;
@@ -28,7 +29,7 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                pc.anim.SetTrigger("Attack");
+                pc.anim.SetBool("Attack", true);
                 slownessDebuff.duration = 0.3f;
                 if(!pc.sm.statusEffects.Contains(slownessDebuff))
                 {
@@ -38,6 +39,10 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
                 NetworkSpellManager.Instance.FireProjectileRpc(NetworkGameManager.GetLocalPlayerId, currentSpread, pc.sm.AttackDamage, currentSpread,projectileSize,projectileSpeed, penetration, 1);
                 NetworkVFXManager.Instance.SpawnVFXRpc(1, pc.gunBarrelEnd.transform.position, source.transform.rotation);
                 AudioManager.instance.PlaySoundFromAudiolistRpc(1, pc.gunBarrelEnd.transform.position, 1);
+            }
+            else
+            {
+                pc.anim.SetBool("Attack", false);
             }
         }
     }
@@ -57,6 +62,8 @@ public class RifleProjectileWeapon_ItemEffects : GunInteractionEffects
     public override void OnUseEnd(GameObject source,Item item)
     {
         base.OnUseEnd(source,item);
+        FPSController pc = source.GetComponent<FPSController>();
+        pc.anim.SetBool("Attack", false);
     }
 
     public override string EffectDescription(Item item)

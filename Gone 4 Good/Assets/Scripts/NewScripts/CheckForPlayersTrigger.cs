@@ -6,19 +6,15 @@ using UnityEngine;
 public class CheckForPlayersTrigger : NetworkBehaviour
 {
     private List<FPSController> playersInTrigger = new List<FPSController>();
-    private BoxCollider myCollider;
     private bool triggered = false;
     public CanvasGroup endCanvas;
     private void Start()
     {
-        if(!IsServer)
-        {
-            enabled = false;
-        }
-        myCollider = GetComponent<BoxCollider>();
+
     }
     private void Update()
     {
+        if (NetworkGameManager.Instance.connectedClients.Values.Count == 0) return;
         if (playersInTrigger.Count >= NetworkGameManager.Instance.connectedClients.Values.Count && !triggered)
         {
             EndTheGame();
@@ -45,6 +41,8 @@ public class CheckForPlayersTrigger : NetworkBehaviour
     {
         triggered = true;
         StartCoroutine(ShowCanvaGroup());
+        // force show cursor
+        GameUI.instance.forceMouseVisible = true;
     }
 
     private IEnumerator ShowCanvaGroup()
@@ -56,6 +54,16 @@ public class CheckForPlayersTrigger : NetworkBehaviour
             endCanvas.alpha += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public void OpenFormAndExit()
+    {
+        string url = "https://www.google.com/";
+
+        // Open url in default browswer
+        Application.OpenURL(url);
+        NetworkManager.Singleton.Shutdown();
+        Application.Quit();
     }
 
 

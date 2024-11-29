@@ -43,6 +43,10 @@ public class NetworkItemEffectsManager : NetworkBehaviour
         {
             Destroy(source.GetComponent<FPSController>().WeaponPivot.GetChild(0).gameObject);
         }
+        if (source.GetComponent<FPSController>().fpsWeaponPivot.childCount > 0)
+        {
+            Destroy(source.GetComponent<FPSController>().fpsWeaponPivot.GetChild(0).gameObject);
+        }
 
         GameObject weaponPrefab = weaponPrefabs.FirstOrDefault(weapon => weapon.name == weaponPrefabName);
         if(weaponPrefab == null)
