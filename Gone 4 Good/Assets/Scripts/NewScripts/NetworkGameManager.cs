@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class NetworkGameManager : NetworkBehaviour
@@ -17,6 +18,8 @@ public class NetworkGameManager : NetworkBehaviour
     public static string connectedPlayerName;
 
     public GameObject playerPrefab;
+
+    public Dictionary<GameObject, NavMeshPath> calculatedPaths = new Dictionary<GameObject, NavMeshPath>();
 
     public void Awake()
     {
@@ -35,8 +38,8 @@ public class NetworkGameManager : NetworkBehaviour
 
     }
 
-    [Rpc(SendTo.Owner)]
-    public void RequestSpawnOnServerRpc(ulong clientId)
+    [Rpc(SendTo.SpecifiedInParams)]
+    public void RequestSpawnOnServerRpc(ulong clientId,RpcParams rpcParams = default)
     {
         SpawnPlayerOnServerRpc(PlayerPrefs.GetString("PlayerName", "Unknown"),clientId);
     }
@@ -44,6 +47,7 @@ public class NetworkGameManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnPlayerOnServerRpc(FixedString128Bytes value,ulong clientId)
     {
+        print(value.ToString());
         string playerName = value.ToString();
         if (playerName == "Spectator1337") return;
         GameObject go = Instantiate(playerPrefab);
@@ -60,6 +64,29 @@ public class NetworkGameManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             NetworkManager.Singleton.StartClient();
+        }
+        return;
+        if(IsServer)
+        {
+            CalculateNavmeshPath();
+        }
+    }
+
+    public void CalculateNavmeshPath()
+    {
+        foreach (var player in connectedClients.Values)
+        {
+            NavMeshPath path = new NavMeshPath();
+            NavMesh.CalculatePath(player.gameObject.transform.position, GetRandomPlayer().transform.position, NavMesh.AllAreas, path);
+            // Override if already added
+            if (calculatedPaths.ContainsKey(player.gameObject))
+            {
+                calculatedPaths[player.gameObject] = path;
+            }
+            else
+            {
+                calculatedPaths.Add(player.gameObject, path);
+            }
         }
     }
 

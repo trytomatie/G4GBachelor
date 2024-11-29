@@ -81,7 +81,8 @@ public class G4GNetworkManager : NetworkManager
             );
             Singleton.OnClientConnectedCallback += (clientId) =>
             {
-                NetworkGameManager.Instance.RequestSpawnOnServerRpc(clientId);
+
+                NetworkGameManager.Instance.RequestSpawnOnServerRpc(clientId,RpcTarget.Single(clientId,RpcTargetUse.Temp));
             };
             StartHost();
 

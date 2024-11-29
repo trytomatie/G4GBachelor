@@ -244,6 +244,23 @@ public class ZombieAI : NetworkBehaviour
 
     }
 
+    public void PathfindToDestination(GameObject go)
+    {
+        if (agent.isOnOffMeshLink)
+        {
+            return;
+        }
+        if(NetworkGameManager.Instance.calculatedPaths.ContainsKey(go))
+        {
+            agent.SetPath(NetworkGameManager.Instance.calculatedPaths[go]);
+            return;
+        }
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(go.transform.position, path);
+        agent.SetPath(path);
+
+    }
+
     public void Attack()
     {
         StartCoroutine(InvokeAttack());
@@ -383,7 +400,7 @@ public class ChaseState : State
     private float attackCooldown = 1.5f;
     private float[] attackspeed = { 2f, 2, 3 };
     private float pathfindUpdateTimer;
-    private float[] pathindUpdateTimes = { 0, 1, 5 };
+    private float[] pathindUpdateTimes = { 0.25f, 1, 5 };
     private float pathfindUpdateTime = 0;
     private float groanTimer = 0;
 
@@ -406,11 +423,11 @@ public class ChaseState : State
             case >= 40:
                 pathfindUpdateTime = pathindUpdateTimes[2];
                 break;
-            case >= 20:
+            case >= 10:
                 pathfindUpdateTime = pathindUpdateTimes[1];
                 break;
             default:
-                pathfindUpdateTime = Time.deltaTime;
+                pathfindUpdateTime = Random.Range(0,0.25f);
                 break;
         }
         if(pathfindUpdateTime < pathfindUpdateTimer)
@@ -433,7 +450,6 @@ public class ChaseState : State
                 int rnd = Random.Range(0, 3);
                 pc.Attack();
                 attackTimer = Time.time;
-                pc.animator.speed = attackspeed[rnd];
                 pc.animator.SetTrigger("Attack");
                 pc.animator.SetInteger("AttackAnimation", rnd);
                 //pc.PathfindToDestination(pc.transform.position);
@@ -446,4 +462,7 @@ public class ChaseState : State
     {
 
     }
+
+   
 }
+

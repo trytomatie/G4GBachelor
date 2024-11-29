@@ -42,7 +42,7 @@ public class PerformanceEvaluationHandler : MonoBehaviour
             string dataAsJson = File.ReadAllText(pathTutorial);
             PerformanceStack[] loadedData = JsonConvert.DeserializeObject<PerformanceStack[]>(dataAsJson);
             hostageSituation = loadedData[0];
-            reactionTest = loadedData[1];
+            reactionTest = loadedData[1];   
             survivalTest = loadedData[2];
         }
         else

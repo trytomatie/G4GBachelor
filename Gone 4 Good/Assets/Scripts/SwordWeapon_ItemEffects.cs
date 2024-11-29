@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static Unity.VisualScripting.Member;
 
 [CreateAssetMenu(fileName = "SwordWeapon_ItemEffects", menuName = "ScriptableObjects/ItemInteractionEffects/SwordWeapon_ItemEffects", order = 1)]
 public class SwordWeapon_ItemEffects : ItemInteractionEffects
