@@ -46,12 +46,12 @@
             ]
         },
         {
-            "question": "Do you regularly use visual or audio cues to inform your decisions in-game?",
+            "question": "How well do you balance focusing on your objectives with reacting to unexpected events in-game?",
             "answers": [
-                "Yes, I rely heavily on every sound and visual cue.",
-                "I use them often, but I don't rely solely on them.",
-                "I notice some cues, but I play intuitively too.",
-                "I mostly follow the main action and don't focus on cues."
+                "I balance both seamlessly, staying effective in every situation.",
+                "I manage well but occasionally miss unexpected details.",
+                "I focus more on objectives and adjust if necessary.",
+                "I take things as they come and prioritize enjoyment."
             ]
         },
         {

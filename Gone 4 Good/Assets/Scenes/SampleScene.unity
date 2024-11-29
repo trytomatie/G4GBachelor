@@ -13138,9 +13138,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1696385957108468188, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+    - target: {fileID: 3425546509992586189, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 38734932
+      value: 44499258
       objectReference: {fileID: 0}
     - target: {fileID: 3591540763937981523, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: m_Name
@@ -13149,18 +13149,6 @@ PrefabInstance:
     - target: {fileID: 4170634492268072349, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 960763421
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6963707
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.71768236
-      objectReference: {fileID: 0}
-    - target: {fileID: 4616704160430448478, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 91.727
       objectReference: {fileID: 0}
     - target: {fileID: 5193540830601498113, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13206,10 +13194,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3194261971
       objectReference: {fileID: 0}
-    - target: {fileID: 6652047728759785708, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 1839260689
-      objectReference: {fileID: 0}
     - target: {fileID: 6981607852364080100, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2903160123
@@ -13217,18 +13201,6 @@ PrefabInstance:
     - target: {fileID: 7172768398549316750, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1092945125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_BoundingSphereOverride.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_BoundingSphereOverride.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8989533090615328512, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
-      propertyPath: m_BoundingSphereOverride.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

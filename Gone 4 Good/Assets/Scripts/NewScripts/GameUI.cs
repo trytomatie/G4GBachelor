@@ -205,6 +205,16 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public void ExitToMainMenu()
+    {
+        if (NetworkManager.Singleton.IsServer)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+        // load Main menu
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
     public void SetInterfaceState(int state)
     {
         interfaceAnimator.SetInteger("State", state);

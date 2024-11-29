@@ -170,7 +170,7 @@ public class BartleTestHandler : MonoBehaviour
         switch(score)
         {
             case > 50:
-                return "Competitive";
+                return "Competitive Gamer";
             case > 35:
                 return "Advanced Teamplayer";
             case > 30:
@@ -178,7 +178,7 @@ public class BartleTestHandler : MonoBehaviour
             case > 20:
                 return "Casual Gamer";
             case >= 0:
-                return "Exploration/Relaxed Game";
+                return "Relaxed Gamer";
         }
         return "Error";
     }
@@ -191,9 +191,9 @@ public class BartleTestHandler : MonoBehaviour
                 return "You’re at the top of your game! Your fast reactions, dedication to skill mastery, and strategic mindset show that you’re serious about improvement. You thrive under pressure and adapt quickly to changes, keeping one step ahead of the competition.";
             case > 35:
                 return "Your team-oriented skills are strong! You’re comfortable communicating, sharing intel, and leading when needed, helping your team succeed. With a bit more focus on personal skills, you’d be an unstoppable teammate.";
-            case > 30:
+            case > 25:
                 return "You have a versatile playstyle, balancing personal skill with teamwork. You adapt well and enjoy playing competitively, while still having a casual approach. Whether solo or with a team, you can hold your own";
-            case > 20:
+            case > 15:
                 return "You play for the fun of it! While you might not focus heavily on drills or map knowledge, you enjoy each game as it comes. Your spontaneous playstyle is perfect for relaxed gaming sessions.";
             case >= 0:
                 return "You prefer to play at your own pace, discovering and enjoying each game’s world. Strategy and drills aren’t a priority. You’re here for the journey and enjoy the surprises along the way.";
