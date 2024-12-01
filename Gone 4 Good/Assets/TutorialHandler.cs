@@ -187,6 +187,8 @@ public class TutorialHandler : NetworkBehaviour
         }
         if (position == Vector3.zero || ZombieAI.zombies.Count >= 120) return null;
         GameObject enemyInstance = Instantiate(_zombiePrefab, position, Quaternion.identity);
+        float scale = UnityEngine.Random.Range(0.8f, 1.2f);
+        enemyInstance.transform.localScale = new Vector3(scale, scale, scale);
         if (aggroed == 1)
         {
             enemyInstance.GetComponent<ZombieAI>().target = NetworkGameManager.GetRandomPlayer();

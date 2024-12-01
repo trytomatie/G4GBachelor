@@ -5964,7 +5964,7 @@ Transform:
   m_GameObject: {fileID: 4960024325463466728}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37, y: -0.7, z: 2.2700005}
+  m_LocalPosition: {x: -0.01, y: -0.7, z: 2.2700005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14153,13 +14153,6 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 1
     OriginatingState: 2048251345
-    DestinationState: 210696763
-    TransitionDuration: 0.25
-    TriggerNameHash: 1080829965
-    TransitionIndex: 0
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 2048251345
     DestinationState: -1525363869
     TransitionDuration: 0
     TriggerNameHash: -1525363869
@@ -14167,17 +14160,10 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 1
     OriginatingState: 210696763
-    DestinationState: 210696763
-    TransitionDuration: 0.12
-    TriggerNameHash: 1080829965
-    TransitionIndex: 1
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 210696763
     DestinationState: -1525363869
     TransitionDuration: 0.25
     TriggerNameHash: -1525363869
-    TransitionIndex: 2
+    TransitionIndex: 1
   m_Animator: {fileID: 3399288148259794583}
 --- !u!114 &98834484359643977
 MonoBehaviour:
@@ -15663,13 +15649,6 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 1
     OriginatingState: 2048251345
-    DestinationState: 210696763
-    TransitionDuration: 0.25
-    TriggerNameHash: 1080829965
-    TransitionIndex: 0
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 2048251345
     DestinationState: -1525363869
     TransitionDuration: 0
     TriggerNameHash: -1525363869
@@ -15677,17 +15656,10 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 1
     OriginatingState: 210696763
-    DestinationState: 210696763
-    TransitionDuration: 0.12
-    TriggerNameHash: 1080829965
-    TransitionIndex: 1
-  - IsCrossFadeExit: 0
-    Layer: 1
-    OriginatingState: 210696763
     DestinationState: -1525363869
     TransitionDuration: 0.25
     TriggerNameHash: -1525363869
-    TransitionIndex: 2
+    TransitionIndex: 1
   m_Animator: {fileID: 4700966721635612080}
 --- !u!114 &8273692736405204457
 MonoBehaviour:

@@ -58,8 +58,8 @@ public class NetworkItemEffectsManager : NetworkBehaviour
         Transform fpsWeaponPivot = source.GetComponent<FPSController>().FPSWeaponPivot;
         if(source.GetComponent<NetworkObject>().OwnerClientId == NetworkManager.LocalClientId)
         {
-            InstantiateWeaponToPivot(source, weaponPrefab, fpsWeaponPivot, 0);
-            InstantiateWeaponToPivot(source, weaponPrefab, weaponPivot, 2);
+            InstantiateWeaponToPivot(source, weaponPrefab,  fpsWeaponPivot, 0);
+            InstantiateWeaponToPivot(source, weaponPrefab,  weaponPivot, 2);
         }
         else
         {
@@ -68,7 +68,7 @@ public class NetworkItemEffectsManager : NetworkBehaviour
 
     }
 
-    private void InstantiateWeaponToPivot(GameObject source,GameObject weaponPrefab, Transform weaponPivot,int fps)
+    private void InstantiateWeaponToPivot(GameObject source,GameObject weaponPrefab,Transform weaponPivot,int fps)
     {
         GameObject instaniatedWeapon = Instantiate(weaponPrefab, weaponPivot);
         instaniatedWeapon.transform.localScale = weaponPrefab.transform.localScale;

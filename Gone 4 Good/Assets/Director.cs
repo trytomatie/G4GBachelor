@@ -1,13 +1,8 @@
-using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Linq;
-using UnityEngine.Splines;
-using Unity.Mathematics;
-using NUnit.Framework;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
+using UnityEngine.UIElements;
 
 public class Director : NetworkBehaviour
 {
@@ -56,6 +51,7 @@ public class Director : NetworkBehaviour
             }
             SpawnEnemyRpc(0, navMeshVertices[randomPosition], false);
         }
+        ZombieAI.zombies.Clear();
     }
 
     // Update is called once per frame
@@ -189,9 +185,11 @@ public class Director : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
-        if(position == Vector3.zero || ZombieAI.zombies.Count >= 1024) return;
+        if(position == Vector3.zero || ZombieAI.zombies.Count >= 120) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
-        if(aggroed)
+        //float scale = UnityEngine.Random.Range(0.8f, 1.2f);
+        //enemyInstance.transform.localScale = new Vector3(scale, scale, scale);
+        if (aggroed)
         {
             GameObject[] allConnectedPlayers = NetworkGameManager.GetAllConnectedPlayers();
             int[] targetingRolls = new int[allConnectedPlayers.Length];

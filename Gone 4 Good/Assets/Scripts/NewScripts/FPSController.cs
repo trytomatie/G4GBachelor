@@ -1,10 +1,8 @@
 using Cinemachine;
 using System.Collections;
 using Unity.Collections;
-using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class FPSController : NetworkBehaviour, IActor
 {
@@ -143,7 +141,7 @@ public class FPSController : NetworkBehaviour, IActor
                 currentAmmo = item.currentAmmo,
                 currentClip = item.currentClip
             };
-            DropEquipedItemRpc(NetworkObject, inventory.CurrentHotbarItem.id, data);
+            DropEquipedItemRpc(playerCamera.transform.position,playerCamera.transform.forward, inventory.CurrentHotbarItem.id, data);
             inventory.items[inventory.currentHotbarIndex] = new Item(0, 0);
             inventory.onInventoryUpdate?.Invoke(inventory.currentHotbarIndex);
         }
@@ -162,27 +160,16 @@ public class FPSController : NetworkBehaviour, IActor
     }
 
     [Rpc(SendTo.Server)]
-    public void DropEquipedItemRpc(NetworkObjectReference reference, int itemId, NetworkItemData networkItemData)
+    public void DropEquipedItemRpc(Vector3 pos, Vector3 direction, int itemId, NetworkItemData networkItemData)
     {
-        GameObject playerGo;
-        if(reference.TryGet(out NetworkObject playerNetworkObject))
-        {
-            playerGo = playerNetworkObject.gameObject;
-            FPSController player = playerGo.GetComponent<FPSController>();
-            print(itemId);
-            print(ItemDatabase.instance.items[itemId].droppedPrefab);
-            GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab, player.transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-            NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
-            _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
-            networkObject.Spawn();
-            Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
-            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
-            rb.linearVelocity = UnityEngine.Random.Range(1, 2) * player.playerCamera.transform.forward;
-        }
-        else
-        {
-            Debug.LogError("Could not get player object");
-        }
+        print(ItemDatabase.instance.items[itemId].droppedPrefab);
+        GameObject _droppedItem = Instantiate(ItemDatabase.instance.items[itemId].droppedPrefab, pos, Quaternion.identity);
+        NetworkObject networkObject = _droppedItem.GetComponent<NetworkObject>();
+        _droppedItem.GetComponent<Interactable_NetworkItem>().networkItemData = networkItemData;
+        networkObject.Spawn();
+        Rigidbody rb = _droppedItem.GetComponent<Rigidbody>();
+        rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+        rb.linearVelocity = UnityEngine.Random.Range(4, 7) * direction;
 
     }
 
@@ -326,7 +313,7 @@ public class FPSController : NetworkBehaviour, IActor
     public void RecoverFromRemnantTransformation()
     {
         if (!IsServer) return;
-        sm.Hp.Value = 30 + UnityEngine.Random.Range(0,10);
+        sm.HealHpRpc(30 + UnityEngine.Random.Range(0,10));
         RecoverFromRemnantRemnantRpc();
         RecoverFromRemnantLocalRpc();
     }

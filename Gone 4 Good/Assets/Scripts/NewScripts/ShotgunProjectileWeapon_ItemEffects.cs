@@ -33,7 +33,7 @@ public class ShotgunProjectileWeapon_ItemEffects : ItemInteractionEffects
                 timeLastFired = Time.time;
                 for(int i = 0; i < pelets; i++)
                 {
-                    NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40, 60), 3);
+                   // NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40, 60), 3);
                 }
                 source.GetComponent<PlayerController>().anim.SetTrigger("Attack");
                 // Gun Fire

@@ -210,6 +210,7 @@ public class GameUI : MonoBehaviour
         if (NetworkManager.Singleton.IsServer)
         {
             NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
         }
         // load Main menu
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);

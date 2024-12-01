@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -77,7 +75,8 @@ public class Interactable_NetworkItem : Interactable
                     currentAmmo = inventory.items[assignedSlot].currentAmmo,
                     currentClip = inventory.items[assignedSlot].currentClip
                 };
-                player.GetComponent<FPSController>().DropEquipedItemRpc(player, inventory.items[assignedSlot].id, data);
+                Transform dropSpawnpoint = player.GetComponent<FPSController>().playerCamera.transform;
+                player.GetComponent<FPSController>().DropEquipedItemRpc(dropSpawnpoint.position, dropSpawnpoint.forward, inventory.items[assignedSlot].id, data);
                 inventory.items[assignedSlot] = item;
                 inventory.SwitchHotbarItem(player.GetComponent<Inventory>().currentHotbarIndex);
             }

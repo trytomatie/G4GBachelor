@@ -111,6 +111,12 @@ public class StatusManager : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.Server)]
+    public void HealHpRpc(int amount)
+    {
+        Hp.Value = (int)(Mathf.Clamp(Hp.Value + amount,0,maxHp));
+    }   
+
     private IEnumerator RegenStamina()
     {
         float regenFloat = 0;

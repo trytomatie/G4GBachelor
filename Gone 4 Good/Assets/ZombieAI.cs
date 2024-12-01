@@ -34,6 +34,7 @@ public class ZombieAI : NetworkBehaviour
     [Header("Attack")]
     public Collider hitbox;
     public float triggerAttack = 0; // if this is greater than 0, spawn the hitbox
+    public float attackTriggerRange = 3;
 
     [Header("Debug")]
     public bool debugPathfinding = false;
@@ -46,9 +47,9 @@ public class ZombieAI : NetworkBehaviour
     {
         // Random Scale
         float scale = Random.Range(0.95f, 1.2f);
-        transform.localScale = new Vector3(scale, scale, scale);
         if (!IsServer)
         {
+            agent.enabled = false;
             enabled = false;
             return;
         }
@@ -241,7 +242,6 @@ public class ZombieAI : NetworkBehaviour
         NavMeshPath path = new NavMeshPath();
         agent.CalculatePath(pos, path);
         agent.SetPath(path);
-
     }
 
     public void PathfindToDestination(GameObject go)
@@ -257,7 +257,8 @@ public class ZombieAI : NetworkBehaviour
         }
         NavMeshPath path = new NavMeshPath();
         agent.CalculatePath(go.transform.position, path);
-        agent.SetPath(path);
+        agent.SetPath(path);  
+
 
     }
 
@@ -269,7 +270,6 @@ public class ZombieAI : NetworkBehaviour
     public void ShootProjectile(Quaternion relativeDirection)
     {
         NetworkSpellManager.Instance.FireNPCProjectileRpc(GetComponent<NetworkObject>(), 3, 12, relativeDirection, 6);
-
     }
 
     private IEnumerator InvokeAttack()
@@ -427,7 +427,7 @@ public class ChaseState : State
                 pathfindUpdateTime = pathindUpdateTimes[1];
                 break;
             default:
-                pathfindUpdateTime = Random.Range(0,0.25f);
+                pathfindUpdateTime = Random.Range(0.25f,0.5f);
                 break;
         }
         if(pathfindUpdateTime < pathfindUpdateTimer)
@@ -444,7 +444,7 @@ public class ChaseState : State
                 return;
             }
            
-            if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < 1.5f)
+            if (Vector3.Distance(pc.transform.position, pc.target.transform.position) < pc.attackTriggerRange)
             {
                 pc.RotateTowardsTargetInstant();
                 int rnd = Random.Range(0, 3);

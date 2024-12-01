@@ -45,8 +45,25 @@ public class NetworkVFXManager : NetworkBehaviour
                 vfx[vfxIndex].transform.rotation = rotation;
                 vfx[vfxIndex].PlayFeedbacks();
                 break;
+            case 4:
+                break;
         }
 
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SpawnVFXBulletLineRpc(ulong id, Vector3 end)
+    {
+        FPSController source = NetworkGameManager.GetPlayerById(id).GetComponent<FPSController>();
+        Vector3 start = source.gunBarrelEnd.transform.position;
+        if(id == NetworkManager.LocalClientId)
+        {
+            start = source.fpsgunbarrelEnd.transform.position;
+        }
+        GameObject bulletLine = Instantiate(projectileVFX[4], start, Quaternion.identity);
+        bulletLine.GetComponent<BulletLineHandler>().enabled = true;
+        bulletLine.GetComponent<BulletLineHandler>().start = start;
+        bulletLine.GetComponent<BulletLineHandler>().end = end;
     }
 
     public static NetworkVFXManager Instance { get => instance;}

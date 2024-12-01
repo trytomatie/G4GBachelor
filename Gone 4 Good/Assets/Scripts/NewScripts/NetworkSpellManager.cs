@@ -1,8 +1,4 @@
-using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -29,6 +25,7 @@ public class NetworkSpellManager : NetworkBehaviour
             Destroy(this);
         }
     }
+
     List<StatusManager> hitlist = new List<StatusManager>();
     public void FireRaycastBullet(ulong sourcePlayer,float spread, int damage,int penetration)
     {
@@ -108,7 +105,7 @@ public class NetworkSpellManager : NetworkBehaviour
                 break;
             }
         }
-
+        NetworkVFXManager.Instance.SpawnVFXBulletLineRpc(sourcePlayer, impactPosition);
         //FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
 

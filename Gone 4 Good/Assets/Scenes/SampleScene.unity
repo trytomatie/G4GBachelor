@@ -13292,10 +13292,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1143920138
       objectReference: {fileID: 0}
-    - target: {fileID: 1049583373807655177, guid: a16ecca975bf7de458c67e4732f7ca73, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 2467553465
-      objectReference: {fileID: 0}
     - target: {fileID: 3453106479608078220, guid: a16ecca975bf7de458c67e4732f7ca73, type: 3}
       propertyPath: m_Name
       value: NetworkVFXManager

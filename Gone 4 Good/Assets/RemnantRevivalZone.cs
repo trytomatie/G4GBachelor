@@ -35,6 +35,8 @@ public class RemnantRevivalZone : MonoBehaviour
                     if (remnantRevivalTimer >= remnantRevivalTime)
                     {
                         fpsController.RecoverFromRemnantTransformation();
+                        playersReviving[i].UpdateRemnantRevivalBarUIRpc(fpsController.OwnerClientId,0);
+                        fpsController.UpdateRemnantRevivalBarUIRpc(fpsController.OwnerClientId, 0);
                     }
                 }
             }

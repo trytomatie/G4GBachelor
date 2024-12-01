@@ -58,10 +58,8 @@ public class CheckForPlayersTrigger : NetworkBehaviour
 
     public void OpenFormAndExit()
     {
-        string url = "https://www.google.com/";
-
         // Open url in default browswer
-        Application.OpenURL(url);
+        Application.OpenURL("https://www.google.com/");
         NetworkManager.Singleton.Shutdown();
         Application.Quit();
     }
