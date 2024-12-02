@@ -1,5 +1,6 @@
 using Cinemachine;
 using System.Collections;
+using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -49,6 +50,7 @@ public class FPSController : NetworkBehaviour, IActor
     private GameObject playerSetupInstance;
     private float horizontalInput;
     private float verticalInput;
+    public TextMeshProUGUI playerNameCard;
 
     public override void OnNetworkSpawn()
     {
@@ -58,6 +60,7 @@ public class FPSController : NetworkBehaviour, IActor
             playerName.Value = PlayerPrefs.GetString("PlayerName", "Unknown");
             PlayerSetupSetup();
             GameUI.instance.SyncHpBar(GetComponent<StatusManager>());
+            playerNameCard.gameObject.SetActive(false);
         }
         else
         {
@@ -186,9 +189,11 @@ public class FPSController : NetworkBehaviour, IActor
     {
         while (GameUI.instance == null)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
         }
         GameUI.instance.SyncHpAllyBar(GetComponent<StatusManager>());
+        playerNameCard.text = playerName.Value.ToString();
+
     }
 
     private void Update()
