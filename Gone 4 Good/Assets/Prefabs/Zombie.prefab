@@ -316,9 +316,9 @@ MonoBehaviour:
   materialType: 0
   deathSound: 0
   level: 1
-  maxHp: 100
+  maxHp: 250
   hp:
-    m_InternalValue: 100
+    m_InternalValue: 250
   maxStamina: 0
   stamina: 0
   staminaRegenPerSecond: 5

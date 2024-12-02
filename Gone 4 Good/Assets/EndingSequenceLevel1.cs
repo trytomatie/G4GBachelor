@@ -1,7 +1,8 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class EndingSequenceLevel1 : MonoBehaviour
+public class EndingSequenceLevel1 : NetworkBehaviour
 {
     public Animation truck;
     public Transform[] spawnPoints;
@@ -18,11 +19,18 @@ public class EndingSequenceLevel1 : MonoBehaviour
 
     public void TriggerEvent()
     {
-        truck.Play();
+        MoveTruckRpc();
         director = FindObjectOfType<Director>();
         AudioManager.instance.PlayMusicRpc(0);
-        preperationCanvas.SetActive(false);
+
         StartCoroutine(SpawnBehaviour());
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void MoveTruckRpc()
+    {
+        truck.Play();
+        preperationCanvas.SetActive(false);
     }
 
     IEnumerator SpawnBehaviour()

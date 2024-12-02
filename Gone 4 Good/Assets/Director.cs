@@ -187,8 +187,8 @@ public class Director : NetworkBehaviour
     {
         if(position == Vector3.zero || ZombieAI.zombies.Count >= 120) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
-        //float scale = UnityEngine.Random.Range(0.8f, 1.2f);
-        //enemyInstance.transform.localScale = new Vector3(scale, scale, scale);
+        float scale = UnityEngine.Random.Range(0.8f, 1.2f);
+        enemyInstance.transform.localScale = new Vector3(scale, scale, scale);
         if (aggroed)
         {
             GameObject[] allConnectedPlayers = NetworkGameManager.GetAllConnectedPlayers();

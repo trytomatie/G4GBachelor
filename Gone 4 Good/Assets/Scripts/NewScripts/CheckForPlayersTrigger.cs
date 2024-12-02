@@ -59,7 +59,6 @@ public class CheckForPlayersTrigger : NetworkBehaviour
     public void OpenFormAndExit()
     {
         // Open url in default browswer
-        Application.OpenURL("https://www.google.com/");
         NetworkManager.Singleton.Shutdown();
         Application.Quit();
     }

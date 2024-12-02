@@ -42,9 +42,21 @@ public class InteractionManager : MonoBehaviour
     {
         if (interactablesInRange.Count > 0)
         {
-            Interactable interactable = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First();
-            interactable.Interact(source);
-            interactablesInRange.Remove(interactable);
+            Interactable correctInteractable = null;
+            float distance = float.MaxValue;
+            foreach(Interactable interactable in interactablesInRange)
+            {
+                if(interactable != null)
+                {
+                    if(Vector3.Distance(transform.position,interactable.transform.position) < distance)
+                    {
+                        correctInteractable = interactable;
+                    }
+                }
+            }
+            // Interactable interactable = interactablesInRange.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First();
+            correctInteractable.Interact(source);
+            interactablesInRange.Remove(correctInteractable);
         }
     }
 }
