@@ -7,7 +7,7 @@ public class RemnantRevivalZone : MonoBehaviour
 {
     public static List<RemnantRevivalZone> allRevivalZones = new List<RemnantRevivalZone>();
     public float range = 3;
-    public float remnantRevivalTime = 8;
+    private float remnantRevivalTime = 4;
     public float remnantRevivalTimer = 0;
 
     public FPSController fpsController;
@@ -52,6 +52,13 @@ public class RemnantRevivalZone : MonoBehaviour
     {
         remnantRevivalTimer = 0;
         fpsController.UpdateRemnantRevivalBarUIRpc(fpsController.OwnerClientId, 0);
+        for(int i = 0; i < playersReviving.Length; i++)
+        {
+            if (playersReviving[i] != null)
+            {
+                playersReviving[i].UpdateRemnantRevivalBarUIRpc(fpsController.OwnerClientId, 0);
+            }
+        }
         playersReviving = new FPSController[4];
     }
 

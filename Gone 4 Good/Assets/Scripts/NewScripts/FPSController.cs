@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FPSController : NetworkBehaviour, IActor
@@ -54,7 +55,11 @@ public class FPSController : NetworkBehaviour, IActor
 
     public override void OnNetworkSpawn()
     {
-
+        playerName.OnValueChanged += (oldValue, newValue) =>
+        {
+            UpdateNameCardRpc();
+        };
+        UpdateNameCardRpc();
         if (IsLocalPlayer)
         {
             playerName.Value = PlayerPrefs.GetString("PlayerName", "Unknown");
@@ -70,6 +75,12 @@ public class FPSController : NetworkBehaviour, IActor
         base.OnNetworkSpawn();
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
+    public void UpdateNameCardRpc()
+    {
+        playerNameCard.text = playerName.Value.ToString();
+    }
+
     public void Start()
     {
         NetworkGameManager.Instance.AddClient(NetworkObject.OwnerClientId, GetComponent<NetworkObject>());
@@ -77,6 +88,7 @@ public class FPSController : NetworkBehaviour, IActor
         {
             CameraAnimator.gameObject.SetActive(false);
             playerCamera.GetComponent<Camera>().enabled = false; // Only turning camera off so the aimtarget can still sync
+            playerCamera.GetComponent<AudioListener>().enabled = false;
             fpsOverlayCamera.SetActive(false);
             fpsPlayerModel.SetActive(false);
             interactionManager.gameObject.SetActive(false);
@@ -192,7 +204,6 @@ public class FPSController : NetworkBehaviour, IActor
             yield return new WaitForSeconds(0.25f);
         }
         GameUI.instance.SyncHpAllyBar(GetComponent<StatusManager>());
-        playerNameCard.text = playerName.Value.ToString();
 
     }
 
@@ -317,8 +328,15 @@ public class FPSController : NetworkBehaviour, IActor
 
     public void RecoverFromRemnantTransformation()
     {
-        if (!IsServer) return;
-        sm.HealHpRpc(30 + UnityEngine.Random.Range(0,10));
+        if (IsServer) return;
+        RecoverFromRemnantTransformationRpc();
+
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void RecoverFromRemnantTransformationRpc()
+    {
+        sm.HealHpRpc(30 + UnityEngine.Random.Range(0, 10));
         RecoverFromRemnantRemnantRpc();
         RecoverFromRemnantLocalRpc();
     }

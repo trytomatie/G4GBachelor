@@ -76,7 +76,11 @@ public class StatusManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        hp.Value = maxHp;
+        if(IsServer)
+        {
+            hp.Value = maxHp;
+        }
+
     }
 
     private void OnEnable()

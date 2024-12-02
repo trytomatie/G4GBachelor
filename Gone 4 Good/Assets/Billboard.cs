@@ -2,15 +2,7 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    Transform cam;
-
-    private void OnEnable()
-    {
-        if (cam == null)
-        {
-            cam = Camera.main.transform;
-        }
-    }
+    public Transform cam;
 
     // Update is called once per frame
     void Update()
