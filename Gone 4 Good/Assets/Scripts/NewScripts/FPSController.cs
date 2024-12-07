@@ -353,15 +353,17 @@ public class FPSController : NetworkBehaviour, IActor
 
     public void RecoverFromRemnantTransformation()
     {
-        if (IsServer) return;
         RecoverFromRemnantTransformationRpc();
-
     }
 
     [Rpc(SendTo.Owner)]
     public void RecoverFromRemnantTransformationRpc()
     {
-        sm.HealHpRpc(30 + UnityEngine.Random.Range(0, 10));
+        if(sm != null)
+        {
+            if (sm.Hp.Value > 0) return;
+            sm.HealHpRpc(30 + UnityEngine.Random.Range(0, 10));
+        }
         RecoverFromRemnantRemnantRpc();
         RecoverFromRemnantLocalRpc();
     }
