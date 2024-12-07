@@ -45,6 +45,7 @@ public class DDAData : NetworkBehaviour
     {
         adjustmentLevel.Value = PerformanceEvaluationHandler.ddaRating;
         SetDDAParameters(adjustmentLevel.Value);
+        PerformanceTracker.instance.currentStack.ddaLevel = adjustmentLevel.Value;
     }
 
     public void SetDDAParameters(int i)
@@ -56,7 +57,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 2;
                 enemyTargetingProbability.Value = 0.25f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.5f;
-                damageOutgoingExecuteTreshold.Value = 20;
+                damageOutgoingExecuteTreshold.Value = 90;
                 weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 2:
@@ -64,7 +65,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 3;
                 enemyTargetingProbability.Value = 0.4f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.2f;
-                damageOutgoingExecuteTreshold.Value = 15;
+                damageOutgoingExecuteTreshold.Value = 75;
                 weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 3:
@@ -72,7 +73,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 4;
                 enemyTargetingProbability.Value = 0.45f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.1f;
-                damageOutgoingExecuteTreshold.Value = 10;
+                damageOutgoingExecuteTreshold.Value = 60;
                 weaponSpherecastRadius.Value = 0.15f;
                 break;
             case 4: // Normal
@@ -80,7 +81,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 5;
                 enemyTargetingProbability.Value = 0.5f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
-                damageOutgoingExecuteTreshold.Value = 5;
+                damageOutgoingExecuteTreshold.Value = 50;
                 weaponSpherecastRadius.Value = 0.1f;
                 break;
             case 5:
@@ -88,7 +89,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 5;
                 enemyTargetingProbability.Value = 0.55f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
-                damageOutgoingExecuteTreshold.Value = 0;
+                damageOutgoingExecuteTreshold.Value = 50;
                 weaponSpherecastRadius.Value = 0.075f;
                 break;
             case 6: 
@@ -96,7 +97,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 5;
                 enemyTargetingProbability.Value = 0.6f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
-                damageOutgoingExecuteTreshold.Value = 0;
+                damageOutgoingExecuteTreshold.Value = 40;
                 weaponSpherecastRadius.Value = 0.05f;
                 break;
             case 7: // hardest
@@ -104,7 +105,7 @@ public class DDAData : NetworkBehaviour
                 maxDamageInstancesPerSecond.Value = 6;
                 enemyTargetingProbability.Value = 0.8f;
                 navmeshAvoidanceRadiusMultiplier.Value = 0.9f;
-                damageOutgoingExecuteTreshold.Value = 0;
+                damageOutgoingExecuteTreshold.Value = 30;
                 weaponSpherecastRadius.Value = 0.0f;
                 break;
         }

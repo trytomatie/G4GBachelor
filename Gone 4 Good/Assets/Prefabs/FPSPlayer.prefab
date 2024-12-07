@@ -6845,7 +6845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjustmentLevel:
-    m_InternalValue: -1
+    m_InternalValue: 4
   damgeReceivedBias:
     m_InternalValue: 0.5
   maxDamageInstancesPerSecond:

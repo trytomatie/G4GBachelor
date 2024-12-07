@@ -43,6 +43,7 @@ public class CheckForPlayersTrigger : NetworkBehaviour
         StartCoroutine(ShowCanvaGroup());
         // force show cursor
         GameUI.instance.forceMouseVisible = true;
+        PerformanceTracker.instance.SaveStackToFile("SessionFiles");
     }
 
     private IEnumerator ShowCanvaGroup()

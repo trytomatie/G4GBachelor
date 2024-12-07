@@ -184,7 +184,7 @@ public class PerformanceEvaluationHandler : MonoBehaviour
         int maxScore = 60+130+50+160; // 400
         int maxScoreAdjusted = maxScore - 100;
         int finalScore = (hostageSituationScore + reactionTestScore + survivalTestScore + bartleTestScore);
-        PerformanceEvaluationHandler.ddaRating = Mathf.Clamp(Mathf.RoundToInt((float)finalScore / maxScoreAdjusted * 7),0,7);
+        ddaRating = Mathf.Clamp(Mathf.RoundToInt((float)finalScore / maxScoreAdjusted * 7),0,7);
         Debug.Log("Final Score: " + finalScore + " DDARating: " + ddaRating);
 
     }

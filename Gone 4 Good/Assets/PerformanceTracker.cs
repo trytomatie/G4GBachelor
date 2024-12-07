@@ -23,7 +23,7 @@ public class PerformanceTracker : MonoBehaviour
         }
     }
 
-    public static void StartNewStack(string stackName, string playerName,string description)
+    public static void StartNewStack(string stackName, string playerName,string description,int ddaLevel = -1)
     {
         instance.currentStack = new PerformanceStack();
         instance.startTime = Time.time;
@@ -56,6 +56,26 @@ public class PerformanceTracker : MonoBehaviour
         System.IO.File.WriteAllText(path + "/" + fileName, json);
     }
 
+    public void SaveStackToFile(string customPath)
+    {
+        string path = Application.persistentDataPath + customPath;
+        if (!System.IO.Directory.Exists(path))
+        {
+            System.IO.Directory.CreateDirectory(path);
+        }
+        int fileNumber = 1;
+        string fileName = "SessionData" + fileNumber + ".json";
+
+        string json = JsonConvert.SerializeObject(performanceStacks, Formatting.Indented);
+        // Write file, increment number by 1 if exists
+        while (System.IO.File.Exists(path + "/" + fileName))
+        {
+            fileName = "SessionData" + fileNumber + ".json";
+            fileNumber++;
+        }
+        System.IO.File.WriteAllText(path + "/" + fileName, json);
+    }
+
     public static void WriteToCurrentStack(bool shotHit, bool headShot)
     {
         if (instance.currentStack.stackName == null) return;
@@ -76,6 +96,7 @@ public class PerformanceStack
 {
     public float timeElapsed;
     public string playerName;
+    public int ddaLevel;
     public string stackName;
     public string stackDescription;
 
@@ -83,4 +104,11 @@ public class PerformanceStack
     public int shootsHit;
     public int headShots;
     public float custom;
+    public int enemiesKilled;
+    public int damageDealt;
+    public int damageReceived;
+    public int timesHit;
+    public int timesDowned;
+    public float distanceMoved;
+    public float distanceSprinted;
 }

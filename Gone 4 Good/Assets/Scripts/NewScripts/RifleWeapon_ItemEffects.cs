@@ -31,7 +31,7 @@ public class RifleWeapon_ItemEffects : GunInteractionEffects
                     currentSpread = Mathf.Clamp(currentSpread + spreadAccumulation, 0, spreadLimit);
                 }
                 timeLastFired = Time.time;
-                NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(40,60), 3);
+                NetworkSpellManager.Instance.FireRaycastBullet(NetworkGameManager.GetLocalPlayerId, currentSpread, Random.Range(55,75), 3);
             }
         }
         else

@@ -58,15 +58,16 @@ public class NetworkSpellManager : NetworkBehaviour
         bool hasHitHead = false;
         foreach (RaycastHit hit in hits)
         {
-            if(hit.collider.gameObject.name.Contains("Head"))
-            {
-                hasHitHead = true;
-            }
-        }
-        foreach (RaycastHit hit in hits)
-        {
             if (hit.collider != null)
             {
+                if (hit.collider.gameObject.name.Contains("Head"))
+                {
+                    hasHitHead = true;
+                }
+                else
+                {
+                    hasHitHead = false;
+                }
                 distance = hit.distance;
                 impactPosition = hit.point;
                 StatusManager sm = hit.collider.transform.root.GetComponent<StatusManager>() ?? null;
@@ -87,7 +88,7 @@ public class NetworkSpellManager : NetworkBehaviour
                     {
                         damage *= 3;
                     }
-                    hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0);
+                    hit.collider.transform.root.GetComponent<StatusManager>().ApplyDamageRpc(damage, player.transform.position, 0,sourcePlayer);
                     NetworkVFXManager.Instance.SpawnVFXRpc(2, impactPosition, Quaternion.LookRotation(-hit.normal));
 
                 }

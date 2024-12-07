@@ -240,8 +240,13 @@ public class ZombieAI : NetworkBehaviour
             return;
         }
         NavMeshPath path = new NavMeshPath();
-        agent.CalculatePath(pos, path);
-        agent.SetPath(path);
+        // clamp position to navmesh
+        if(NavMesh.SamplePosition(pos, out NavMeshHit hit, 2.1f, NavMesh.AllAreas))
+        {
+            pos = hit.position;
+            agent.CalculatePath(pos, path);
+            agent.SetPath(path);
+        }
     }
 
     public void PathfindToDestination(GameObject go)

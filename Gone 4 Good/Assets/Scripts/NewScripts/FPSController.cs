@@ -120,6 +120,7 @@ public class FPSController : NetworkBehaviour, IActor
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
         PerformanceTracker.StartNewStack("Level", playerName.Value.ToString(), "Performance of the Player in the Main Scenairo Level.");
+        sm.OnDamageOwner.AddListener(TrackDamageReceived);
         GameObject spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
         if(spawnPoint != null)
         {
@@ -302,8 +303,14 @@ public class FPSController : NetworkBehaviour, IActor
             currentSpeed = inputMagnitude;
             CameraFOV = 60;
         }
+        float calculatedSpeed = currentSpeed * currentAcceleration * sm.MovementSpeedMultiplier * Time.deltaTime * 3.55f;
+        PerformanceTracker.instance.currentStack.distanceMoved += calculatedSpeed;
+        if(sprinting && sm.Stamina > 0)
+        {
+            PerformanceTracker.instance.currentStack.distanceSprinted += calculatedSpeed;
+        }
         
-        cc.Move(movementDirection * currentSpeed * currentAcceleration * 3.55f * sm.MovementSpeedMultiplier * Time.deltaTime);
+        cc.Move(movementDirection * calculatedSpeed);
 
         // Handle Viewbob Intensity
         viewBobing.m_FrequencyGain = Mathf.Clamp(currentSpeed * currentAcceleration * 1.5f, 0,3);
@@ -317,6 +324,24 @@ public class FPSController : NetworkBehaviour, IActor
             ySpeed = 0;
             ySpeed += 7;
         }
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void TrackEnemiesKilledRpc()
+    {
+        PerformanceTracker.instance.currentStack.enemiesKilled++;
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void TrackDamageDealtRpc(int damage)
+    {
+        PerformanceTracker.instance.currentStack.damageDealt += damage;
+    }
+
+    public void TrackDamageReceived(int damage)
+    {
+        PerformanceTracker.instance.currentStack.damageReceived += damage;
+        PerformanceTracker.instance.currentStack.timesHit++;
     }
 
     public void TriggerRemnantTransformation()
@@ -353,6 +378,7 @@ public class FPSController : NetworkBehaviour, IActor
         CameraAnimator.SetInteger("CameraState", 1);
         playerRemnant.SetActive(true);
         playerModel.gameObject.SetActive(false);
+        PerformanceTracker.instance.currentStack.timesDowned++;
     }
     [Rpc(SendTo.NotOwner)]
     private void RecoverFromRemnantRemnantRpc()

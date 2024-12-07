@@ -44,6 +44,7 @@ public class StatusManager : NetworkBehaviour
 
     public UnityEvent OnDeath;
     public UnityEvent OnDamage;
+    public UnityEvent<int> OnDamageOwner;
     public UnityEvent NetworkDespawnEvent;
     public UnityEvent OnStaminaUpdate;
 
@@ -151,12 +152,17 @@ public class StatusManager : NetworkBehaviour
         }
     }
     [Rpc(SendTo.Everyone)]
-    public void ApplyDamageRpc(int damage,Vector3 position,float force)
+    public void ApplyDamageRpc(int damage,Vector3 position,float force,ulong sourceId = 99999)
     {
         if (Hp.Value <= 0) return;
         int calculatedDamage = Mathf.Clamp(damage - bonusDefense, 1, 9999);
         if (IsServer)
         {
+            DDAData sourceData = null;
+            if(sourceId != 99999)
+            {
+                sourceData = NetworkManager.Singleton.ConnectedClients[sourceId].PlayerObject.GetComponent<DDAData>();
+            }
             bool canTakeDamage = true;
             if (ddaData != null)
             {
@@ -174,15 +180,39 @@ public class StatusManager : NetworkBehaviour
             }
             if (canTakeDamage)
             {
+                OnDamageOwnerTriggerRpc(calculatedDamage);
+                if (sourceId != 99999)
+                {
+                    FPSController damageSource = NetworkManager.Singleton.ConnectedClients[sourceId].PlayerObject.GetComponent<FPSController>();
+                    damageSource.TrackDamageDealtRpc(calculatedDamage);
+                    if(sourceData != null)
+                    {
+                        if(Hp.Value - calculatedDamage <= sourceData.damageOutgoingExecuteTreshold.Value) // execute on the spot
+                        {
+                            calculatedDamage = Hp.Value;
+                        }
+                    }
+                }
                 Hp.Value -= calculatedDamage;
             }
             if (Hp.Value <= 0)
             {
                 InvokeDeathRpc();
+                if(sourceId != 99999)
+                {
+                    FPSController damageSource = NetworkManager.Singleton.ConnectedClients[sourceId].PlayerObject.GetComponent<FPSController>();
+                    damageSource.TrackEnemiesKilledRpc();
+                }
             }
         }
         GetComponentInChildren<Animator>().SetTrigger("Damage");
+    }
 
+    [Rpc(SendTo.Owner)]
+    private void OnDamageOwnerTriggerRpc(int calculatedDamage)
+    {
+        print("test");
+        OnDamageOwner.Invoke(calculatedDamage);
     }
 
     [Rpc(SendTo.Everyone)]
