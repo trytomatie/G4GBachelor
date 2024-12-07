@@ -22,9 +22,9 @@ public class Options
         // Load options from PlayerPrefs
         mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 50f);
         VSync = PlayerPrefs.GetInt("VSync", 1) == 1;
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 1f);
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 50f);
+        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 50f);
+        SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 50f);
 
     }
 

@@ -9391,12 +9391,20 @@ MonoBehaviour:
   currentStack:
     timeElapsed: 0
     playerName: 
+    ddaLevel: 0
     stackName: 
     stackDescription: 
     shootsFired: 0
     shootsHit: 0
     headShots: 0
     custom: 0
+    enemiesKilled: 0
+    damageDealt: 0
+    damageReceived: 0
+    timesHit: 0
+    timesDowned: 0
+    distanceMoved: 0
+    distanceSprinted: 0
   performanceStacks: []
 --- !u!1001 &1064914465
 PrefabInstance:
@@ -14455,6 +14463,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e543ee6aa4acc242a8c3b82458a7368, type: 2}
   - {fileID: 11400000, guid: ff41d11167a9ec446b1d674c5db0cce2, type: 2}
   - {fileID: 11400000, guid: 32d1f61be35516a4a9e8ecced3e7dfd1, type: 2}
+  - {fileID: 11400000, guid: 855c2acb705c74d4788906a228eb7ecd, type: 2}
   sfxAudioGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   musicAudioGroup: {fileID: -2273146209696275378, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
   audioSourcePrefab: {fileID: 7989588483833957038, guid: 8039677dd24f91d4db556c86799388ad, type: 3}

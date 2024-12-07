@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Audio;
+using static Unity.VisualScripting.Member;
 
 public class AudioManager : NetworkBehaviour
 {
@@ -63,6 +64,7 @@ public class AudioManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void PlayMusicRpc(int index)
     {
+        GetComponent<AudioSource>().volume = Options.MasterVolume;
         GetComponent<AudioSource>().clip = instance.bgMusic[musicIndex];
         GetComponent<AudioSource>().outputAudioMixerGroup = instance.musicAudioGroup;
         GetComponent<AudioSource>().Play();

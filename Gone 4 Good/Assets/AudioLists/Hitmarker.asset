@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179ebeb0152285544ad70eb050ccc43d, type: 3}
-  m_Name: AKAudioList
+  m_Name: Hitmarker
   m_EditorClassIdentifier: 
   randomPitchRange: 0.09
   audioClips:
-  - {fileID: 8300000, guid: 5a615b1ffc4759849804d821f4046a70, type: 3}
+  - {fileID: 8300000, guid: a44e438b354d050448a559778bfc6775, type: 3}

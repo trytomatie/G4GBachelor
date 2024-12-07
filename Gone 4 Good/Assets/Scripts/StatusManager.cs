@@ -71,7 +71,6 @@ public class StatusManager : NetworkBehaviour
         // Stop all coroutines on death
         OnDeath.AddListener(() => StopAllCoroutines());
         OnDeath.AddListener(() => AddToFactionDictonary());
-        OnDeath.AddListener(() => AudioManager.PlaySound(transform.position, deathSound));
         ddaData = GetComponent<DDAData>() ?? null;
     }
 

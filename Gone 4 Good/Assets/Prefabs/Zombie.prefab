@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: 1
-  materialType: 0
+  materialType: 2
   deathSound: 0
   level: 1
   maxHp: 250
@@ -395,6 +395,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDamageOwner:
     m_PersistentCalls:
       m_Calls: []
   NetworkDespawnEvent:

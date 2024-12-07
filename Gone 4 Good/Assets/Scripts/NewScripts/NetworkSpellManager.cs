@@ -106,6 +106,18 @@ public class NetworkSpellManager : NetworkBehaviour
                 break;
             }
         }
+        if(hasHitEntity)
+        {
+            if(hasHitHead)
+            {
+                AudioManager.PlayRandomSoundFromList(4, player.transform.position, 1.3f);
+            }
+            else
+            {
+                AudioManager.PlayRandomSoundFromList(4, player.transform.position, 1);
+            }
+
+        }
         NetworkVFXManager.Instance.SpawnVFXBulletLineRpc(sourcePlayer, impactPosition);
         //FireRaycastBulletVisualRpc(sourcePlayer, impactPosition);
     }
