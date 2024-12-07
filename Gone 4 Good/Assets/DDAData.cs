@@ -45,7 +45,6 @@ public class DDAData : NetworkBehaviour
     {
         adjustmentLevel.Value = PerformanceEvaluationHandler.ddaRating;
         SetDDAParameters(adjustmentLevel.Value);
-        PerformanceTracker.instance.currentStack.ddaLevel = adjustmentLevel.Value;
     }
 
     public void SetDDAParameters(int i)
@@ -62,7 +61,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 2:
                 damgeReceivedBias.Value = 0.25f;
-                maxDamageInstancesPerSecond.Value = 3;
+                maxDamageInstancesPerSecond.Value = 2;
                 enemyTargetingProbability.Value = 0.4f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.2f;
                 damageOutgoingExecuteTreshold.Value = 75;
@@ -70,7 +69,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 3:
                 damgeReceivedBias.Value = 0.4f;
-                maxDamageInstancesPerSecond.Value = 4;
+                maxDamageInstancesPerSecond.Value = 3;
                 enemyTargetingProbability.Value = 0.45f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1.1f;
                 damageOutgoingExecuteTreshold.Value = 60;
@@ -78,7 +77,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 4: // Normal
                 damgeReceivedBias.Value = 0.5f;
-                maxDamageInstancesPerSecond.Value = 5;
+                maxDamageInstancesPerSecond.Value = 3;
                 enemyTargetingProbability.Value = 0.5f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 50;
@@ -86,7 +85,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 5:
                 damgeReceivedBias.Value = 0.6f;
-                maxDamageInstancesPerSecond.Value = 5;
+                maxDamageInstancesPerSecond.Value = 4;
                 enemyTargetingProbability.Value = 0.55f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 50;
@@ -94,7 +93,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 6: 
                 damgeReceivedBias.Value = 0.7f;
-                maxDamageInstancesPerSecond.Value = 5;
+                maxDamageInstancesPerSecond.Value = 4;
                 enemyTargetingProbability.Value = 0.6f;
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 40;
@@ -102,7 +101,7 @@ public class DDAData : NetworkBehaviour
                 break;
             case 7: // hardest
                 damgeReceivedBias.Value = 0.8f;
-                maxDamageInstancesPerSecond.Value = 6;
+                maxDamageInstancesPerSecond.Value = 5;
                 enemyTargetingProbability.Value = 0.8f;
                 navmeshAvoidanceRadiusMultiplier.Value = 0.9f;
                 damageOutgoingExecuteTreshold.Value = 30;

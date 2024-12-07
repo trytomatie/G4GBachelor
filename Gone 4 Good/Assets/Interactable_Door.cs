@@ -1,3 +1,4 @@
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,10 +12,11 @@ public class Interactable_Door : Interactable
     private bool firstInteraction = true;
     private Animator anim;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         anim = GetComponent<Animator>();
         isOpen.OnValueChanged += OnOpenValueChanged;
+        anim.SetBool("isOpen", isOpen.Value);
     }
 
     private void OnOpenValueChanged(bool previousValue, bool newValue)

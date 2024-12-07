@@ -20,11 +20,11 @@ public class Options
     public static void LoadOptions()
     {
         // Load options from PlayerPrefs
-        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 50f);
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 10f);
         VSync = PlayerPrefs.GetInt("VSync", 1) == 1;
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 50f);
-        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 50f);
-        SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 50f);
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 55f);
+        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 5f);
+        SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 100f);
 
     }
 

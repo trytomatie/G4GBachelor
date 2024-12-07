@@ -16,7 +16,7 @@ MonoBehaviour:
   itemType: 8
   itemName: Medi Pack
   itemDescription: Heals Player
-  itemIcon: {fileID: -1331788603, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+  itemIcon: {fileID: 21300000, guid: 7adedef867298a442a5ec778b802bb71, type: 3}
   maxStackSize: 1
   keyItem: 0
   itemInteractionEffects: {fileID: 11400000, guid: f7b1e861328a36b40a4bda3fdcea573e, type: 2}

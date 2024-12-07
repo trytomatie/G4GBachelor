@@ -42,6 +42,7 @@ public class FPSController : NetworkBehaviour, IActor
     private float ySpeed;
     private float gravity = 2.5f;
     public float groundedRaycastDistance = 0.5f;
+    private bool canJump = false;
     private CharacterController cc;
     private CinemachineBasicMultiChannelPerlin viewBobing;
     private Vector3 lastSolidGround;
@@ -120,6 +121,7 @@ public class FPSController : NetworkBehaviour, IActor
         InputSystem.GetInputActionMapPlayer().Player.Reload.performed += ctx => ReloadCurrentItem();
 
         PerformanceTracker.StartNewStack("Level", playerName.Value.ToString(), "Performance of the Player in the Main Scenairo Level.");
+        PerformanceTracker.instance.currentStack.ddaLevel = GetComponent<DDAData>().adjustmentLevel.Value;
         sm.OnDamageOwner.AddListener(TrackDamageReceived);
         GameObject spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
         if(spawnPoint != null)
@@ -319,8 +321,9 @@ public class FPSController : NetworkBehaviour, IActor
     public void HandleJump()
     {
         if (sm.Hp.Value <= 0) return;
-        if (IsGrounded())
+        if (ySpeed > -4.5f && canJump)
         {
+            canJump = false;
             ySpeed = 0;
             ySpeed += 7;
         }
@@ -403,6 +406,7 @@ public class FPSController : NetworkBehaviour, IActor
         if (isGrounded && ySpeed <= 0.2f)
         {
             ySpeed = 0;
+            canJump = true;
             //if (CurrentPlayerState != PlayerState.VoidOut)
             //{
             //    lastSolidGround = transform.position;

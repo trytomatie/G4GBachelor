@@ -39,7 +39,15 @@ public class PerformanceTracker : MonoBehaviour
         instance.performanceStacks.Add(instance.currentStack);
         instance.currentStack = new PerformanceStack();
         instance.SaveStackToFile();
+    }
 
+    public static void EndCurrentStack(string customPath)
+    {
+        instance.currentStack.timeElapsed = Time.time - instance.startTime;
+        // Save to file
+        instance.performanceStacks.Add(instance.currentStack);
+        instance.currentStack = new PerformanceStack();
+        instance.SaveStackToFile(customPath);
     }
 
     public void SaveStackToFile()
@@ -58,7 +66,7 @@ public class PerformanceTracker : MonoBehaviour
 
     public void SaveStackToFile(string customPath)
     {
-        string path = Application.persistentDataPath + customPath;
+        string path = Application.persistentDataPath + "/" +customPath;
         if (!System.IO.Directory.Exists(path))
         {
             System.IO.Directory.CreateDirectory(path);

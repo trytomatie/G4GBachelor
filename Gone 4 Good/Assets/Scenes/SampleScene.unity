@@ -19169,6 +19169,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2715939126409744950, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710784
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715939126409744950, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715939126409744950, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.70710576
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715939126409744950, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2715939126409744950, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3253469521882122570, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 3253469521882122570, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -111.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3425546509992586189, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 44499258
@@ -19176,6 +19204,10 @@ PrefabInstance:
     - target: {fileID: 3591540763937981523, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: m_Name
       value: Level_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917784321370716494, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_text
+      value: Exit and open sessiondata folder
       objectReference: {fileID: 0}
     - target: {fileID: 4170634492268072349, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -19221,6 +19253,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6231080170297030926, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.53791034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231080170297030926, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231080170297030926, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8430021
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231080170297030926, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6231080170297030926, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 114.917
+      objectReference: {fileID: 0}
     - target: {fileID: 6469682530084874455, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3194261971
@@ -19232,6 +19284,14 @@ PrefabInstance:
     - target: {fileID: 7172768398549316750, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1092945125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561533985229028199, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561533985229028199, guid: d67d92a273603aa4aacc6d1680bfa01b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -111.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

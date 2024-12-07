@@ -10,7 +10,7 @@ public class CheckForPlayersTrigger : NetworkBehaviour
     public CanvasGroup endCanvas;
     private void Start()
     {
-
+        
     }
     private void Update()
     {
@@ -43,7 +43,7 @@ public class CheckForPlayersTrigger : NetworkBehaviour
         StartCoroutine(ShowCanvaGroup());
         // force show cursor
         GameUI.instance.forceMouseVisible = true;
-        PerformanceTracker.instance.SaveStackToFile("SessionFiles");
+        PerformanceTracker.EndCurrentStack("SessionFiles");
     }
 
     private IEnumerator ShowCanvaGroup()
@@ -59,9 +59,20 @@ public class CheckForPlayersTrigger : NetworkBehaviour
 
     public void OpenFormAndExit()
     {
-        // Open url in default browswer
         NetworkManager.Singleton.Shutdown();
         Application.Quit();
+
+        // Open File Location
+        string path = Application.persistentDataPath + "/SessionFiles";
+        path = path.Replace(@"/", @"\");
+        if (System.IO.Directory.Exists(path)) // Check if the folder exists
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "/select," + path);
+        }
+        else
+        {
+            print("The specified folder does not exist.");
+        }
     }
 
 
