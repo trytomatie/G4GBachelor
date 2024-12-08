@@ -72,9 +72,10 @@ public class ZombieAI : NetworkBehaviour
     void Update()
     {
         if (!IsSpawned) return;
+        agent.speed = currentMovespeed * statusManager.MovementSpeedMultiplier;
         enemyStates[(int)currentState].OnUpdate(this);
         Animation();
-        agent.speed = currentMovespeed * statusManager.MovementSpeedMultiplier;
+
         CheckOffMeshLink();
     }
 
@@ -408,10 +409,12 @@ public class ChaseState : State
     private float[] pathindUpdateTimes = { 0.25f, 1, 5 };
     private float pathfindUpdateTime = 0;
     private float groanTimer = 0;
+    private DDAData targetDDaData;
 
     public void OnEnter(ZombieAI pc)
     {
         pc.LookForClosestTarget();
+        targetDDaData = pc.target.GetComponent<DDAData>() ?? null;
     }
 
     public void OnUpdate(ZombieAI pc)
@@ -460,7 +463,10 @@ public class ChaseState : State
                 //pc.PathfindToDestination(pc.transform.position);
             }
         }
-
+        if(targetDDaData != null)
+        {
+            pc.agent.speed = pc.currentMovespeed * pc.statusManager.MovementSpeedMultiplier * targetDDaData.zombieAggroedSpeedMultiplier.Value;
+        }
     }
 
     public void OnExit(ZombieAI pc)

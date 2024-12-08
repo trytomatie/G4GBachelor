@@ -25,6 +25,9 @@ public class DDAData : NetworkBehaviour
     // Navmesh Avoidance Radius [0.5...1]
     public NetworkVariable<float> navmeshAvoidanceRadiusMultiplier = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // works
 
+    // Navmesh Avoidance Radius [0.9...1.2]
+    public NetworkVariable<float> zombieAggroedSpeedMultiplier = new NetworkVariable<float>(1f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // works
+
     [Header("Offensive Parameters")]
     // The number of hitpoints a Target has to be reduced to be defeated [0...20]
     public NetworkVariable<int> damageOutgoingExecuteTreshold = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Works
@@ -58,6 +61,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1.5f;
                 damageOutgoingExecuteTreshold.Value = 90;
                 weaponSpherecastRadius.Value = 0.15f;
+                zombieAggroedSpeedMultiplier.Value = 0.9f;
                 break;
             case 2:
                 damgeReceivedBias.Value = 0.25f;
@@ -66,6 +70,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1.2f;
                 damageOutgoingExecuteTreshold.Value = 75;
                 weaponSpherecastRadius.Value = 0.15f;
+                zombieAggroedSpeedMultiplier.Value = 0.95f;
                 break;
             case 3:
                 damgeReceivedBias.Value = 0.4f;
@@ -74,6 +79,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1.1f;
                 damageOutgoingExecuteTreshold.Value = 60;
                 weaponSpherecastRadius.Value = 0.15f;
+                zombieAggroedSpeedMultiplier.Value = 1f;
                 break;
             case 4: // Normal
                 damgeReceivedBias.Value = 0.5f;
@@ -82,6 +88,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 50;
                 weaponSpherecastRadius.Value = 0.1f;
+                zombieAggroedSpeedMultiplier.Value = 1f;
                 break;
             case 5:
                 damgeReceivedBias.Value = 0.6f;
@@ -90,6 +97,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 50;
                 weaponSpherecastRadius.Value = 0.075f;
+                zombieAggroedSpeedMultiplier.Value = 1f;
                 break;
             case 6: 
                 damgeReceivedBias.Value = 0.7f;
@@ -98,6 +106,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 1f;
                 damageOutgoingExecuteTreshold.Value = 40;
                 weaponSpherecastRadius.Value = 0.05f;
+                zombieAggroedSpeedMultiplier.Value = 1.05f;
                 break;
             case 7: // hardest
                 damgeReceivedBias.Value = 0.8f;
@@ -106,6 +115,7 @@ public class DDAData : NetworkBehaviour
                 navmeshAvoidanceRadiusMultiplier.Value = 0.9f;
                 damageOutgoingExecuteTreshold.Value = 30;
                 weaponSpherecastRadius.Value = 0.0f;
+                zombieAggroedSpeedMultiplier.Value = 1.15f;
                 break;
         }
     }

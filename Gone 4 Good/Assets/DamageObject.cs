@@ -35,7 +35,7 @@ public class DamageObject : MonoBehaviour
         if (sm != null && !hitList.Contains(sm))
         {
             if (sm.faction == faction) return;
-            int dmg = 3;
+            int dmg = 2;
             if (data != null)
             {
 

@@ -56,6 +56,14 @@ public class NetworkSpellManager : NetworkBehaviour
         hits = hits.OrderBy(hits => hits.distance).ToArray();
         bool hasHitEntity = false;
         bool hasHitHead = false;
+        bool hasHitHeadAtleastOnceSomewhere = false;
+        foreach(RaycastHit hit in hits)
+        {
+            if (hit.collider.gameObject.name.Contains("Head"))
+            {
+                hasHitHeadAtleastOnceSomewhere = true;
+            }
+        }
         foreach (RaycastHit hit in hits)
         {
             if (hit.collider != null)
@@ -94,7 +102,7 @@ public class NetworkSpellManager : NetworkBehaviour
                 }
                 else
                 {
-                    PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHead);
+                    PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHeadAtleastOnceSomewhere);
                     NetworkVFXManager.Instance.SpawnVFXRpc(0, impactPosition, Quaternion.LookRotation(-hit.normal));
                     break;
                 }
@@ -102,7 +110,7 @@ public class NetworkSpellManager : NetworkBehaviour
             }
             if(penetration <= 0)
             {
-                PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHead);
+                PerformanceTracker.WriteToCurrentStack(hasHitEntity, hasHitHeadAtleastOnceSomewhere);
                 break;
             }
         }

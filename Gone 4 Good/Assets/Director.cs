@@ -81,7 +81,7 @@ public class Director : NetworkBehaviour
                     peakTimer = 0;
                 }
                 enemySpawnInterval = 2f;
-                EnemySpawning(20);
+                EnemySpawning(22);
                 break;
             case DirectorState.Relax:
                 enemySpawnInterval = 30;
@@ -185,7 +185,7 @@ public class Director : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnEnemyRpc(int index,Vector3 position,bool aggroed)
     {
-        if(position == Vector3.zero || ZombieAI.zombies.Count >= 240) return;
+        if(position == Vector3.zero || ZombieAI.zombies.Count >= 140) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
         float scale = UnityEngine.Random.Range(0.8f, 1.2f);
         enemyInstance.transform.localScale = new Vector3(scale, scale, scale);

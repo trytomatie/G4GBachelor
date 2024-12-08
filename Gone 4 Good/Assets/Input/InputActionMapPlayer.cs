@@ -516,6 +516,17 @@ public partial class @InputActionMapPlayer: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f1e7239c-fc1c-47ad-8876-f71904b03f7c"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropEquipedItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d1fef516-4421-41c6-920f-cf7238ce41a2"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
