@@ -35,7 +35,7 @@ public class DDAData : NetworkBehaviour
     // Spherecast Radius for Weapons Calculation [0...1.5]
     public NetworkVariable<float> weaponSpherecastRadius = new NetworkVariable<float>(0.5f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); // Works
 
-    private void OnConnectedToServer()
+    public override void OnNetworkSpawn()
     {
         if (NetworkManager.Singleton.IsServer && NetworkGameManager.enableDDA)
         {

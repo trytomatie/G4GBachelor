@@ -2,7 +2,6 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class Director : NetworkBehaviour
 {
@@ -17,12 +16,16 @@ public class Director : NetworkBehaviour
     public DirectorState currentState = DirectorState.BuildUp;
     public float buildUpTime = 80;
     public float buildUpTimer = 0;
+   
     public float peakTime = 10;
     public float peakTimer = 0;
     public float relaxTime = 20;
     public float relaxTimer = 0;
     public float enemySpawnTimer = 0;
     public float enemySpawnInterval = 6;
+
+    public float zombieSpieedBaseMutliplier = 1;
+    public int zombieBaseHealthBonus = 0;
 
     public override void OnNetworkSpawn()
     {
@@ -207,6 +210,9 @@ public class Director : NetworkBehaviour
             }
             enemyInstance.GetComponent<ZombieAI>().target = allConnectedPlayers[targetIndex];
         }
+        enemyInstance.GetComponent<ZombieAI>().moveSpeed *= zombieSpieedBaseMutliplier;
+        enemyInstance.GetComponent<StatusManager>().maxHp += zombieBaseHealthBonus;
+        enemyInstance.GetComponent<StatusManager>().Hp.Value += zombieBaseHealthBonus;
         enemyInstance.GetComponent<NetworkObject>().Spawn();
     }
 
