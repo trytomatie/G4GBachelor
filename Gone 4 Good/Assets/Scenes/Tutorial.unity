@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.04
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.13962269, g: 0, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 02f208a84d767994c82d128930305478, type: 2}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -8565,6 +8565,8 @@ MonoBehaviour:
   relaxTimer: 0
   enemySpawnTimer: 0
   enemySpawnInterval: 15
+  zombieSpieedBaseMutliplier: 1
+  zombieBaseHealthBonus: 0
 --- !u!114 &504107188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21861,7 +21863,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1183659671214609146, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
       propertyPath: m_ChildCameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1810096355977717450, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226410494755233371, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_ClearFlags
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226410494755233371, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226410494755233371, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226410494755233371, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2540030700015802237, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
       propertyPath: m_Enabled
@@ -21939,9 +21961,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: RemnantTutorial
       objectReference: {fileID: 0}
+    - target: {fileID: 5898742905013297944, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5946455593978112332, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
       propertyPath: maxHp
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019891931570106079, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6648318880752542602, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -21955,11 +21985,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7656948438513142838, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3819037635125607187, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
     - {fileID: 9115365662211206488, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
     - {fileID: 8299055266206694038, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+    - {fileID: 1262847237521022063, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+    - {fileID: 1810096355977717450, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
+    - {fileID: 7656948438513142838, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5848615779863950307, guid: 1122168a1b640f543b1d10225f6bcd58, type: 3}
@@ -28645,7 +28682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1562649110
 Transform:
   m_ObjectHideFlags: 0

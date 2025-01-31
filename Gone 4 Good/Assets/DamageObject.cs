@@ -38,7 +38,6 @@ public class DamageObject : MonoBehaviour
             int dmg = 2;
             if (data != null)
             {
-
                 for (int i = 0; i < 3; i++)
                 {
                     dmg += Random.Range(0f, 1f) < data.damgeReceivedBias.Value ? 1 : 0;

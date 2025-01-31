@@ -1,6 +1,8 @@
 ﻿using Unity.Netcode;
 
 using UnityEngine;
+using UnityEngine.AI;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -118,6 +120,7 @@ public class DDAData : NetworkBehaviour
                 zombieAggroedSpeedMultiplier.Value = 1.15f;
                 break;
         }
+        SetNavmeshAvoidanceRadiusMultiplierForPlayerRpc();
     }
 
     [Rpc(SendTo.Owner)]
@@ -132,6 +135,12 @@ public class DDAData : NetworkBehaviour
     {
         adjustmentLevel.Value--;
         SetDDAParameters(adjustmentLevel.Value);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SetNavmeshAvoidanceRadiusMultiplierForPlayerRpc()
+    {
+        GetComponent<NavMeshObstacle>().radius = GameManager.Instance.playerBaseAvoidanceRadius *  navmeshAvoidanceRadiusMultiplier.Value;
     }
 }
 

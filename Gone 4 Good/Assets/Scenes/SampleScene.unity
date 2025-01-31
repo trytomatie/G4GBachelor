@@ -5057,6 +5057,8 @@ MonoBehaviour:
   relaxTimer: 0
   enemySpawnTimer: 0
   enemySpawnInterval: 15
+  zombieSpieedBaseMutliplier: 1
+  zombieBaseHealthBonus: 25
 --- !u!114 &504107188
 MonoBehaviour:
   m_ObjectHideFlags: 0

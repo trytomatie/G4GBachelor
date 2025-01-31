@@ -190,7 +190,7 @@ public class Director : NetworkBehaviour
     {
         if(position == Vector3.zero || ZombieAI.zombies.Count >= 140) return;
         GameObject enemyInstance = Instantiate(zombie, position, Quaternion.identity);
-        float scale = UnityEngine.Random.Range(0.8f, 1.2f);
+        float scale = Random.Range(0.8f, 1.2f);
         enemyInstance.transform.localScale = new Vector3(scale, scale, scale);
         if (aggroed)
         {
@@ -198,7 +198,8 @@ public class Director : NetworkBehaviour
             int[] targetingRolls = new int[allConnectedPlayers.Length];
             for(int i =0; i < allConnectedPlayers.Length; i++)
             {
-                targetingRolls[i] = Mathf.RoundToInt(UnityEngine.Random.Range(0, 100) * allConnectedPlayers[i].GetComponent<DDAData>().enemyTargetingProbability.Value);
+                targetingRolls[i] = Mathf.RoundToInt(Random.Range(0, 100) 
+                    * allConnectedPlayers[i].GetComponent<DDAData>().enemyTargetingProbability.Value);
             }
             int targetIndex = 0;
             for(int i = 0; i < targetingRolls.Length; i++)

@@ -164,6 +164,8 @@ public class GameManager : MonoBehaviour
         }
     }
     public AnimationCurve flowerSpawnWindCurve;
+    internal float playerBaseAvoidanceRadius;
+
     private IEnumerator RegulateFlowerSpawnWind(Renderer flower)
     {
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
